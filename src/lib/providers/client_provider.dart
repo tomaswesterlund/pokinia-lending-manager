@@ -1,69 +1,59 @@
-import 'package:flutter/material.dart';
-import 'package:pokinia_lending_manager/models/client_model.dart';
-import 'package:pokinia_lending_manager/models/loan_model.dart';
-import 'package:pokinia_lending_manager/models/payment_model.dart';
+// import 'package:flutter/material.dart';
+// import 'package:pokinia_lending_manager/enums/client_payment_status.dart';
+// import 'package:pokinia_lending_manager/enums/loan_payment_status.dart';
+// import 'package:pokinia_lending_manager/models/client_model.dart';
+// import 'package:pokinia_lending_manager/providers/loan_provider.dart';
+// import 'package:pokinia_lending_manager/services/loan_service.dart';
 
-class ClientProvider extends ChangeNotifier {
-  late final List<ClientModel> _clients;
+// class ClientProvider extends ChangeNotifier {
 
-  ClientProvider() {
-    // Client one
-    var clientOne =
-        ClientModel(name: "Client One", phoneNumber: '+52 55 1234 9999');
+//   final LoanProvider loanProvider;
 
-    var clientOneLoanOne = LoanModel(amount: 1000, interestRate: 5.0);
-    clientOneLoanOne.addScheduledPayment(PaymentModel(
-        amount: 50,
-        interestRate: 5.0,
-        payDate: DateTime.now().add(const Duration(days: 7)))); // Prompt
-    clientOne.addLoan(clientOneLoanOne);
+//   ClientProvider({required this.loanProvider});
 
-    // Client two
-    var clientTwo =
-        ClientModel(name: "Client Two", phoneNumber: '+52 55 1234 9999');
+//   Stream<List<ClientModel>> get clientStream =>
+//       databaseService.getClientsStream();
 
-    var clientTwoLoanOne = LoanModel(amount: 5000, interestRate: 2.5);
-    clientTwoLoanOne.addScheduledPayment(PaymentModel(
-        amount: 125,
-        interestRate: 2.5,
-        payDate: DateTime.now().add(const Duration(days: -7)))); // Overdue
-    clientTwo.addLoan(clientTwoLoanOne);
+//   ClientPaymentStatus getClientPaymentStatus(String clientId) {
+//     var loans = databaseService.getLoansByClientId(clientId);
 
-    // Client three
-    var clientThree =
-        ClientModel(name: "Client Three", phoneNumber: '+52 55 1234 9999');
+//     if (loans.isEmpty) {
+//       return ClientPaymentStatus.empty;
+//     } else {
+//       if (loans.any((loan) =>
+//           loanProvider.getLoanPaymentStatus(loan.id) ==
+//           LoanPaymentStatus.overdue)) {
+//         return ClientPaymentStatus.overdue;
+//       } else {
+//         return ClientPaymentStatus.prompt;
+//       }
+//     }
+//   }
 
-    var clientThreeLoanOne = LoanModel(amount: 9999, interestRate: 1.5);
-    clientThreeLoanOne.addScheduledPayment(PaymentModel(
-        amount: 150,
-        interestRate: 1.5,
-        payDate: DateTime.now().add(const Duration(days: -2)))); // Warning
-    clientThree.addLoan(clientThreeLoanOne);
+//   void addClient(
+//       {required String id,
+//       required String name,
+//       required String phoneNumber,
+//       String? address}) {
+//     ClientModel client =
+//         ClientModel(id: id, name: name, phoneNumber: phoneNumber);
+//     //_clients.add(client);
+//     notifyListeners();
+//   }
 
-    // Client four
-    var clientFour =
-        ClientModel(name: "Client four", phoneNumber: '+52 55 1234 9999');
-    // No loan
+//   void removeClient(ClientModel client) {
+//     //_clients.remove(client);
+//     notifyListeners();
+//   }
 
-    _clients = [clientOne, clientTwo, clientThree, clientFour];
-    
-  }
+//   ClientModel? getLatestClientBasedOnName(String name) {
+//     return ClientModel(id: '-1', name: '-1', phoneNumber: '-1');
 
-  List<ClientModel> get clients => _clients;
-  bool get hasClients => _clients.isNotEmpty;
+//     // return _clients.where((client) => client.name == name).toList().first;
+//   }
 
-  void addClient(String name, String phoneNumber, String? address) {
-    ClientModel client = ClientModel(name: name, phoneNumber: phoneNumber);
-    _clients.add(client);
-    notifyListeners();
-  }
-
-  void removeClient(ClientModel client) {
-    _clients.remove(client);
-    notifyListeners();
-  }
-
-  ClientModel? getLatestClientBasedOnName(String name) {
-    return _clients.where((client) => client.name == name).toList().first;
-  }
-}
+//   ClientModel getClientById(String id) {
+//     return ClientModel(id: '-1', name: '-1', phoneNumber: '-1');
+//     //return _clients.where((client) => client.id == id).toList().first;
+//   }
+// }

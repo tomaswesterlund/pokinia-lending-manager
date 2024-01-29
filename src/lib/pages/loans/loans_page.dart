@@ -23,8 +23,6 @@ class LoansPage extends StatelessWidget {
             const MySubHeadingText(text: "Would you like to create a new loan?"),
             
             const SizedBox(height: 100),
-            
-            //const MyFab(subTitle: "New loan",),
           ],
         ),
       ),

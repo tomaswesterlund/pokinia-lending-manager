@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:pokinia_lending_manager/components/client/client_list_component.dart';
 import 'package:pokinia_lending_manager/components/client/empty_list_client_component.dart';
 import 'package:pokinia_lending_manager/components/texts/header_three_text.dart';
-import 'package:pokinia_lending_manager/providers/client_provider.dart';
+import 'package:pokinia_lending_manager/models/client_model.dart';
+import 'package:pokinia_lending_manager/services/client_service.dart';
 import 'package:provider/provider.dart';
 
 class ClientsPage extends StatelessWidget {
@@ -10,15 +11,32 @@ class ClientsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ClientProvider>(
-      builder: (_, clientProvider, child) => Scaffold(
+
+    var clientService = Provider.of<ClientService>(context, listen: false);
+
+    return Scaffold(
         appBar: AppBar(
           title: const HeaderThreeText(text: "Clients"),
         ),
-        body: clientProvider.hasClients == true
-            ? const ClientList()
-            : const EmptyClientList(),
-      ),
-    );
+        body: StreamBuilder<List<ClientModel>>(
+          stream: clientService.getClientsStream(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              if (snapshot.data!.isNotEmpty) {
+                List<ClientModel> clients = snapshot.data!;
+                return  ClientList(clients: clients);
+              } else {
+                return const EmptyClientList();
+              }
+            } else {
+              return const Center(child: CircularProgressIndicator());
+            }
+          },
+        ),
+      );
   }
 }
+
+// clientProvider.hasClients == true
+//             ? const ClientList()
+//             : const EmptyClientList(),

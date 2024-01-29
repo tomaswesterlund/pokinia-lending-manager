@@ -1,34 +1,26 @@
-import 'package:pokinia_lending_manager/components/enums/payment_status_enum.dart';
-import 'package:pokinia_lending_manager/models/loan_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ClientModel {
+  final String id;
   final String name;
   final String phoneNumber;
-  final List<LoanModel> _loans = [];
 
-  ClientModel({required this.name, required this.phoneNumber});
+  ClientModel({required this.id, required this.name, required this.phoneNumber});
 
-  // Getter
-  List<LoanModel> get loans => _loans;
-  PaymentStatus get paymentStatus {
-    if (_loans.isEmpty) {
-      return PaymentStatus.empty;
-    } else {
-      if (_loans.any((loan) => loan.paymentStatus == PaymentStatus.overdue)) {
-        return PaymentStatus.overdue;
-      } else if (_loans
-          .any((loan) => loan.paymentStatus == PaymentStatus.pending)) {
-        return PaymentStatus.pending;
-      } else if (_loans
-          .any((loan) => loan.paymentStatus == PaymentStatus.prompt)) {
-        return PaymentStatus.prompt;
-      }
-    }
-
-    throw Exception("No payment status found");
+  factory ClientModel.fromJson(Map<String, dynamic> json) {
+    return ClientModel(
+        id: json['id'],
+        name: json['name'],
+        phoneNumber: json['phoneNumber']);
   }
 
-  void addLoan(LoanModel loan) {
-    _loans.add(loan);
+  factory ClientModel.fromFirestore(DocumentSnapshot doc) {
+    Map<String, dynamic> json = doc.data() as Map<String, dynamic>;
+      
+    return ClientModel(
+        id: doc.id,
+        name: json['name'],
+        phoneNumber: json['phoneNumber']);
   }
+
 }

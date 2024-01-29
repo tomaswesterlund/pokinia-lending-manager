@@ -1,11 +1,19 @@
+import 'package:circular_profile_avatar/circular_profile_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:pokinia_lending_manager/components/buttons/my_fab.dart';
-import 'package:pokinia_lending_manager/components/status_boxes/compact_status_box_component.dart';
-import 'package:pokinia_lending_manager/components/status_boxes/regular_status_box_component.dart';
-import 'package:pokinia_lending_manager/components/texts/amount_text.dart';
-import 'package:pokinia_lending_manager/components/texts/header_four_text.dart';
-import 'package:pokinia_lending_manager/components/texts/paragraph_one_text.dart';
+import 'package:pokinia_lending_manager/components/status_boxes/client_payment_status/wide_client_status_box_component.dart';
+import 'package:pokinia_lending_manager/components/status_boxes/loan_payment_status/compact_loan_status_box_component.dart';
+import 'package:pokinia_lending_manager/components/texts/amounts/big_amount_text.dart';
+import 'package:pokinia_lending_manager/components/texts/header_three_text.dart';
+import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_one_bold_text.dart';
+import 'package:pokinia_lending_manager/enums/client_payment_status.dart';
 import 'package:pokinia_lending_manager/models/client_model.dart';
+import 'package:pokinia_lending_manager/models/loan_model.dart';
+import 'package:pokinia_lending_manager/pages/loans/loan_page.dart';
+import 'package:pokinia_lending_manager/pages/loans/new_loan_page.dart';
+import 'package:pokinia_lending_manager/services/client_service.dart';
+import 'package:pokinia_lending_manager/services/loan_service.dart';
+import 'package:provider/provider.dart';
 
 class ClientPage extends StatelessWidget {
   final ClientModel client;
@@ -14,112 +22,209 @@ class ClientPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(client.name),
-      ),
-      body: Column(children: [
-        // Image
-        Image.asset(
-          "assets/images/dummy_avatar.png",
-          width: 48,
-          height: 48,
-        ),
+    var clientService = Provider.of<ClientService>(context, listen: false);
+    var loanService = Provider.of<LoanService>(context, listen: false);
 
-        // Name
-        HeaderFourText(text: client.name),
+    // CLIENT - StreamBuilder
+    return StreamBuilder<ClientModel>(
+      stream: clientService.getClientByIdStream(client.id),
+      builder: (context, clientSnapshot) {
+        if (clientSnapshot.hasError) {
+          return const Center(child: Text("Error"));
+        } else if (!clientSnapshot.hasData) {
+          return const Center(child: CircularProgressIndicator());
+        } else {
+          var client = clientSnapshot.data!;
 
-        // Status
-        RegularStatusBoxComponent(paymentStatus: client.paymentStatus),
+          // LOAN - StreamBuilder
+          return StreamBuilder<List<LoanModel>>(
+            stream: loanService.getLoansByClientIdStream(client.id),
+            builder: (context, loansSnapshot) {
+              if (loansSnapshot.hasError) {
+                return const Center(child: Text("Error"));
+              } else if (!loansSnapshot.hasData) {
+                return const Center(child: CircularProgressIndicator());
+              } else {
+                var loans = loansSnapshot.data!;
 
-        //Contact buttons
-        Row(
-          children: [
-            // Call button
-            IconButton(
-              icon: const Icon(Icons.call),
-              onPressed: () {},
-            ),
-
-            // Message button
-            IconButton(
-              icon: const Icon(Icons.message),
-              onPressed: () {},
-            ),
-
-            // Email button
-            IconButton(
-              icon: const Icon(Icons.email),
-              onPressed: () {},
-            ),
-          ],
-        ),
-
-        // Phone number
-        Row(
-          children: [
-            const Icon(Icons.phone),
-            ParagraphOneText(text: client.phoneNumber)
-          ],
-        ),
-
-        // Address
-        Row(
-          children: [
-            const Icon(Icons.location_on),
-            ParagraphOneText(text: client.phoneNumber),
-          ],
-        ),
-
-        //Edit button
-        const Text("Edit"),
-
-        // Separator
-        const Divider(color: Colors.grey, thickness: 2),
-
-        // Loans
-        ListView.builder(
-          itemCount: client.loans.length,
-          itemBuilder: (context, index) {
-            var loan = client.loans[index];
-
-            return Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: const Color(0xFFF8F8F8),
-                  border: const Border(
-                    bottom: BorderSide(
-                      color: Color(0xFFD2DEE0),
-                    ),
+                // SCAFFOLD
+                return Scaffold(
+                  appBar: AppBar(
+                    title: Text(client.name),
                   ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  body: Column(
                     children: [
+                      // Image
+                      CircularProfileAvatar(
+                        '',
+                        borderColor: const Color(0xFF008080),
+                        borderWidth: 5,
+                        elevation: 2,
+                        radius: 50,
+                        child: Image.asset("assets/images/dummy_avatar_2.webp"),
+                      ),
+
+                      const SizedBox(height: 16.0),
+
+                      // Name
+                      HeaderThreeText(text: client.name),
+
+                      const SizedBox(height: 16.0),
+
+                      // Status
+                      const WideClientStatusBoxComponent(
+                          clientPaymentStatus: ClientPaymentStatus.unknown),
+
+                      const SizedBox(height: 16.0),
+                      //Contact buttons
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          CompactStatusBoxComponent(paymentStatus: loan.paymentStatus),
-                          const SizedBox(width: 10),
-                          AmountText(amount: loan.amount),
+                          // Call button
+                          Container(
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFE3F2F2),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: IconButton(
+                              icon: const Icon(Icons.call),
+                              color: const Color(0xFF008080),
+                              onPressed: () {},
+                            ),
+                          ),
+
+                          const SizedBox(width: 16),
+
+                          Container(
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFF2EEE3),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: IconButton(
+                              icon: const Icon(Icons.message),
+                              color: const Color(0xFFEAB308),
+                              onPressed: () {},
+                            ),
+                          ),
+
+                          const SizedBox(width: 16),
+
+                          Container(
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFF2E3E3),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: IconButton(
+                              icon: const Icon(Icons.map),
+                              color: const Color(0xFFEB5857),
+                              onPressed: () {},
+                            ),
+                          ),
                         ],
                       ),
-                      const Icon(Icons.arrow_forward_ios),
+
+                      // Phone number
+                      Padding(
+                        padding: const EdgeInsets.all(32.0),
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                const Icon(Icons.phone),
+                                const SizedBox(width: 8.0),
+                                ParagraphOneBoldText(text: client.phoneNumber)
+                              ],
+                            ),
+                            const SizedBox(height: 16.0),
+                            // Address
+                            const Row(
+                              children: [
+                                Icon(Icons.location_on),
+                                SizedBox(width: 8.0),
+                                ParagraphOneBoldText(
+                                    text: "Some direction ..."),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      //Edit button
+                      const Text("Edit"),
+
+                      // Separator
+                      const Divider(color: Colors.grey, thickness: 2),
+
+                      // Loans
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: loans.length,
+                          itemBuilder: (context, index) {
+                            var loan = loans[index];
+                        
+                            return GestureDetector(
+                              onTap: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => LoanPage(
+                                          clientId: client.id, loanId: loan.id))),
+                              child: Padding(
+                                padding: const EdgeInsets.all(20.0),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: const Color(0xFFF8F8F8),
+                                    border: const Border(
+                                      bottom: BorderSide(
+                                        color: Color(0xFFD2DEE0),
+                                      ),
+                                    ),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(20.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            CompactLoanStatusBoxComponent(
+                                                loanPaymentStatus:
+                                                    loan.loanPaymentStatus),
+                                            const SizedBox(width: 20),
+                                            BigAmountText(
+                                                amount: loan
+                                                    .remainingPrincipalAmount),
+                                          ],
+                                        ),
+                                        const Icon(Icons.arrow_forward_ios),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                          shrinkWrap: true,
+                        ),
+                      ),
+
+                      // New loan
+                      MyFab(
+                          subTitle: "New loan",
+                          onPressed: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => NewLoanPage(
+                                      clientId: client.id)))),
                     ],
                   ),
-                ),
-              ),
-            );
-          },
-          shrinkWrap: true,
-        ),
-
-        // New loan
-        MyFab(subTitle: "New loan", onPressed: () {}),
-      ]),
+                );
+              }
+            },
+          );
+        }
+      },
     );
   }
 }

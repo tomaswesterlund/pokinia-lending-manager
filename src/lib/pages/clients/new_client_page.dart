@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pokinia_lending_manager/components/buttons/my_cta_button.dart';
 import 'package:pokinia_lending_manager/components/texts/header_three_text.dart';
-import 'package:pokinia_lending_manager/pages/clients/client_page.dart';
-import 'package:pokinia_lending_manager/providers/client_provider.dart';
+import 'package:pokinia_lending_manager/services/client_service.dart';
 import 'package:provider/provider.dart';
 
 class NewClientPage extends StatelessWidget {
@@ -14,69 +13,73 @@ class NewClientPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ClientProvider>(
-      builder: (_, clientProvider, child) => Scaffold(
-        appBar: AppBar(
-          title: const HeaderThreeText(text: 'New client'),
-        ),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            // Foto
 
-            // Agregar foto
+    var clientService = Provider.of<ClientService>(context, listen: false);
 
-            Column(
-              children: [
-                const Text("New Client Page"),
+    return Scaffold(
+      appBar: AppBar(
+        title: const HeaderThreeText(text: 'New client'),
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          // Foto
 
-                Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-                    child: MyTextField(
-                        labelText: 'Name', controller: _nameController)),
+          // Agregar foto
 
-                // Phone number
-                Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-                    child: MyTextField(
-                      labelText: 'Phone number',
-                      controller: _phoneNumberController,
-                    )),
+          Column(
+            children: [
+              const Text("New Client Page"),
 
-                // Address
-                Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-                    child: MyTextField(
-                      labelText: 'Address',
-                      controller: _addressController,
-                    )),
-              ],
-            ),
-            // Name
+              Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                  child: MyTextField(
+                      labelText: 'Name', controller: _nameController)),
 
-            // Button: Create new client
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20, 20, 20, 40),
-              child: MyCtaButton(
-                  text: "New client",
-                  onPressed: () {
-                    String name = _nameController.text;
-                    String phoneNumber = _phoneNumberController.text;
-                    String address = _addressController.text;
+              // Phone number
+              Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                  child: MyTextField(
+                    labelText: 'Phone number',
+                    controller: _phoneNumberController,
+                  )),
 
-                    clientProvider.addClient(name, phoneNumber, address);
-                    var client =
-                        clientProvider.getLatestClientBasedOnName(name);
+              // Address
+              Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                  child: MyTextField(
+                    labelText: 'Address',
+                    controller: _addressController,
+                  )),
+            ],
+          ),
+          // Name
 
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (ctx) => ClientPage(client: client!)));
-                  }),
-            ),
-            // Button: Client already exists
-          ],
-        ),
+          // Button: Create new client
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 20, 20, 40),
+            child: MyCtaButton(
+                text: "New client",
+                onPressed: () {
+                  String name = _nameController.text;
+                  String phoneNumber = _phoneNumberController.text;
+                  String address = _addressController.text;
+
+                  // clientProvider.addClient(
+                  //     id: name.replaceAll(' ', ''),
+                  //     name: name,
+                  //     phoneNumber: phoneNumber,
+                  //     address: address);
+                  // var client = clientProvider.getLatestClientBasedOnName(name);
+
+                  // Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //         builder: (ctx) => ClientPage(client: client!)));
+                }),
+          ),
+          // Button: Client already exists
+        ],
       ),
     );
   }

@@ -1,0 +1,82 @@
+{
+  "project_info": {
+    "project_number": "457013140749",
+    "project_id": "pokinia-lending-manager-c66c7",
+    "storage_bucket": "pokinia-lending-manager-c66c7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:457013140749:android:4fdb20085af96fa11ee444",
+        "android_client_info": {
+          "package_name": "com.example.pokinia_lending_manager"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "457013140749-q7ku305i6kcts7k2uj3b6ipr43tpep59.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDjTD4wBbwr56B3HyUc4t43jt128AcHr7o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "457013140749-lr0vk85cqb4g9du06qim2oe21es5uh4r.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "457013140749-ai3m29n1ce199m8f8450prnohphinp2j.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.pokiniaLendingManager"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:457013140749:android:b14d0fba45c63c2c1ee444",
+        "android_client_info": {
+          "package_name": "com.pokinia.lending_manager.pokinia_lending_manager"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "457013140749-q7ku305i6kcts7k2uj3b6ipr43tpep59.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDjTD4wBbwr56B3HyUc4t43jt128AcHr7o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "457013140749-lr0vk85cqb4g9du06qim2oe21es5uh4r.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "457013140749-ai3m29n1ce199m8f8450prnohphinp2j.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.pokiniaLendingManager"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

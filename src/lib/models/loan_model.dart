@@ -1,35 +1,52 @@
-import 'package:pokinia_lending_manager/components/enums/payment_status_enum.dart';
-import 'package:pokinia_lending_manager/models/payment_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:pokinia_lending_manager/enums/loan_payment_status.dart';
 
 class LoanModel {
-  final int amount;
-  final double interestRate;
+  final String id;
+  final String clientId;
+  final double initialPrincipalAmount;
+  final double initialInterestRate;
+  final double remainingPrincipalAmount;
+  final double interestAmountPaid;
+  final double principalAmountPaid;
+  final LoanPaymentStatus loanPaymentStatus;
 
-  List<PaymentModel> payments = [];
-  List<PaymentModel> scheduledPayments = [];
+  LoanModel({
+    required this.id,
+    required this.clientId,
+    required this.initialPrincipalAmount,
+    required this.initialInterestRate,
+    required this.remainingPrincipalAmount,
+    required this.interestAmountPaid,
+    required this.principalAmountPaid,
+    required this.loanPaymentStatus,
+  });
 
-  LoanModel({required this.amount, required this.interestRate});
+  factory LoanModel.fromFirestore(DocumentSnapshot doc) {
+    Map<String, dynamic> json = doc.data() as Map<String, dynamic>;
 
-  void addScheduledPayment(PaymentModel payment) {
-    scheduledPayments.add(payment);
+    return LoanModel(
+      id: doc.id,
+      clientId: json['clientId'],
+      initialPrincipalAmount: (json['initialPrincipalAmount'] as num).toDouble(),
+      initialInterestRate: (json['initialInterestRate'] as num).toDouble(),
+      remainingPrincipalAmount:
+          (json['remainingPrincipalAmount'] as num).toDouble(),
+      interestAmountPaid: (json['interestAmountPaid'] as num).toDouble(),
+      principalAmountPaid: (json['principalAmountPaid'] as num).toDouble(),
+      loanPaymentStatus: LoanPaymentStatus.fromName(json['loanPaymentStatus']),
+    );
   }
 
-  PaymentStatus get paymentStatus {
-    if (scheduledPayments.isEmpty) {
-      return PaymentStatus.empty;
-    } else {
-      var lastPayment = scheduledPayments.last;
-
-      if (lastPayment.payDate.isBefore(DateTime.now())) {
-        return PaymentStatus.overdue;
-      } else if (lastPayment.payDate.isAfter(DateTime.now()) &&
-          lastPayment.payDate.isBefore(DateTime.now().add(const Duration(days: 3)))) {
-        return PaymentStatus.pending;
-      } else if (lastPayment.payDate.isAfter(DateTime.now())) {
-        return PaymentStatus.prompt;
-      } else {
-        throw Exception("No payment status found");
-      }
-    }
+  toJson() {
+    return {
+      'clientId': clientId,
+      'initialPrincipalAmount': initialPrincipalAmount,
+      'initialInterestRate': initialInterestRate,
+      'remainingPrincipalAmount': remainingPrincipalAmount,
+      'interestAmountPaid': interestAmountPaid,
+      'principalAmountPaid': principalAmountPaid,
+      'loanPaymentStatus': loanPaymentStatus.name.toString(),
+    };
   }
 }
