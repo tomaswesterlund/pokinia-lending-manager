@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:pokinia_lending_manager/enums/client_payment_status.dart';
+import 'package:pokinia_lending_manager/enums/payment_status_enum.dart';
 
 class WideClientStatusBoxComponent extends StatelessWidget {
-  final ClientPaymentStatus clientPaymentStatus;
+  final PaymentStatus paymentStatus;
 
-  const WideClientStatusBoxComponent({super.key, required this.clientPaymentStatus});
+  const WideClientStatusBoxComponent({super.key, required this.paymentStatus});
 
   Color _getFillColor() {
-    switch (clientPaymentStatus) {
-      case ClientPaymentStatus.prompt:
+    switch (paymentStatus) {
+      case PaymentStatus.prompt:
         return const Color(0xFFF0FFF6);
-      case ClientPaymentStatus.overdue:
+      case PaymentStatus.overdue:
         return const Color(0xFFFFF0F0);
       default:
         return const Color.fromARGB(202, 238, 238, 238);
@@ -18,10 +18,10 @@ class WideClientStatusBoxComponent extends StatelessWidget {
   }
 
   Color _getBorderColor() {
-    switch (clientPaymentStatus) {
-      case ClientPaymentStatus.prompt:
+    switch (paymentStatus) {
+      case PaymentStatus.prompt:
         return const Color(0xFF22C55E);
-      case ClientPaymentStatus.overdue:
+      case PaymentStatus.overdue:
         return const Color(0xFFEB5857);
       default:
         return const Color.fromARGB(255, 116, 115, 115);
@@ -29,10 +29,10 @@ class WideClientStatusBoxComponent extends StatelessWidget {
   }
 
   IconData _getIcon() {
-    switch (clientPaymentStatus) {
-      case ClientPaymentStatus.prompt:
+    switch (paymentStatus) {
+      case PaymentStatus.prompt:
         return Icons.check;
-      case ClientPaymentStatus.overdue:
+      case PaymentStatus.overdue:
         return Icons.close;
       default:
         return Icons.question_mark;
@@ -57,7 +57,7 @@ class WideClientStatusBoxComponent extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.only(left: 6.0),
-            child: Text(clientPaymentStatus.name),
+            child: Text(paymentStatus.name),
           ),
           Padding(
             padding: const EdgeInsets.only(right: 5.0),

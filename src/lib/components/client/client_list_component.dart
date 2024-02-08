@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pokinia_lending_manager/components/status_boxes/client_payment_status/compact_client_payment_status_box_component.dart';
-import 'package:pokinia_lending_manager/components/texts/header_four_text.dart';
-import 'package:pokinia_lending_manager/enums/client_payment_status.dart';
+import 'package:pokinia_lending_manager/components/texts/headers/header_four_text.dart';
 import 'package:pokinia_lending_manager/models/client_model.dart';
 import 'package:pokinia_lending_manager/pages/clients/client_page.dart';
 import 'package:pokinia_lending_manager/pages/clients/new_client_page.dart';
@@ -12,13 +11,12 @@ class ClientList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: ListView.builder(
         itemCount: clients.length,
         itemBuilder: (context, index) {
           final ClientModel client = clients[index];
-    
+
           return GestureDetector(
             onTap: () => Navigator.push(
                 context,
@@ -30,7 +28,7 @@ class ClientList extends StatelessWidget {
               // height: 50,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                color: const Color(0xFFD2DEE0),
+                color: const Color(0xFFF8F8F8),
                 border: Border(
                   bottom: BorderSide(
                     color: Colors.grey[300]!,
@@ -51,7 +49,8 @@ class ClientList extends StatelessWidget {
                       HeaderFourText(text: client.name),
                     ],
                   ),
-                  const CompactClientPaymentStatusBoxComponent(clientPaymentStatus: ClientPaymentStatus.unknown)
+                  CompactClientPaymentStatusBoxComponent(
+                      paymentStatus: client.paymentStatus)
                 ],
               ),
             ),
@@ -62,7 +61,7 @@ class ClientList extends StatelessWidget {
         onPressed: () => Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => NewClientPage(),
+            builder: (context) => const NewClientPage(),
           ),
         ),
         child: const Icon(Icons.add),

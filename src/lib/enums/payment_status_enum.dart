@@ -3,8 +3,10 @@ enum PaymentStatus {
   empty,
   deleted,
   paid,
+  pending,
   scheduled,
-  overdue;
+  overdue,
+  prompt;
 
   static PaymentStatus fromName(String name) {
     for (PaymentStatus enumVariant in PaymentStatus.values) {

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pokinia_lending_manager/components/buttons/my_cta_button.dart';
-import 'package:pokinia_lending_manager/enums/loan_payment_status.dart';
-import 'package:pokinia_lending_manager/models/loan_model.dart';
-import 'package:pokinia_lending_manager/pages/clients/new_client_page.dart';
+import 'package:pokinia_lending_manager/components/input/my_text_field.dart';
 import 'package:pokinia_lending_manager/services/loan_service.dart';
 import 'package:provider/provider.dart';
 
@@ -15,7 +13,7 @@ class NewLoanPage extends StatefulWidget {
 }
 
 class _NewLoanPageState extends State<NewLoanPage> {
-  DateTime selectedDate = DateTime.now();
+  DateTime _startDate = DateTime.now();
   late LoanService _loanService;
   final TextEditingController _clientController = TextEditingController();
   final TextEditingController _loanPrincipalAmountController =
@@ -31,34 +29,38 @@ class _NewLoanPageState extends State<NewLoanPage> {
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
         context: context,
-        initialDate: selectedDate,
+        initialDate: _startDate,
         firstDate: DateTime(2015, 8),
         lastDate: DateTime(2101));
-    if (picked != null && picked != selectedDate) {
+    if (picked != null && picked != _startDate) {
       setState(() {
-        selectedDate = picked;
+        _startDate = picked;
       });
     }
   }
 
-  void _createLoan() {
-    // Create loan
-    var loan = LoanModel(
-      id: '',
-      clientId: _clientController.text,
-      initialPrincipalAmount: double.parse(_loanPrincipalAmountController.text),
-      initialInterestRate: double.parse(_interestRateController.text),
-      loanPaymentStatus: LoanPaymentStatus.unknown,
-      remainingPrincipalAmount:
-          double.parse(_loanPrincipalAmountController.text),
-      interestAmountPaid: 0,
-      principalAmountPaid: 0,
-    );
+  void _createLoan() async {
+    var clientId = _clientController.text;
+    var initialPrincipalAmount =
+        double.parse(_loanPrincipalAmountController.text);
+    var initialInterestRate = double.parse(_interestRateController.text);
 
-    // Create payments
+    var response = await _loanService.createLoan(
+        clientId: clientId,
+        initialPrincipalAmount: initialPrincipalAmount,
+        initialInterestRate: initialInterestRate,
+        startDate: _startDate,
+        paymentPeriod: 'monthly');
 
-
-    _loanService.addLoan(loan);
+    if (response.statusCode == 200) {
+      Navigator.pop(context);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Please validate your input!"),
+        ),
+      );
+    }
   }
 
   @override

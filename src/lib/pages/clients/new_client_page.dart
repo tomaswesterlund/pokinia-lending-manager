@@ -1,19 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:pokinia_lending_manager/components/buttons/my_cta_button.dart';
-import 'package:pokinia_lending_manager/components/texts/header_three_text.dart';
+import 'package:pokinia_lending_manager/components/input/my_text_field.dart';
+import 'package:pokinia_lending_manager/components/texts/headers/header_three_text.dart';
 import 'package:pokinia_lending_manager/services/client_service.dart';
 import 'package:provider/provider.dart';
 
-class NewClientPage extends StatelessWidget {
-  NewClientPage({super.key});
+class NewClientPage extends StatefulWidget {
+  const NewClientPage({super.key});
 
+  @override
+  State<NewClientPage> createState() => _NewClientPageState();
+}
+
+class _NewClientPageState extends State<NewClientPage> {
+  bool _isProcessing = false;
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-
     var clientService = Provider.of<ClientService>(context, listen: false);
 
     return Scaffold(
@@ -59,55 +65,32 @@ class NewClientPage extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 20, 20, 40),
             child: MyCtaButton(
-                text: "New client",
-                onPressed: () {
-                  String name = _nameController.text;
-                  String phoneNumber = _phoneNumberController.text;
-                  String address = _addressController.text;
+              text: "New client",
+              onPressed: () async {
+                String name = _nameController.text;
+                String phoneNumber = _phoneNumberController.text;
+                String address = _addressController.text;
 
-                  // clientProvider.addClient(
-                  //     id: name.replaceAll(' ', ''),
-                  //     name: name,
-                  //     phoneNumber: phoneNumber,
-                  //     address: address);
-                  // var client = clientProvider.getLatestClientBasedOnName(name);
+                _isProcessing = true;
+                var response = await clientService.createClient(
+                    name: name, phoneNumber: phoneNumber, address: address);
+                _isProcessing = false;
 
-                  // Navigator.push(
-                  //     context,
-                  //     MaterialPageRoute(
-                  //         builder: (ctx) => ClientPage(client: client!)));
-                }),
+                if (response.statusCode == 200) {
+                  Navigator.pop(context);
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text("Please validate your input!"),
+                    ),
+                  );
+                }
+              },
+            ),
           ),
           // Button: Client already exists
         ],
       ),
-    );
-  }
-}
-
-class MyTextField extends StatelessWidget {
-  final String labelText;
-  final TextEditingController controller;
-
-  const MyTextField(
-      {super.key, required this.labelText, required this.controller});
-
-  @override
-  Widget build(BuildContext context) {
-    return TextField(
-      controller: controller,
-      decoration: InputDecoration(
-          enabledBorder: OutlineInputBorder(
-            borderSide: const BorderSide(color: Color(0xFF979797)),
-            borderRadius: BorderRadius.circular(10),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: const BorderSide(color: Color(0xFF979797)),
-            borderRadius: BorderRadius.circular(10),
-          ),
-          filled: true,
-          fillColor: const Color(0xFFE5EAEB),
-          labelText: labelText),
     );
   }
 }

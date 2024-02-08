@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:pokinia_lending_manager/enums/loan_payment_status.dart';
+import 'package:pokinia_lending_manager/enums/payment_status_enum.dart';
 
 class LoanModel {
   final String id;
@@ -9,7 +9,7 @@ class LoanModel {
   final double remainingPrincipalAmount;
   final double interestAmountPaid;
   final double principalAmountPaid;
-  final LoanPaymentStatus loanPaymentStatus;
+  final PaymentStatus paymentStatus;
 
   LoanModel({
     required this.id,
@@ -19,7 +19,7 @@ class LoanModel {
     required this.remainingPrincipalAmount,
     required this.interestAmountPaid,
     required this.principalAmountPaid,
-    required this.loanPaymentStatus,
+    required this.paymentStatus,
   });
 
   factory LoanModel.fromFirestore(DocumentSnapshot doc) {
@@ -34,19 +34,20 @@ class LoanModel {
           (json['remainingPrincipalAmount'] as num).toDouble(),
       interestAmountPaid: (json['interestAmountPaid'] as num).toDouble(),
       principalAmountPaid: (json['principalAmountPaid'] as num).toDouble(),
-      loanPaymentStatus: LoanPaymentStatus.fromName(json['loanPaymentStatus']),
+      paymentStatus: PaymentStatus.fromName(json['paymentStatus']),
     );
   }
 
   toJson() {
     return {
+      'id': id,
       'clientId': clientId,
       'initialPrincipalAmount': initialPrincipalAmount,
       'initialInterestRate': initialInterestRate,
       'remainingPrincipalAmount': remainingPrincipalAmount,
       'interestAmountPaid': interestAmountPaid,
       'principalAmountPaid': principalAmountPaid,
-      'loanPaymentStatus': loanPaymentStatus.name.toString(),
+      'paymentStatus': paymentStatus.name.toString(),
     };
   }
 }

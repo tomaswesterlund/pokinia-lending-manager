@@ -1,20 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 
 class BigAmountText extends StatelessWidget {
-  final double amount;
-  String formattedAmount = '';
+  final String text;
 
-  BigAmountText({super.key, required this.amount}) {
-    formattedAmount = NumberFormat.simpleCurrency(locale: 'en-US', decimalDigits: 0)
-        .format(amount);
-  }
+  const BigAmountText({super.key, required this.text});
 
   @override
   Widget build(BuildContext context) {
     return Text(
-      formattedAmount,
+      text,
       style: GoogleFonts.sourceCodePro(
           color: const Color(0xFF1C2829),
           textStyle: const TextStyle(

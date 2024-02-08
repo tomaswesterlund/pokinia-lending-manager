@@ -1,10 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:pokinia_lending_manager/pages/clients/clients_page.dart';
-import 'package:pokinia_lending_manager/providers/payment_provider.dart';
-import 'package:pokinia_lending_manager/providers/receipt_provider.dart';
+import 'package:pokinia_lending_manager/pages/main_page.dart';
 import 'package:pokinia_lending_manager/services/client_service.dart';
 import 'package:pokinia_lending_manager/services/loan_service.dart';
+import 'package:pokinia_lending_manager/services/loan_statement_service.dart';
 import 'package:pokinia_lending_manager/services/payment_service.dart';
 import 'package:provider/provider.dart';
 
@@ -24,31 +27,28 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  ClientService clientService = ClientService();
-  LoanService loanService = LoanService();
-  PaymentService paymentService = PaymentService();
+   if (kDebugMode) {
+   try {
+     FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8080);
+     await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
+   } catch (e) {
+     // ignore: avoid_print
+     print(e);
+   }
+ }
 
-  ReceiptProvider receiptProvider = ReceiptProvider();
-
-  // LoanProvider loanProvider = LoanProvider(
-  //   databaseService: databaseService,
-  //   paymentProvider: paymentProvider,
-  // );
-  // ClientProvider clientProvider = ClientProvider(
-  //   databaseService: databaseService,
-  //   loanProvider: loanProvider,
-  // );
+String baseApiUrl = "http://127.0.0.1:5001/pokinia-lending-manager-c66c7/us-central1/api";
+  ClientService clientService = ClientService(baseApiUrl: baseApiUrl);
+  LoanService loanService = LoanService(baseApiUrl: baseApiUrl);
+  LoanStatementService loanStatementService = LoanStatementService();
+  PaymentService paymentService = PaymentService(baseApiUrl: baseApiUrl);
 
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (context) => clientService),
       ChangeNotifierProvider(create: (context) => loanService),
+      ChangeNotifierProvider(create: (context) => loanStatementService),
       ChangeNotifierProvider(create: (context) => paymentService),
-      ChangeNotifierProvider(create: (context) => receiptProvider),
-      // StreamProvider<List<ClientModel>>(
-      //   create: (context) => databaseService.getClientStream(),
-      //   initialData: const [],
-      // )
     ],
     child: const MyApp(),
   ));
@@ -66,7 +66,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const ClientsPage(),
+      home: const MainPage(),
     );
   }
 }

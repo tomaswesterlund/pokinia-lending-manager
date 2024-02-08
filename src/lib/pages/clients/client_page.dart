@@ -4,15 +4,15 @@ import 'package:pokinia_lending_manager/components/buttons/my_fab.dart';
 import 'package:pokinia_lending_manager/components/status_boxes/client_payment_status/wide_client_status_box_component.dart';
 import 'package:pokinia_lending_manager/components/status_boxes/loan_payment_status/compact_loan_status_box_component.dart';
 import 'package:pokinia_lending_manager/components/texts/amounts/big_amount_text.dart';
-import 'package:pokinia_lending_manager/components/texts/header_three_text.dart';
+import 'package:pokinia_lending_manager/components/texts/headers/header_three_text.dart';
 import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_one_bold_text.dart';
-import 'package:pokinia_lending_manager/enums/client_payment_status.dart';
 import 'package:pokinia_lending_manager/models/client_model.dart';
 import 'package:pokinia_lending_manager/models/loan_model.dart';
 import 'package:pokinia_lending_manager/pages/loans/loan_page.dart';
 import 'package:pokinia_lending_manager/pages/loans/new_loan_page.dart';
 import 'package:pokinia_lending_manager/services/client_service.dart';
 import 'package:pokinia_lending_manager/services/loan_service.dart';
+import 'package:pokinia_lending_manager/util/double_extensions.dart';
 import 'package:provider/provider.dart';
 
 class ClientPage extends StatelessWidget {
@@ -26,33 +26,35 @@ class ClientPage extends StatelessWidget {
     var loanService = Provider.of<LoanService>(context, listen: false);
 
     // CLIENT - StreamBuilder
-    return StreamBuilder<ClientModel>(
-      stream: clientService.getClientByIdStream(client.id),
-      builder: (context, clientSnapshot) {
-        if (clientSnapshot.hasError) {
-          return const Center(child: Text("Error"));
-        } else if (!clientSnapshot.hasData) {
-          return const Center(child: CircularProgressIndicator());
-        } else {
-          var client = clientSnapshot.data!;
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(client.name),
+      ),
+      body: StreamBuilder<ClientModel>(
+        stream: clientService.getClientByIdStream(client.id),
+        builder: (context, clientSnapshot) {
+          if (clientSnapshot.hasError) {
+            debugPrint(clientSnapshot.error.toString());
+            return const Center(child: Text('Error loading clients'));
+          } else if (!clientSnapshot.hasData) {
+            return const Center(child: CircularProgressIndicator());
+          } else {
+            var client = clientSnapshot.data!;
 
-          // LOAN - StreamBuilder
-          return StreamBuilder<List<LoanModel>>(
-            stream: loanService.getLoansByClientIdStream(client.id),
-            builder: (context, loansSnapshot) {
-              if (loansSnapshot.hasError) {
-                return const Center(child: Text("Error"));
-              } else if (!loansSnapshot.hasData) {
-                return const Center(child: CircularProgressIndicator());
-              } else {
-                var loans = loansSnapshot.data!;
+            // LOAN - StreamBuilder
+            return StreamBuilder<List<LoanModel>>(
+              stream: loanService.getLoansByClientIdStream(client.id),
+              builder: (context, loansSnapshot) {
+                if (loansSnapshot.hasError) {
+                  debugPrint(loansSnapshot.error.toString());
+                  return const Center(child: Text('Error loading loans'));
+                } else if (!loansSnapshot.hasData) {
+                  return const Center(child: CircularProgressIndicator());
+                } else {
+                  var loans = loansSnapshot.data!;
 
-                // SCAFFOLD
-                return Scaffold(
-                  appBar: AppBar(
-                    title: Text(client.name),
-                  ),
-                  body: Column(
+                  // SCAFFOLD
+                  return Column(
                     children: [
                       // Image
                       CircularProfileAvatar(
@@ -72,8 +74,8 @@ class ClientPage extends StatelessWidget {
                       const SizedBox(height: 16.0),
 
                       // Status
-                      const WideClientStatusBoxComponent(
-                          clientPaymentStatus: ClientPaymentStatus.unknown),
+                      WideClientStatusBoxComponent(
+                          paymentStatus: client.paymentStatus),
 
                       const SizedBox(height: 16.0),
                       //Contact buttons
@@ -161,13 +163,14 @@ class ClientPage extends StatelessWidget {
                           itemCount: loans.length,
                           itemBuilder: (context, index) {
                             var loan = loans[index];
-                        
+
                             return GestureDetector(
                               onTap: () => Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => LoanPage(
-                                          clientId: client.id, loanId: loan.id))),
+                                          clientId: client.id,
+                                          loanId: loan.id))),
                               child: Padding(
                                 padding: const EdgeInsets.all(20.0),
                                 child: Container(
@@ -189,12 +192,12 @@ class ClientPage extends StatelessWidget {
                                         Row(
                                           children: [
                                             CompactLoanStatusBoxComponent(
-                                                loanPaymentStatus:
-                                                    loan.loanPaymentStatus),
+                                                paymentStatus:
+                                                    loan.paymentStatus),
                                             const SizedBox(width: 20),
                                             BigAmountText(
-                                                amount: loan
-                                                    .remainingPrincipalAmount),
+                                                text: loan
+                                                    .remainingPrincipalAmount.toFormattedCurrency()),
                                           ],
                                         ),
                                         const Icon(Icons.arrow_forward_ios),
@@ -215,16 +218,16 @@ class ClientPage extends StatelessWidget {
                           onPressed: () => Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => NewLoanPage(
-                                      clientId: client.id)))),
+                                  builder: (context) =>
+                                      NewLoanPage(clientId: client.id)))),
                     ],
-                  ),
-                );
-              }
-            },
-          );
-        }
-      },
+                  );
+                }
+              },
+            );
+          }
+        },
+      ),
     );
   }
 }

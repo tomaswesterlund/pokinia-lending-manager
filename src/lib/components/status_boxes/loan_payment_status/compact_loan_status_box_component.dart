@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:pokinia_lending_manager/enums/loan_payment_status.dart';
+import 'package:pokinia_lending_manager/enums/payment_status_enum.dart';
 
 class CompactLoanStatusBoxComponent extends StatelessWidget {
-  final LoanPaymentStatus loanPaymentStatus;
-  const CompactLoanStatusBoxComponent({super.key, required this.loanPaymentStatus});
+  final PaymentStatus paymentStatus;
+  const CompactLoanStatusBoxComponent({super.key, required this.paymentStatus});
 
   Color _getFillColor() {
-    switch (loanPaymentStatus) {
-      case LoanPaymentStatus.prompt:
+    switch (paymentStatus) {
+      case PaymentStatus.prompt:
         return const Color(0xFFF0FFF6);
-      case LoanPaymentStatus.pending:
+      case PaymentStatus.pending:
         return const Color(0xFFFFF4E5);
 
-      case LoanPaymentStatus.overdue:
+      case PaymentStatus.overdue:
         return const Color(0xFFFFF0F0);
 
       default:
@@ -21,12 +21,12 @@ class CompactLoanStatusBoxComponent extends StatelessWidget {
   }
 
   Color _getBorderColor() {
-    switch (loanPaymentStatus) {
-      case LoanPaymentStatus.prompt:
+    switch (paymentStatus) {
+      case PaymentStatus.prompt:
         return const Color(0xFF22C55E);
-      case LoanPaymentStatus.pending:
+      case PaymentStatus.pending:
         return const Color(0xFFF99C16);
-      case LoanPaymentStatus.overdue:
+      case PaymentStatus.overdue:
         return const Color(0xFFEB5857);
 
       default:
@@ -35,12 +35,12 @@ class CompactLoanStatusBoxComponent extends StatelessWidget {
   }
 
   IconData _getIcon() {
-    switch (loanPaymentStatus) {
-      case LoanPaymentStatus.prompt:
+    switch (paymentStatus) {
+      case PaymentStatus.prompt:
         return Icons.check;
-      case LoanPaymentStatus.pending:
+      case PaymentStatus.pending:
         return Icons.warning;
-      case LoanPaymentStatus.overdue:
+      case PaymentStatus.overdue:
         return Icons.close;
 
       default:
@@ -89,7 +89,7 @@ class CompactLoanStatusBoxComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (loanPaymentStatus == LoanPaymentStatus.empty) {
+    if (paymentStatus == PaymentStatus.empty) {
       return _getEmptyWidget();
     } else {
       return _getWidgetBasedOnStatus();
