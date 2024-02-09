@@ -1,0 +1,1 @@
+ /Users/tomaswesterlund/Development/GitHub/pokinia-lending-manager/src/.dart_tool/flutter_build/7701553e28274e4000966fdc4864fea8/native_assets.yaml: 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pokinia_lending_manager/components/texts/amounts/small_amount_text.dart';
-import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_two_regular_text.dart';
+import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_two_text.dart';
 import 'package:pokinia_lending_manager/models/payment_model.dart';
 import 'package:pokinia_lending_manager/pages/payments/payment_page.dart';
 import 'package:pokinia_lending_manager/services/payment_service.dart';
@@ -54,7 +54,7 @@ class PaymentTable extends StatelessWidget {
                             else
                               const Icon(Icons.money),
                             Expanded(
-                              child: ParagraphTwoRegularText(
+                              child: ParagraphTwoText(
                                   text: payment.date.toFormattedDate()),
                             ),
                             Expanded(

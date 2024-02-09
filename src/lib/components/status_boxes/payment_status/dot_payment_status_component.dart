@@ -12,6 +12,8 @@ class DotPaymentStatus extends StatelessWidget {
       return const Color.fromARGB(255, 255, 185, 0);
     } else if (paymentStatus == PaymentStatus.overdue) {
       return const Color.fromARGB(255, 255, 0, 0);
+      } else if (paymentStatus == PaymentStatus.unknown) {
+      return Colors.grey;
     } else {
       return const Color.fromARGB(255, 0, 255, 0);
     }

@@ -46,6 +46,16 @@ Future<ResponseModel> createPayment(
     return ResponseModel(statusCode: response.statusCode, body: response.body);
   }
 
+  Stream<List<PaymentModel>> getAllPaymentsStream() {
+    var stream = _db
+        .collection('payments')
+        .snapshots()
+        .map((snapshot) => snapshot.docs
+            .map((doc) => PaymentModel.fromFirestore(doc))
+            .toList());
+    return stream;
+  }
+
   Stream<PaymentModel> getPaymentByIdStream(String id) {
     var stream = _db
         .collection('payments')

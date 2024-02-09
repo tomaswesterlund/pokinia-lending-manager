@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:pokinia_lending_manager/components/loans/loan_summary_component.dart';
-import 'package:pokinia_lending_manager/components/texts/amounts/big_amount_text.dart';
 import 'package:pokinia_lending_manager/components/texts/amounts/primary_amount_red_text.dart';
 import 'package:pokinia_lending_manager/components/texts/amounts/primary_amount_text.dart';
 import 'package:pokinia_lending_manager/components/texts/amounts/small_amount_text.dart';
-import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_one_regular_text.dart';
+import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_one_text.dart';
 import 'package:pokinia_lending_manager/components/texts/paragraphs/red_paragraph_one_regular_text.dart';
 import 'package:pokinia_lending_manager/services/payment_service.dart';
 import 'package:pokinia_lending_manager/util/date_extensions.dart';
@@ -84,7 +82,7 @@ class PaymentPage extends StatelessWidget {
                         else
                         Column(
                           children: [
-                            const ParagraphOneRegularText(
+                             ParagraphOneText(
                             text: 'Total amount paid'), 
                             PrimaryAmountText(
                                 text: (payment.interestAmountPaid +
@@ -144,7 +142,7 @@ class PaymentPage extends StatelessWidget {
                         width: 200,
                         child: Column(
                           children: [
-                            const ParagraphOneRegularText(
+                             ParagraphOneText(
                                 text: "Interest paid"),
                             SmallAmountText(
                                 text: payment.interestAmountPaid
@@ -160,7 +158,7 @@ class PaymentPage extends StatelessWidget {
                         width: 200,
                         child: Column(
                           children: [
-                            const ParagraphOneRegularText(
+                             ParagraphOneText(
                                 text: "Principal paid"),
                             SmallAmountText(
                                 text: payment.principalAmountPaid

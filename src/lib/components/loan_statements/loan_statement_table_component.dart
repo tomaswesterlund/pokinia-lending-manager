@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pokinia_lending_manager/components/status_boxes/payment_status/compact_payment_status_box_component.dart';
 import 'package:pokinia_lending_manager/components/texts/amounts/small_amount_text.dart';
-import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_one_regular_text.dart';
-import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_two_regular_text.dart';
+import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_one_text.dart';
+import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_two_text.dart';
 import 'package:pokinia_lending_manager/components/texts/percentages/small_percentage_text.dart';
 import 'package:pokinia_lending_manager/models/loan_statement_model.dart';
 import 'package:pokinia_lending_manager/pages/loan_statements/loan_statement_page.dart';
@@ -25,16 +25,16 @@ class LoanStatementTable extends StatelessWidget {
       child: Column(
         children: [
           // Date - Interest rate - Interest paid - Abono - Status
-          const Padding(
+           const Padding(
             padding: EdgeInsets.fromLTRB(32.0, 16.0, 32.0, 0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                ParagraphOneRegularText(text: 'Status'),
-                ParagraphOneRegularText(text: 'Date'),
-                ParagraphOneRegularText(text: 'Int. rate'),
-                ParagraphOneRegularText(text: 'Int. paid'),
-                ParagraphOneRegularText(text: 'Pri. paid'),
+                ParagraphOneText(text: 'Status'),
+                ParagraphOneText(text: 'Date'),
+                ParagraphOneText(text: 'Int. rate'),
+                ParagraphOneText(text: 'Int. paid'),
+                ParagraphOneText(text: 'Pri. paid'),
               ],
             ),
           ),
@@ -88,7 +88,7 @@ class LoanStatementTable extends StatelessWidget {
                                       child: Padding(
                                         padding: const EdgeInsets.symmetric(
                                             horizontal: 4.0),
-                                        child: ParagraphTwoRegularText(
+                                        child: ParagraphTwoText(
                                             text: loanStatement.expectedPayDate
                                                 .toFormattedDate()),
                                       ),

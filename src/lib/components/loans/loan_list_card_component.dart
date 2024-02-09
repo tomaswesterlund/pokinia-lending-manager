@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:pokinia_lending_manager/components/status_boxes/payment_status/compact_payment_status_box_component.dart';
 import 'package:pokinia_lending_manager/components/status_boxes/payment_status/dot_payment_status_component.dart';
 import 'package:pokinia_lending_manager/components/texts/amounts/big_amount_text.dart';
-import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_one_bold_text.dart';
-import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_two_regular_text.dart';
-import 'package:pokinia_lending_manager/enums/payment_status_enum.dart';
+import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_one_text.dart';
+import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_two_text.dart';
 import 'package:pokinia_lending_manager/models/client_model.dart';
 import 'package:pokinia_lending_manager/models/loan_model.dart';
 import 'package:pokinia_lending_manager/pages/loans/loan_page.dart';
@@ -56,20 +54,21 @@ class LoanListCard extends StatelessWidget {
                   children: [
                     DotPaymentStatus(paymentStatus: loan.paymentStatus),
                     const SizedBox(width: 5),
-                    ParagraphOneBoldText(text: client.name),
+                    ParagraphOneText(
+                        text: client.name, fontWeight: FontWeight.bold),
                   ],
                 ),
                 Row(
                   children: [
-                    const ParagraphTwoRegularText(
-                        text: "Interest: ", color: Color(0xFF9EA6A7)),
-                    ParagraphTwoRegularText(
+                    const ParagraphTwoText(
+                        text: "Interest: ", fillColor: Color(0xFF9EA6A7)),
+                    ParagraphTwoText(
                         text: "${loan.initialInterestRate}% ",
-                        color: const Color(0xFF1C2829)),
-                    const ParagraphTwoRegularText(
-                        text: "| ", color: Color(0xFF9EA6A7)),
-                    const ParagraphTwoRegularText(
-                        text: "Monthly", color: Color(0xFF1C2829)),
+                        fillColor: const Color(0xFF1C2829)),
+                    const ParagraphTwoText(
+                        text: "| ", fillColor: Color(0xFF9EA6A7)),
+                    const ParagraphTwoText(
+                        text: "Monthly", fillColor: Color(0xFF1C2829)),
                   ],
                 ),
               ],
@@ -81,7 +80,7 @@ class LoanListCard extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const ParagraphTwoRegularText(text: "Remaining"),
+                      const ParagraphTwoText(text: "Remaining"),
                       BigAmountText(
                           text: loan.remainingPrincipalAmount
                               .toFormattedCurrency())

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pokinia_lending_manager/components/input/my_text_field.dart';
 import 'package:pokinia_lending_manager/components/texts/amounts/big_amount_text.dart';
 import 'package:pokinia_lending_manager/components/texts/amounts/primary_amount_text.dart';
-import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_one_regular_text.dart';
+import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_one_text.dart';
 import 'package:pokinia_lending_manager/components/texts/percentages/big_percentage_text.dart';
 import 'package:pokinia_lending_manager/models/loan_model.dart';
 import 'package:pokinia_lending_manager/services/loan_service.dart';
@@ -25,7 +25,7 @@ class LoanSummary extends StatelessWidget {
             children: [
               Column(
                 children: [
-                  const ParagraphOneRegularText(
+                   ParagraphOneText(
                       text: 'Remaining Principal amount'),
                   PrimaryAmountText(
                       text: loan.remainingPrincipalAmount.toFormattedCurrency())
@@ -43,7 +43,7 @@ class LoanSummary extends StatelessWidget {
               Expanded(
                 child: Column(
                   children: [
-                    const ParagraphOneRegularText(text: 'Interests paid'),
+                     ParagraphOneText(text: 'Interests paid'),
                     BigAmountText(
                         text: loan.interestAmountPaid.toFormattedCurrency())
                   ],
@@ -60,7 +60,7 @@ class LoanSummary extends StatelessWidget {
               Expanded(
                 child: Column(
                   children: [
-                    const ParagraphOneRegularText(
+                     ParagraphOneText(
                         text: 'Initial principal amount'),
                     BigAmountText(
                         text: loan.initialPrincipalAmount.toFormattedCurrency())
@@ -71,7 +71,7 @@ class LoanSummary extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    const ParagraphOneRegularText(
+                     ParagraphOneText(
                         text: 'Principal amount paid'),
                     BigAmountText(
                         text: loan.principalAmountPaid.toFormattedCurrency())
@@ -143,7 +143,7 @@ class _InterestRateComponentState extends State<InterestRateComponent> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const ParagraphOneRegularText(text: 'Interest rate'),
+           ParagraphOneText(text: 'Interest rate'),
           _isEditing
               ? Row(
                   mainAxisAlignment: MainAxisAlignment.center,

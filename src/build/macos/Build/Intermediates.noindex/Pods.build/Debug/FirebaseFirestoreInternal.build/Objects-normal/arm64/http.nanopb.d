@@ -1,0 +1,25 @@
+dependencies: \
+  /Users/tomaswesterlund/Development/GitHub/pokinia-lending-manager/src/macos/Pods/FirebaseFirestoreInternal/Firestore/Protos/nanopb/google/api/http.nanopb.cc \
+  /Users/tomaswesterlund/Development/GitHub/pokinia-lending-manager/src/macos/Pods/FirebaseFirestoreInternal/Firestore/Protos/nanopb/google/api/http.nanopb.h \
+  /Users/tomaswesterlund/Development/GitHub/pokinia-lending-manager/src/macos/Pods/nanopb/pb.h \
+  /Users/tomaswesterlund/Development/GitHub/pokinia-lending-manager/src/macos/Pods/FirebaseFirestoreInternal/Firestore/core/src/nanopb/pretty_printing.h \
+  /Users/tomaswesterlund/Development/GitHub/pokinia-lending-manager/src/build/macos/Build/Products/Debug/abseil/absl.framework/Headers/strings/str_cat.h \
+  /Users/tomaswesterlund/Development/GitHub/pokinia-lending-manager/src/build/macos/Build/Products/Debug/abseil/absl.framework/Headers/base/port.h \
+  /Users/tomaswesterlund/Development/GitHub/pokinia-lending-manager/src/build/macos/Build/Products/Debug/abseil/absl.framework/Headers/base/attributes.h \
+  /Users/tomaswesterlund/Development/GitHub/pokinia-lending-manager/src/build/macos/Build/Products/Debug/abseil/absl.framework/Headers/base/config.h \
+  /Users/tomaswesterlund/Development/GitHub/pokinia-lending-manager/src/build/macos/Build/Products/Debug/abseil/absl.framework/Headers/base/options.h \
+  /Users/tomaswesterlund/Development/GitHub/pokinia-lending-manager/src/build/macos/Build/Products/Debug/abseil/absl.framework/Headers/base/policy_checks.h \
+  /Users/tomaswesterlund/Development/GitHub/pokinia-lending-manager/src/build/macos/Build/Products/Debug/abseil/absl.framework/Headers/base/optimization.h \
+  /Users/tomaswesterlund/Development/GitHub/pokinia-lending-manager/src/build/macos/Build/Products/Debug/abseil/absl.framework/Headers/strings/numbers.h \
+  /Users/tomaswesterlund/Development/GitHub/pokinia-lending-manager/src/build/macos/Build/Products/Debug/abseil/absl.framework/Headers/base/internal/endian.h \
+  /Users/tomaswesterlund/Development/GitHub/pokinia-lending-manager/src/build/macos/Build/Products/Debug/abseil/absl.framework/Headers/base/casts.h \
+  /Users/tomaswesterlund/Development/GitHub/pokinia-lending-manager/src/build/macos/Build/Products/Debug/abseil/absl.framework/Headers/base/internal/identity.h \
+  /Users/tomaswesterlund/Development/GitHub/pokinia-lending-manager/src/build/macos/Build/Products/Debug/abseil/absl.framework/Headers/base/macros.h \
+  /Users/tomaswesterlund/Development/GitHub/pokinia-lending-manager/src/build/macos/Build/Products/Debug/abseil/absl.framework/Headers/meta/type_traits.h \
+  /Users/tomaswesterlund/Development/GitHub/pokinia-lending-manager/src/build/macos/Build/Products/Debug/abseil/absl.framework/Headers/base/internal/unaligned_access.h \
+  /Users/tomaswesterlund/Development/GitHub/pokinia-lending-manager/src/build/macos/Build/Products/Debug/abseil/absl.framework/Headers/numeric/bits.h \
+  /Users/tomaswesterlund/Development/GitHub/pokinia-lending-manager/src/build/macos/Build/Products/Debug/abseil/absl.framework/Headers/numeric/internal/bits.h \
+  /Users/tomaswesterlund/Development/GitHub/pokinia-lending-manager/src/build/macos/Build/Products/Debug/abseil/absl.framework/Headers/numeric/int128.h \
+  /Users/tomaswesterlund/Development/GitHub/pokinia-lending-manager/src/build/macos/Build/Products/Debug/abseil/absl.framework/Headers/numeric/int128_have_intrinsic.inc \
+  /Users/tomaswesterlund/Development/GitHub/pokinia-lending-manager/src/build/macos/Build/Products/Debug/abseil/absl.framework/Headers/strings/string_view.h \
+  /Users/tomaswesterlund/Development/GitHub/pokinia-lending-manager/src/build/macos/Build/Products/Debug/abseil/absl.framework/Headers/base/internal/throw_delegate.h

@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:pokinia_lending_manager/components/buttons/my_cancel_button.dart';
 import 'package:pokinia_lending_manager/components/buttons/my_cta_button.dart';
 import 'package:pokinia_lending_manager/components/payments/payment_table_component.dart';
 import 'package:pokinia_lending_manager/components/texts/amounts/primary_amount_text.dart';
 import 'package:pokinia_lending_manager/components/texts/amounts/small_amount_text.dart';
-import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_one_regular_text.dart';
-import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_two_regular_text.dart';
+import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_one_text.dart';
+import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_two_text.dart';
 import 'package:pokinia_lending_manager/components/texts/percentages/small_percentage_text.dart';
 import 'package:pokinia_lending_manager/models/loan_statement_model.dart';
 import 'package:pokinia_lending_manager/pages/clients/new_client_page.dart';
@@ -64,7 +62,7 @@ class _LoanStatementPageState extends State<LoanStatementPage> {
                       children: [
                         Column(
                           children: [
-                            const ParagraphOneRegularText(
+                             const ParagraphOneText(
                                 text: 'Remaining amount to be paid'),
                             PrimaryAmountText(
                                 text: loanStatement.remainingAmountToBePaid
@@ -80,7 +78,7 @@ class _LoanStatementPageState extends State<LoanStatementPage> {
                       Expanded(
                         child: Column(
                           children: [
-                            const ParagraphOneRegularText(
+                             const ParagraphOneText(
                                 text: "Expected interest"),
                             SmallAmountText(
                                 text: loanStatement.expectedInterestAmount
@@ -91,7 +89,7 @@ class _LoanStatementPageState extends State<LoanStatementPage> {
                       Expanded(
                         child: Column(
                           children: [
-                            const ParagraphOneRegularText(
+                             const ParagraphOneText(
                                 text: "Expected principal"),
                             SmallAmountText(
                                 text: loanStatement.expectedPrincipalAmount
@@ -107,7 +105,7 @@ class _LoanStatementPageState extends State<LoanStatementPage> {
                       Expanded(
                         child: Column(
                           children: [
-                            const ParagraphOneRegularText(
+                             const ParagraphOneText(
                                 text: "Interest paid"),
                             SmallAmountText(
                                 text: loanStatement.interestAmountPaid
@@ -118,7 +116,7 @@ class _LoanStatementPageState extends State<LoanStatementPage> {
                       Expanded(
                         child: Column(
                           children: [
-                            const ParagraphOneRegularText(
+                             const ParagraphOneText(
                                 text: "Principal paid"),
                             SmallAmountText(
                                 text: loanStatement.principalAmountPaid
@@ -134,9 +132,9 @@ class _LoanStatementPageState extends State<LoanStatementPage> {
                       Expanded(
                         child: Column(
                           children: [
-                            const ParagraphOneRegularText(
+                             const ParagraphOneText(
                                 text: "Expected pay date"),
-                            ParagraphTwoRegularText(
+                            ParagraphTwoText(
                                 text: loanStatement.expectedPayDate
                                     .toFormattedDate()),
                           ],
@@ -145,8 +143,8 @@ class _LoanStatementPageState extends State<LoanStatementPage> {
                       Expanded(
                         child: Column(
                           children: [
-                            const ParagraphOneRegularText(text: "Status"),
-                            ParagraphTwoRegularText(
+                             const ParagraphOneText(text: "Status"),
+                            ParagraphTwoText(
                                 text: loanStatement.paymentStatus.name),
                           ],
                         ),
@@ -159,7 +157,7 @@ class _LoanStatementPageState extends State<LoanStatementPage> {
                       Expanded(
                         child: Column(
                           children: [
-                            const ParagraphOneRegularText(
+                             const ParagraphOneText(
                                 text: "Interest rate"),
                             SmallPercentageText(
                                 percentage: loanStatement.interestRate),
@@ -169,7 +167,7 @@ class _LoanStatementPageState extends State<LoanStatementPage> {
                       Expanded(
                         child: Column(
                           children: [
-                            const ParagraphOneRegularText(
+                             const ParagraphOneText(
                                 text: "Interest paid"),
                             SmallAmountText(
                                 text: loanStatement.interestAmountPaid

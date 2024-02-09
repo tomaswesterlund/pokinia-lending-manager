@@ -15,6 +15,17 @@ class LoanStatementService extends ChangeNotifier {
     return stream;
   }
 
+  Stream<List<LoanStatementModel>> getOverdueLoanStatementsStream() {
+    var stream = _db
+        .collection('loan_statements')
+        .where('paymentStatus', isEqualTo: 'overdue')
+        .snapshots()
+        .map((snapshot) => snapshot.docs
+            .map((doc) => LoanStatementModel.fromFirestore(doc))
+            .toList());
+    return stream;
+  }
+
   Stream<List<LoanStatementModel>> getLoanStatementsByLoanIdStream(String loanId) {
     var stream = _db
         .collection('loan_statements')

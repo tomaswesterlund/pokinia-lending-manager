@@ -5,7 +5,7 @@ import 'package:pokinia_lending_manager/components/status_boxes/client_payment_s
 import 'package:pokinia_lending_manager/components/status_boxes/loan_payment_status/compact_loan_status_box_component.dart';
 import 'package:pokinia_lending_manager/components/texts/amounts/big_amount_text.dart';
 import 'package:pokinia_lending_manager/components/texts/headers/header_three_text.dart';
-import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_one_bold_text.dart';
+import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_one_text.dart';
 import 'package:pokinia_lending_manager/models/client_model.dart';
 import 'package:pokinia_lending_manager/models/loan_model.dart';
 import 'package:pokinia_lending_manager/pages/loans/loan_page.dart';
@@ -134,17 +134,17 @@ class ClientPage extends StatelessWidget {
                               children: [
                                 const Icon(Icons.phone),
                                 const SizedBox(width: 8.0),
-                                ParagraphOneBoldText(text: client.phoneNumber)
+                                ParagraphOneText(text: client.phoneNumber, fontWeight: FontWeight.bold)
                               ],
                             ),
                             const SizedBox(height: 16.0),
                             // Address
-                            const Row(
+                             Row(
                               children: [
-                                Icon(Icons.location_on),
-                                SizedBox(width: 8.0),
-                                ParagraphOneBoldText(
-                                    text: "Some direction ..."),
+                                const Icon(Icons.location_on),
+                                const SizedBox(width: 8.0),
+                                ParagraphOneText(
+                                    text: "Some direction ...", fontWeight: FontWeight.bold),
                               ],
                             ),
                           ],
