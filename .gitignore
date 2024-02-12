@@ -14,3 +14,5 @@ src/.dart_tool/flutter_build/8c725af9e5968fb12aafafa6c4046b41/native_assets.d
 src/.dart_tool/flutter_build/8c725af9e5968fb12aafafa6c4046b41/native_assets.yaml
 src/.vscode
 src/android
+src/build
+src/.dart_tool
