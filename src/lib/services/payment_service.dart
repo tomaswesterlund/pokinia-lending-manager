@@ -4,22 +4,19 @@ import 'package:pokinia_lending_manager/models/payment_model.dart';
 import 'package:pokinia_lending_manager/models/repsonse_model.dart';
 import 'package:http/http.dart' as http;
 
-class PaymentService extends ChangeNotifier
-{
+class PaymentService extends ChangeNotifier {
   final String baseApiUrl;
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
   PaymentService({required this.baseApiUrl});
 
-Future<ResponseModel> createPayment(
-      {
-        required String clientId,
-        required String loanId,
-        required String loanStatementId,
+  Future<ResponseModel> createPayment(
+      {required String clientId,
+      required String loanId,
+      required String loanStatementId,
       required double interestAmountPaid,
       required double principalAmountPaid,
-      required DateTime date}) async 
-      {
+      required DateTime date}) async {
     final url = Uri.parse('$baseApiUrl/payments');
 
     var body = {
@@ -47,12 +44,8 @@ Future<ResponseModel> createPayment(
   }
 
   Stream<List<PaymentModel>> getAllPaymentsStream() {
-    var stream = _db
-        .collection('payments')
-        .snapshots()
-        .map((snapshot) => snapshot.docs
-            .map((doc) => PaymentModel.fromFirestore(doc))
-            .toList());
+    var stream = _db.collection('payments').snapshots().map((snapshot) =>
+        snapshot.docs.map((doc) => PaymentModel.fromFirestore(doc)).toList());
     return stream;
   }
 
@@ -65,10 +58,25 @@ Future<ResponseModel> createPayment(
     return stream;
   }
 
-  Stream<List<PaymentModel>> getPaymentsByLoanStatementIdStream(String loanStatementId) {
+  Stream<List<PaymentModel>> getPaymentsByLoanStatementIdStream(
+      String loanStatementId) {
     var stream = _db
         .collection('payments')
         .where('loanStatementId', isEqualTo: loanStatementId)
+        .snapshots()
+        .map((snapshot) => snapshot.docs
+            .map((doc) => PaymentModel.fromFirestore(doc))
+            .toList());
+    return stream;
+  }
+
+  Stream<List<PaymentModel>> getRecentlyPaidPaymentsStream({int days = 14}) {
+    var pastDate = DateTime.now().add(Duration(days: (days * -1)));
+    var pastTimestamp = Timestamp.fromDate(pastDate);
+
+    var stream = _db
+        .collection('payments')
+        .where('date', isGreaterThan: pastTimestamp)
         .snapshots()
         .map((snapshot) => snapshot.docs
             .map((doc) => PaymentModel.fromFirestore(doc))
@@ -93,6 +101,4 @@ Future<ResponseModel> createPayment(
 
     return ResponseModel(statusCode: response.statusCode, body: response.body);
   }
-
-
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pokinia_lending_manager/components/buttons/my_cta_button.dart';
-import 'package:pokinia_lending_manager/components/input/my_text_field.dart';
+import 'package:pokinia_lending_manager/components/input/my_text_form_field.dart';
 import 'package:pokinia_lending_manager/services/payment_service.dart';
 import 'package:provider/provider.dart';
 
@@ -68,22 +68,43 @@ class _NewPaymentPageState extends State<NewPaymentPage> {
         ),
         body: Center(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              MyTextField(
-                  labelText: "Interest amount paid",
-                  controller: _interestAmountPaidController),
-              MyTextField(
-                  labelText: "Principal amount paid",
-                  controller: _principalAmountPaidController),
-              const Text("Comprobante"),
+              Column(
+                
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                    child: MyTextFormField(
+                        labelText: "Interest amount paid",
+                        validator: (value) {
+                                return null;
+                              },
+                        controller: _interestAmountPaidController),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                    child: MyTextFormField(
+                        labelText: "Principal amount paid",
+                        validator: (value) {
+                                return null;
+                              },
+                        controller: _principalAmountPaidController),
+                  ),
+                  const Text("Comprobante"),
+                ],
+              ),
               if (_isProcessing)
                 const CircularProgressIndicator()
               else
-                MyCtaButton(
-                    text: "Add payment",
-                    onPressed: () {
-                      _addPayment();
-                    })
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 20, 20, 40),
+                  child: MyCtaButton(
+                      text: "Add payment",
+                      onPressed: () {
+                        _addPayment();
+                      }),
+                )
             ],
           ),
         ));

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pokinia_lending_manager/components/input/my_text_field.dart';
+import 'package:pokinia_lending_manager/components/input/my_text_form_field.dart';
 import 'package:pokinia_lending_manager/components/texts/amounts/big_amount_text.dart';
 import 'package:pokinia_lending_manager/components/texts/amounts/primary_amount_text.dart';
 import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_one_text.dart';
@@ -25,7 +25,7 @@ class LoanSummary extends StatelessWidget {
             children: [
               Column(
                 children: [
-                   ParagraphOneText(
+                   const ParagraphOneText(
                       text: 'Remaining Principal amount'),
                   PrimaryAmountText(
                       text: loan.remainingPrincipalAmount.toFormattedCurrency())
@@ -43,7 +43,7 @@ class LoanSummary extends StatelessWidget {
               Expanded(
                 child: Column(
                   children: [
-                     ParagraphOneText(text: 'Interests paid'),
+                     const ParagraphOneText(text: 'Interests paid'),
                     BigAmountText(
                         text: loan.interestAmountPaid.toFormattedCurrency())
                   ],
@@ -60,7 +60,7 @@ class LoanSummary extends StatelessWidget {
               Expanded(
                 child: Column(
                   children: [
-                     ParagraphOneText(
+                     const ParagraphOneText(
                         text: 'Initial principal amount'),
                     BigAmountText(
                         text: loan.initialPrincipalAmount.toFormattedCurrency())
@@ -71,7 +71,7 @@ class LoanSummary extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                     ParagraphOneText(
+                     const ParagraphOneText(
                         text: 'Principal amount paid'),
                     BigAmountText(
                         text: loan.principalAmountPaid.toFormattedCurrency())
@@ -143,7 +143,7 @@ class _InterestRateComponentState extends State<InterestRateComponent> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-           ParagraphOneText(text: 'Interest rate'),
+           const ParagraphOneText(text: 'Interest rate'),
           _isEditing
               ? Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -151,7 +151,10 @@ class _InterestRateComponentState extends State<InterestRateComponent> {
                     SizedBox(
                       width: 72,
                       height: 48,
-                      child: MyTextField(
+                      child: MyTextFormField(
+                        validator: (value) {
+                          return null;
+                        },
                         controller: _interestRateController,
                         labelText: '',
                         keyboardType: TextInputType.number,

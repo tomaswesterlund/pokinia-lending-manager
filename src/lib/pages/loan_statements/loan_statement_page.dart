@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:pokinia_lending_manager/components/buttons/my_cta_button.dart';
 import 'package:pokinia_lending_manager/components/payments/payment_table_component.dart';
+import 'package:pokinia_lending_manager/components/status_boxes/payment_status/dot_payment_status_component.dart';
 import 'package:pokinia_lending_manager/components/texts/amounts/primary_amount_text.dart';
 import 'package:pokinia_lending_manager/components/texts/amounts/small_amount_text.dart';
+import 'package:pokinia_lending_manager/components/texts/headers/header_five_text.dart';
+import 'package:pokinia_lending_manager/components/texts/headers/header_four_text.dart';
 import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_one_text.dart';
 import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_two_text.dart';
 import 'package:pokinia_lending_manager/components/texts/percentages/small_percentage_text.dart';
@@ -56,13 +59,13 @@ class _LoanStatementPageState extends State<LoanStatementPage> {
               return Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(32.0, 16.0, 32.0, 0),
+                    padding: const EdgeInsets.fromLTRB(32.0, 16.0, 32.0, 32.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Column(
                           children: [
-                             const ParagraphOneText(
+                            const HeaderFourText(
                                 text: 'Remaining amount to be paid'),
                             PrimaryAmountText(
                                 text: loanStatement.remainingAmountToBePaid
@@ -72,112 +75,63 @@ class _LoanStatementPageState extends State<LoanStatementPage> {
                       ],
                     ),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Expanded(
-                        child: Column(
+                  Padding(
+                    padding: const EdgeInsets.only(left: 24.0, right: 24.0),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                             const ParagraphOneText(
-                                text: "Expected interest"),
-                            SmallAmountText(
-                                text: loanStatement.expectedInterestAmount
-                                    .toFormattedCurrency()),
+                            const HeaderFiveText(
+                                text: "Payment status",
+                                fontWeight: FontWeight.normal),
+                            Row(
+                              children: [
+                                DotPaymentStatus(
+                                    paymentStatus: loanStatement.paymentStatus),
+                                const SizedBox(width: 5),
+                                ParagraphTwoText(
+                                    text: loanStatement.paymentStatus.name),
+                              ],
+                            )
                           ],
                         ),
-                      ),
-                      Expanded(
-                        child: Column(
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                             const ParagraphOneText(
-                                text: "Expected principal"),
+                            const HeaderFiveText(
+                                text: "Interest paid / expected",
+                                fontWeight: FontWeight.normal),
                             SmallAmountText(
-                                text: loanStatement.expectedPrincipalAmount
-                                    .toFormattedCurrency()),
+                                text:
+                                    "${loanStatement.interestAmountPaid.toFormattedCurrency()} / ${loanStatement.expectedInterestAmount.toFormattedCurrency()}")
                           ],
                         ),
-                      ),
-                    ],
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const HeaderFiveText(
+                                text: "Principal paid / expected",
+                                fontWeight: FontWeight.normal),
+                            SmallAmountText(
+                                text:
+                                    "${loanStatement.principalAmountPaid.toFormattedCurrency()} / ${loanStatement.expectedPrincipalAmount.toFormattedCurrency()}")
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const HeaderFiveText(
+                                text: "Interest rate",
+                                fontWeight: FontWeight.normal),
+                            SmallAmountText(
+                                text: "${loanStatement.interestRate}%")
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Expanded(
-                        child: Column(
-                          children: [
-                             const ParagraphOneText(
-                                text: "Interest paid"),
-                            SmallAmountText(
-                                text: loanStatement.interestAmountPaid
-                                    .toFormattedCurrency()),
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        child: Column(
-                          children: [
-                             const ParagraphOneText(
-                                text: "Principal paid"),
-                            SmallAmountText(
-                                text: loanStatement.principalAmountPaid
-                                    .toFormattedCurrency()),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Expanded(
-                        child: Column(
-                          children: [
-                             const ParagraphOneText(
-                                text: "Expected pay date"),
-                            ParagraphTwoText(
-                                text: loanStatement.expectedPayDate
-                                    .toFormattedDate()),
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        child: Column(
-                          children: [
-                             const ParagraphOneText(text: "Status"),
-                            ParagraphTwoText(
-                                text: loanStatement.paymentStatus.name),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Expanded(
-                        child: Column(
-                          children: [
-                             const ParagraphOneText(
-                                text: "Interest rate"),
-                            SmallPercentageText(
-                                percentage: loanStatement.interestRate),
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        child: Column(
-                          children: [
-                             const ParagraphOneText(
-                                text: "Interest paid"),
-                            SmallAmountText(
-                                text: loanStatement.interestAmountPaid
-                                    .toFormattedCurrency()),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  const Text("Payments"),
+                  const HeaderFiveText(text: "Payments"),
                   PaymentTable(loanStatementId: loanStatement.id),
                   Padding(
                     padding: const EdgeInsets.all(48.0),

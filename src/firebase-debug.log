@@ -1,0 +1,44 @@
+[debug] [2024-02-10T13:00:30.999Z] ----------------------------------------------------------------------
+[debug] [2024-02-10T13:00:31.001Z] Command:       /opt/homebrew/Cellar/node/20.7.0/bin/node /opt/homebrew/bin/firebase projects:list --json
+[debug] [2024-02-10T13:00:31.001Z] CLI Version:   13.2.1
+[debug] [2024-02-10T13:00:31.001Z] Platform:      darwin
+[debug] [2024-02-10T13:00:31.001Z] Node Version:  v20.7.0
+[debug] [2024-02-10T13:00:31.001Z] Time:          Sat Feb 10 2024 07:00:31 GMT-0600 (Central Standard Time)
+[debug] [2024-02-10T13:00:31.002Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-02-10T13:00:31.004Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-02-10T13:00:31.004Z] > authorizing via signed-in user (tomaswesterlund@gmail.com)
+[debug] [2024-02-10T13:00:31.007Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects pageSize=1000
+[debug] [2024-02-10T13:00:31.552Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects 200
+[debug] [2024-02-10T13:00:31.552Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects [omitted]
+[info] ┌────────────────────────────────┬────────────────────────────────┬────────────────┬──────────────────────┐
+│ Project Display Name           │ Project ID                     │ Project Number │ Resource Location ID │
+├────────────────────────────────┼────────────────────────────────┼────────────────┼──────────────────────┤
+│ fireship-fb-master-course      │ fireship-fb-master-course      │ 452631211657   │ [Not specified]      │
+├────────────────────────────────┼────────────────────────────────┼────────────────┼──────────────────────┤
+│ flutter-lab-chat-demo-dev      │ flutter-lab-chat-demo-dev      │ 783905797084   │ [Not specified]      │
+├────────────────────────────────┼────────────────────────────────┼────────────────┼──────────────────────┤
+│ linktree-clone                 │ linktree-clone-73c2b           │ 1012255241890  │ us-central           │
+├────────────────────────────────┼────────────────────────────────┼────────────────┼──────────────────────┤
+│ pokinia-calculator-flutter-dev │ pokinia-calculator-flutter-dev │ 836352095359   │ [Not specified]      │
+├────────────────────────────────┼────────────────────────────────┼────────────────┼──────────────────────┤
+│ pokinia-calculator-prod        │ pokinia-calculator-prod        │ 397447080993   │ us-central           │
+├────────────────────────────────┼────────────────────────────────┼────────────────┼──────────────────────┤
+│ pokinia-lending-manager-dev    │ pokinia-lending-manager-c66c7  │ 457013140749   │ [Not specified]      │
+├────────────────────────────────┼────────────────────────────────┼────────────────┼──────────────────────┤
+│ pokinia-poker-dev              │ pokinia-poker-dev-b09a6        │ 164908881706   │ us-central           │
+├────────────────────────────────┼────────────────────────────────┼────────────────┼──────────────────────┤
+│ pokinia-stake-dev              │ pokinia-stake-dev              │ 716958739823   │ [Not specified]      │
+├────────────────────────────────┼────────────────────────────────┼────────────────┼──────────────────────┤
+│ pokinia-web-hosting            │ pokinia-web-hosting            │ 210072202866   │ [Not specified]      │
+├────────────────────────────────┼────────────────────────────────┼────────────────┼──────────────────────┤
+│ resipal-dev                    │ resipal-dev                    │ 747497285753   │ [Not specified]      │
+└────────────────────────────────┴────────────────────────────────┴────────────────┴──────────────────────┘
+[info] 
+[info] 10 project(s) total.
+[debug] [2024-02-10T13:00:41.560Z] Error: Timed out.
+    at Timeout._onTimeout (/opt/homebrew/lib/node_modules/firebase-tools/lib/utils.js:258:49)
+    at listOnTimeout (node:internal/timers:573:17)
+    at process.processTimers (node:internal/timers:514:7)
+[error] 
+[error] Error: An unexpected error has occurred.

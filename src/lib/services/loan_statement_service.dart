@@ -26,6 +26,36 @@ class LoanStatementService extends ChangeNotifier {
     return stream;
   }
 
+  Stream<List<LoanStatementModel>> getUpcomingLoanStatementsStream({int days = 14}){
+    var futureDate = DateTime.now().add(Duration(days: days));
+    var futureTimestamp = Timestamp.fromDate(futureDate);
+
+    var stream = _db
+        .collection('loan_statements')
+        .where('paymentStatus', isEqualTo: 'scheduled')
+        .where('expectedPayDate', isLessThanOrEqualTo: futureTimestamp)
+        .snapshots()
+        .map((snapshot) => snapshot.docs
+            .map((doc) => LoanStatementModel.fromFirestore(doc))
+            .toList());
+    return stream;
+  }
+
+  Stream<List<LoanStatementModel>> getRecentlyPaidLoanStatementsStream({int days = 14}){
+    var pastDate = DateTime.now().add(Duration(days: (days * -1)));
+    var pastTimestamp = Timestamp.fromDate(pastDate);
+
+    var stream = _db
+        .collection('loan_statements')
+        .where('paymentStatus', isEqualTo: 'paid')
+        .where('expectedPayDate', isGreaterThan: pastTimestamp)
+        .snapshots()
+        .map((snapshot) => snapshot.docs
+            .map((doc) => LoanStatementModel.fromFirestore(doc))
+            .toList());
+    return stream;
+  }
+
   Stream<List<LoanStatementModel>> getLoanStatementsByLoanIdStream(String loanId) {
     var stream = _db
         .collection('loan_statements')

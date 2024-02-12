@@ -7,6 +7,14 @@ class ClientModel {
   final String phoneNumber;
   final PaymentStatus paymentStatus;
 
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ClientModel &&
+          runtimeType == other.runtimeType &&
+          id == other.id;
+
   ClientModel(
       {required this.id,
       required this.name,
@@ -31,4 +39,6 @@ class ClientModel {
       paymentStatus: PaymentStatus.fromName(json['paymentStatus']),
     );
   }
+  
+  
 }

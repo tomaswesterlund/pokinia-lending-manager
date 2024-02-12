@@ -139,10 +139,10 @@ class ClientPage extends StatelessWidget {
                             ),
                             const SizedBox(height: 16.0),
                             // Address
-                             Row(
+                             const Row(
                               children: [
-                                const Icon(Icons.location_on),
-                                const SizedBox(width: 8.0),
+                                Icon(Icons.location_on),
+                                SizedBox(width: 8.0),
                                 ParagraphOneText(
                                     text: "Some direction ...", fontWeight: FontWeight.bold),
                               ],
@@ -213,13 +213,16 @@ class ClientPage extends StatelessWidget {
                       ),
 
                       // New loan
-                      MyFab(
-                          subTitle: "New loan",
-                          onPressed: () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      NewLoanPage(clientId: client.id)))),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 40),
+                        child: MyFab(
+                            subTitle: "New loan",
+                            onPressed: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        NewLoanPage(selectedClient: client)))),
+                      ),
                     ],
                   );
                 }

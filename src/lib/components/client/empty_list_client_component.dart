@@ -19,15 +19,6 @@ class EmptyClientList extends StatelessWidget {
               const MySubHeadingText(
                   text: "Would you like to create a new client?"),
               const SizedBox(height: 100),
-              MyFab(
-                subTitle: "New client",
-                onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const NewClientPage(),
-                  ),
-                ),
-              ),
             ],
           ),
         );
