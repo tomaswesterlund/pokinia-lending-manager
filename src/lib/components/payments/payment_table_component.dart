@@ -16,16 +16,15 @@ class PaymentTable extends StatelessWidget {
   Widget build(BuildContext context) {
     var paymentService = Provider.of<PaymentService>(context, listen: false);
 
-    return StreamBuilder(
-      stream:
-          paymentService.getPaymentsByLoanStatementIdStream(loanStatementId),
-      builder: (context, paymentsSnapshot) {
-        if (paymentsSnapshot.hasData) {
-          var payments = paymentsSnapshot.data as List<PaymentModel>;
-          payments.sort((a, b) => b.date.compareTo(a.date));
-
-          return Expanded(
-            child: ListView.builder(
+    return Expanded(
+      child: StreamBuilder(
+        stream:
+            paymentService.getPaymentsByLoanStatementIdStream(loanStatementId),
+        builder: (context, paymentsSnapshot) {
+          if (paymentsSnapshot.hasData) {
+            var payments = paymentsSnapshot.data as List<PaymentModel>;
+            payments.sort((a, b) => b.date.compareTo(a.date));
+            return ListView.builder(
               shrinkWrap: true,
               itemCount: payments.length,
               itemBuilder: (context, index) {
@@ -67,7 +66,9 @@ class PaymentTable extends StatelessWidget {
                                   text: payment.principalAmountPaid
                                       .toFormattedCurrency()),
                             ),
-                            const Expanded(child: Icon(Icons.arrow_forward_ios, size: 12.0))
+                            const Expanded(
+                                child:
+                                    Icon(Icons.arrow_forward_ios, size: 12.0))
                           ],
                         ),
                       ),
@@ -75,15 +76,15 @@ class PaymentTable extends StatelessWidget {
                   ),
                 );
               },
-            ),
-          );
-        } else if (paymentsSnapshot.hasError) {
-          debugPrint(paymentsSnapshot.error.toString());
-          return const Center(child: Text('Error loading payments'));
-        } else {
-          return const Center(child: CircularProgressIndicator());
-        }
-      },
+            );
+          } else if (paymentsSnapshot.hasError) {
+            debugPrint(paymentsSnapshot.error.toString());
+            return const Center(child: Text('Error loading payments'));
+          } else {
+            return const Center(child: CircularProgressIndicator());
+          }
+        },
+      ),
     );
   }
 }

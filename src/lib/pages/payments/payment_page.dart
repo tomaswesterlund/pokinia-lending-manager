@@ -7,6 +7,7 @@ import 'package:pokinia_lending_manager/components/texts/paragraphs/red_paragrap
 import 'package:pokinia_lending_manager/services/payment_service.dart';
 import 'package:pokinia_lending_manager/util/date_extensions.dart';
 import 'package:pokinia_lending_manager/util/double_extensions.dart';
+import 'package:pokinia_lending_manager/util/string_extensions.dart';
 import 'package:provider/provider.dart';
 
 class PaymentPage extends StatelessWidget {
@@ -38,7 +39,7 @@ class PaymentPage extends StatelessWidget {
                 child: Text("Delete"),
               )
             ];
-          } , onSelected: (value) {
+          }, onSelected: (value) {
             if (value == "delete") {
               delete();
             }
@@ -67,7 +68,6 @@ class PaymentPage extends StatelessWidget {
                   children: [
                     Column(
                       children: [
-                        
                         if (payment.deleted)
                           Column(
                             children: [
@@ -80,16 +80,15 @@ class PaymentPage extends StatelessWidget {
                             ],
                           )
                         else
-                        Column(
-                          children: [
-                             ParagraphOneText(
-                            text: 'Total amount paid'), 
-                            PrimaryAmountText(
-                                text: (payment.interestAmountPaid +
-                                        payment.principalAmountPaid)
-                                    .toFormattedCurrency())
-                          ],
-                        )
+                          Column(
+                            children: [
+                              const ParagraphOneText(text: 'Total amount paid'),
+                              PrimaryAmountText(
+                                  text: (payment.interestAmountPaid +
+                                          payment.principalAmountPaid)
+                                      .toFormattedCurrency())
+                            ],
+                          )
                       ],
                     )
                   ],
@@ -134,40 +133,69 @@ class PaymentPage extends StatelessWidget {
                     ),
                   ],
                 ),
-              Row(
+              Column(
                 children: [
-                  Column(
+                  Row(
                     children: [
-                      SizedBox(
-                        width: 200,
-                        child: Column(
-                          children: [
-                             ParagraphOneText(
-                                text: "Interest paid"),
-                            SmallAmountText(
-                                text: payment.interestAmountPaid
-                                    .toFormattedCurrency()),
-                          ],
-                        ),
+                      Column(
+                        children: [
+                          SizedBox(
+                            width: 200,
+                            child: Column(
+                              children: [
+                                const ParagraphOneText(text: "Interest paid"),
+                                SmallAmountText(
+                                    text: payment.interestAmountPaid
+                                        .toFormattedCurrency()),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          SizedBox(
+                            width: 200,
+                            child: Column(
+                              children: [
+                                const ParagraphOneText(text: "Principal paid"),
+                                SmallAmountText(
+                                    text: payment.principalAmountPaid
+                                        .toFormattedCurrency()),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                  Column(
-                    children: [
-                      SizedBox(
-                        width: 200,
-                        child: Column(
+                  payment.receiptImagePath.isNullOrEmpty()
+                      ? const ParagraphOneText(text: "No receipt uploaded")
+                      : Column(
                           children: [
-                             ParagraphOneText(
-                                text: "Principal paid"),
-                            SmallAmountText(
-                                text: payment.principalAmountPaid
-                                    .toFormattedCurrency()),
+                            const ParagraphOneText(text: "Receipt"),
+                            Image.network(
+                              payment.receiptImagePath,
+                              width: 200,
+                              height: 200,
+                              loadingBuilder: (BuildContext context,
+                                  Widget child,
+                                  ImageChunkEvent? loadingProgress) {
+                                if (loadingProgress == null) return child;
+                                return Center(
+                                  child: CircularProgressIndicator(
+                                    value: loadingProgress.expectedTotalBytes !=
+                                            null
+                                        ? loadingProgress
+                                                .cumulativeBytesLoaded /
+                                            loadingProgress.expectedTotalBytes!
+                                        : null,
+                                  ),
+                                );
+                              },
+                            ),
                           ],
                         ),
-                      ),
-                    ],
-                  ),
                 ],
               ),
             ],

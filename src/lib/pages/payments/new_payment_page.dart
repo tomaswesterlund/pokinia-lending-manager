@@ -1,8 +1,7 @@
 import 'dart:io';
-
-import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:pokinia_lending_manager/components/buttons/my_cta_button.dart';
 import 'package:pokinia_lending_manager/components/input/my_text_form_field.dart';
 import 'package:pokinia_lending_manager/services/payment_service.dart';
@@ -28,7 +27,7 @@ class _NewPaymentPageState extends State<NewPaymentPage> {
       TextEditingController();
   final TextEditingController _principalAmountPaidController =
       TextEditingController();
-  PlatformFile? _selectedFile;
+  File? _selectedImage;
   bool _isProcessing = false;
 
   void _addPayment() async {
@@ -42,9 +41,8 @@ class _NewPaymentPageState extends State<NewPaymentPage> {
     var principalAmountPaid = double.parse(_principalAmountPaidController.text);
     var date = DateTime.now();
 
-
     var urlDownload = "";
-    if(_selectedFile != null) {
+    if (_selectedImage != null) {
       urlDownload = await _uploadFile();
     }
 
@@ -76,19 +74,31 @@ class _NewPaymentPageState extends State<NewPaymentPage> {
     );
   }
 
-  Future _selectFile() async {
-    final result = await FilePicker.platform.pickFiles();
+  Future _pickImageFromGallery() async {
+    final returnedImage =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
 
-    if (result != null) {
+    if (returnedImage != null) {
       setState(() {
-        _selectedFile = result.files.single;
+        _selectedImage = File(returnedImage.path);
+      });
+    }
+  }
+
+  Future _pickImageFromCamera() async {
+    final returnedImage =
+        await ImagePicker().pickImage(source: ImageSource.camera);
+
+    if (returnedImage != null) {
+      setState(() {
+        _selectedImage = File(returnedImage.path);
       });
     }
   }
 
   Future<String> _uploadFile() async {
     final path = 'files/payment_receipts/${UniqueKey().toString()}.png';
-    final file = File(_selectedFile!.path!);
+    final file = File(_selectedImage!.path);
 
     final ref = FirebaseStorage.instance.ref().child(path);
     var uploadTask = ref.putFile(file);
@@ -132,21 +142,18 @@ class _NewPaymentPageState extends State<NewPaymentPage> {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
                     child: MyCtaButton(
-                        text: "Select file", onPressed: _selectFile),
+                        text: "Pick image from gallery",
+                        onPressed: _pickImageFromGallery),
                   ),
-                  if (_selectedFile != null)
-                    Expanded(
-                      child: Container(
-                        color: Colors.blue,
-                        child: Center(
-                          child: Image.file(
-                            File(_selectedFile!.path!),
-                            width: double.infinity,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                    )
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                    child: MyCtaButton(
+                        text: "Get image from camera",
+                        onPressed: _pickImageFromCamera),
+                  ),
+                  _selectedImage != null
+                      ? Image.file(_selectedImage!, height: 200, width: 200)
+                      : const Text("Please select an image ...")
                 ],
               ),
               if (_isProcessing)
