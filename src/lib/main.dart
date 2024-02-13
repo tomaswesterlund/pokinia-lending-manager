@@ -27,18 +27,21 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-   if (kDebugMode) {
-   try {
-     FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8080);
-     await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
-   } catch (e) {
-     // ignore: avoid_print
-     print(e);
-   }
- }
+// FIRESTORE EMULATOR
+  // if (kDebugMode) {
+  //   try {
+  //     FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8080);
+  //     await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
+  //   } catch (e) {
+  //     // ignore: avoid_print
+  //     print(e);
+  //   }
+  // }
 
 // Needs to change depending on being runned locally or not!
-String baseApiUrl = "http://127.0.0.1:5001/pokinia-lending-manager-c66c7/us-central1/api";
+// String baseApiUrl = "http://127.0.0.1:5001/pokinia-lending-manager-c66c7/us-central1/api";
+  String baseApiUrl =
+      "https://us-central1-pokinia-lending-manager-c66c7.cloudfunctions.net/api";
 
   ClientService clientService = ClientService(baseApiUrl: baseApiUrl);
   LoanService loanService = LoanService(baseApiUrl: baseApiUrl);
