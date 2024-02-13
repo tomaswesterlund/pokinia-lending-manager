@@ -8,6 +8,7 @@ class PaymentModel {
   final double interestAmountPaid;
   final double principalAmountPaid;
   final DateTime date;
+  final String receiptImagePath;
 
   // Deleted
   final DateTime? deleteDate;
@@ -23,6 +24,7 @@ class PaymentModel {
     required this.interestAmountPaid,
     required this.principalAmountPaid,
     required this.date,
+    required this.receiptImagePath,
     required this.deleteDate,
     required this.deleteReason,
   });
@@ -37,6 +39,7 @@ class PaymentModel {
       interestAmountPaid: (json['interestAmountPaid'] as num).toDouble(),
       principalAmountPaid: (json['principalAmountPaid'] as num).toDouble(),
       date: json['date'].toDate(),
+      receiptImagePath: json['receiptImagePath'],
       deleteDate: json['deleteDate']?.toDate(),
       deleteReason: json['deleteReason'],
     );

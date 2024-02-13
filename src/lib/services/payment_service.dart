@@ -16,7 +16,9 @@ class PaymentService extends ChangeNotifier {
       required String loanStatementId,
       required double interestAmountPaid,
       required double principalAmountPaid,
-      required DateTime date}) async {
+      required DateTime date,
+      required String receiptImagePath
+      }) async {
     final url = Uri.parse('$baseApiUrl/payments');
 
     var body = {
@@ -26,6 +28,7 @@ class PaymentService extends ChangeNotifier {
       'interestAmountPaid': interestAmountPaid.toString(),
       'principalAmountPaid': principalAmountPaid.toString(),
       'date': date.toIso8601String(),
+      'receiptImagePath': receiptImagePath,
     };
 
     final response = await http.post(url, body: body);
