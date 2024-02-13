@@ -16,5 +16,6 @@ src/.vscode
 src/android
 src/build
 src/.dart_tool
+src/.dart_tool/**/*
 src/build/ios/pod_inputs.fingerprint
 src/.flutter-plugins-dependencies
