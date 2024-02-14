@@ -8,29 +8,24 @@ class ClientService extends ChangeNotifier {
   final String baseApiUrl;
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
-  ClientService({required this.baseApiUrl});
+  List<ClientModel> clients = [];
 
-  Stream<List<ClientModel>> getClientsStream() {
-    var stream = _db.collection('clients').orderBy('name').snapshots().map(
-        (snapshot) => snapshot.docs
-            .map((doc) => ClientModel.fromFirestore(doc))
-            .toList());
-
-    return stream;
+  ClientService({required this.baseApiUrl}) {
+    listenToClients();
   }
 
-  Future<ClientModel> getClientById(String id) async {
-    var doc = await _db.collection('clients').doc(id).get();
-    return ClientModel.fromFirestore(doc);
+  void listenToClients() {
+    _db.collection('clients').snapshots().listen((snapshot) {
+      var clients =
+          snapshot.docs.map((doc) => ClientModel.fromFirestore(doc)).toList();
+
+      this.clients = clients;
+      notifyListeners();
+    });
   }
 
-  Stream<ClientModel> getClientByIdStream(String id) {
-    var stream = _db
-        .collection('clients')
-        .doc(id)
-        .snapshots()
-        .map((doc) => ClientModel.fromFirestore(doc));
-    return stream;
+  ClientModel getClientById(String id) {
+    return clients.firstWhere((client) => client.id == id);
   }
 
   Future<ResponseModel> createClient(

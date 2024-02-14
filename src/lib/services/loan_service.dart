@@ -8,12 +8,28 @@ class LoanService extends ChangeNotifier {
   final String baseApiUrl;
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
-  LoanService({required this.baseApiUrl});
+  List<LoanModel> loans = [];
 
-  Stream<List<LoanModel>> getLoansStream() {
-    var stream = _db.collection('loans').snapshots().map((snapshot) =>
-        snapshot.docs.map((doc) => LoanModel.fromFirestore(doc)).toList());
-    return stream;
+  LoanService({required this.baseApiUrl}) {
+    listenToLoans();
+  }
+
+  void listenToLoans() {
+    _db.collection('loans').snapshots().listen((snapshot) {
+      var loans =
+          snapshot.docs.map((doc) => LoanModel.fromFirestore(doc)).toList();
+
+      this.loans = loans;
+      notifyListeners();
+    });
+  }
+
+  LoanModel getLoanById(String id) {
+    return loans.firstWhere((loan) => loan.id == id);
+  }
+
+  List<LoanModel> getLoansByClientId(String clientId) {
+    return loans.where((loan) => loan.clientId == clientId).toList();
   }
 
   Future<ResponseModel> createLoan(
@@ -66,41 +82,5 @@ class LoanService extends ChangeNotifier {
     }
 
     return ResponseModel(statusCode: response.statusCode, body: response.body);
-  }
-
-  Stream<LoanModel> getLoanByIdStream(String id) {
-    var stream = _db
-        .collection('loans')
-        .doc(id)
-        .snapshots()
-        .map((doc) => LoanModel.fromFirestore(doc));
-    return stream;
-  }
-
-  Stream<List<LoanModel>> getLoansByClientIdStream(String clientId) {
-    var stream = _db
-        .collection('loans')
-        .where('clientId', isEqualTo: clientId)
-        .snapshots()
-        .map((snapshot) =>
-            snapshot.docs.map((doc) => LoanModel.fromFirestore(doc)).toList());
-    return stream;
-  }
-
-  List<LoanModel> getLoansByClientId(String clientId) {
-    List<LoanModel> loans = [];
-
-    var snapshots = _db
-        .collection('loans')
-        .where('clientId', isEqualTo: clientId)
-        .snapshots();
-
-    snapshots.forEach((snapshot) {
-      for (var doc in snapshot.docs) {
-        var data = LoanModel.fromFirestore(doc);
-        loans.add(data);
-      }
-    });
-    return loans;
   }
 }

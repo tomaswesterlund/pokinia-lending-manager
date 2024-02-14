@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:pokinia_lending_manager/components/payments/payment_list_card_component.dart';
-import 'package:pokinia_lending_manager/components/payments/recent_payment_list_card_component.dart';
-import 'package:pokinia_lending_manager/components/texts/headers/header_five_text.dart';
 import 'package:pokinia_lending_manager/components/texts/headers/header_four_text.dart';
 import 'package:pokinia_lending_manager/components/texts/headers/header_three_text.dart';
 import 'package:pokinia_lending_manager/components/texts/headers/header_two_text.dart';
 import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_one_text.dart';
 import 'package:pokinia_lending_manager/models/client_model.dart';
-import 'package:pokinia_lending_manager/models/loan_statement_model.dart';
-import 'package:pokinia_lending_manager/models/payment_model.dart';
+import 'package:pokinia_lending_manager/pages/clients/new_client_page.dart';
 import 'package:pokinia_lending_manager/services/client_service.dart';
+import 'package:pokinia_lending_manager/services/loan_service.dart';
 import 'package:pokinia_lending_manager/services/loan_statement_service.dart';
 import 'package:pokinia_lending_manager/services/payment_service.dart';
 import 'package:provider/provider.dart';
@@ -19,286 +18,95 @@ class PaymentsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var clientService = Provider.of<ClientService>(context);
-    var loanStatementService = Provider.of<LoanStatementService>(context);
-    var paymentService = Provider.of<PaymentService>(context);
-
     return Scaffold(
-      appBar: AppBar(
-        title: const HeaderTwoText(text: "Payments"),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(bottom: 24.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.only(left: 20.0),
-                    child: HeaderFourText(
-                      text: "Overdue payments",
-                      fontWeight: FontWeight.normal,
+      body: Consumer4<ClientService, LoanService, LoanStatementService,
+          PaymentService>(
+        builder: (context, clientService, loanService, loanStatementService,
+            paymentService, _) {
+          return CustomScrollView(
+            slivers: [
+              SliverAppBar(
+                title: const HeaderTwoText(text: "Payments"),
+                scrolledUnderElevation: 0,
+                floating: true,
+                actions: [
+                  IconButton(
+                    onPressed: () {
+                      showMaterialModalBottomSheet(
+                        enableDrag: false,
+                        isDismissible: false,
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(15.0),
+                            topRight: Radius.circular(15.0),
+                          ),
+                        ),
+                        context: context,
+                        builder: (context) => const NewClientPage(),
+                      );
+                    },
+                    icon: const Icon(
+                      Icons.add,
+                      size: 28.0,
+                      color: Colors.black,
                     ),
-                  ),
-                  _overduePayments(loanStatementService, clientService),
+                  )
                 ],
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 24.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.only(left: 20.0),
-                    child: HeaderFourText(
-                      text: "Upcoming payments",
-                      fontWeight: FontWeight.normal,
-                    ),
-                  ),
-                  _upcomingPayments(loanStatementService, clientService),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 24.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.only(left: 20.0),
-                    child: HeaderFourText(
-                      text: "Recent payments",
-                      fontWeight: FontWeight.normal,
-                    ),
-                  ),
-                  _recentPayments(
-                      paymentService, loanStatementService, clientService),
-                ],
-              ),
-            )
-          ],
-        ),
+              SliverToBoxAdapter(child: _getTitleWidget("Overdue payments")),
+              _getOverduePayments(clientService, loanStatementService),
+              SliverToBoxAdapter(child: _getTitleWidget("Recent payments")),
+              _getRecentlyPaidPayments(
+                  clientService, loanStatementService, paymentService),
+            ],
+          );
+        },
       ),
     );
   }
 
-  StreamBuilder<List<LoanStatementModel>> _overduePayments(
-      LoanStatementService loanStatementService, ClientService clientService) {
-    return StreamBuilder(
-      stream: loanStatementService.getOverdueLoanStatementsStream(),
-      builder: (context, loanStatementsSnapshot) {
-        if (loanStatementsSnapshot.hasError) {
-          return const Center(
-            child: HeaderThreeText(text: "Error loading loan statements"),
-          );
-        }
-
-        if (loanStatementsSnapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-
-        var loanStatements = loanStatementsSnapshot.data!;
-
-        if (loanStatements.isEmpty) {
-          return const Center(
-            child: ParagraphOneText(text: "No overdue payments ..."),
-          );
-        }
-
-        return Column(
-          children: [
-            ListView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemCount: loanStatements.length,
-              itemBuilder: (context, index) {
-                var loanStatement = loanStatements[index];
-
-                return StreamBuilder<ClientModel>(
-                    stream: clientService
-                        .getClientByIdStream(loanStatement.clientId),
-                    builder: (context, clientSnapshot) {
-                      if (clientSnapshot.hasError) {
-                        return const Center(
-                          child: HeaderThreeText(text: "Error loading client"),
-                        );
-                      }
-
-                      if (clientSnapshot.connectionState ==
-                          ConnectionState.waiting) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }
-
-                      var client = clientSnapshot.data!;
-
-                      return PaymentListCard(
-                          client: client, loanStatement: loanStatement);
-                    });
-              },
-            ),
-          ],
-        );
-      },
+  Widget _getTitleWidget(String text) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 20.0),
+      child: HeaderFourText(
+        text: text,
+        fontWeight: FontWeight.normal,
+      ),
     );
   }
 
-  StreamBuilder<List<LoanStatementModel>> _upcomingPayments(
-      LoanStatementService loanStatementService, ClientService clientService) {
-    return StreamBuilder(
-      stream: loanStatementService.getUpcomingLoanStatementsStream(),
-      builder: (context, loanStatementsSnapshot) {
-        if (loanStatementsSnapshot.hasError) {
-          return const Center(
-            child: HeaderThreeText(text: "Error loading loan statements"),
-          );
-        }
+  SliverList _getOverduePayments(
+      ClientService clientService, LoanStatementService loanStatementService) {
+    return SliverList(
+      delegate: SliverChildBuilderDelegate(
+        (context, index) {
+          var loneStatement =
+              loanStatementService.getOverdueLoanStatements()[index];
+          var client = clientService.getClientById(loneStatement.clientId);
 
-        if (loanStatementsSnapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-
-        var loanStatements = loanStatementsSnapshot.data!;
-
-        if (loanStatements.isEmpty) {
-          return const Center(
-            child: ParagraphOneText(text: "No upcoming payments ..."),
-          );
-        }
-
-        return Column(
-          children: [
-            ListView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemCount: loanStatements.length,
-              itemBuilder: (context, index) {
-                var loanStatement = loanStatements[index];
-
-                return StreamBuilder<ClientModel>(
-                    stream: clientService
-                        .getClientByIdStream(loanStatement.clientId),
-                    builder: (context, clientSnapshot) {
-                      if (clientSnapshot.hasError) {
-                        return const Center(
-                          child: HeaderThreeText(text: "Error loading client"),
-                        );
-                      }
-
-                      if (clientSnapshot.connectionState ==
-                          ConnectionState.waiting) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }
-
-                      var client = clientSnapshot.data!;
-
-                      return PaymentListCard(
-                          client: client, loanStatement: loanStatement);
-                    });
-              },
-            ),
-          ],
-        );
-      },
+          return PaymentListCard(client: client, loanStatement: loneStatement);
+        },
+        childCount: loanStatementService.getOverdueLoanStatements().length,
+      ),
     );
   }
 
-  StreamBuilder<List<PaymentModel>> _recentPayments(
-      PaymentService paymentService,
+  SliverList _getRecentlyPaidPayments(
+      ClientService clientService,
       LoanStatementService loanStatementService,
-      ClientService clientService) {
-    return StreamBuilder(
-      stream: paymentService.getRecentlyPaidPaymentsStream(),
-      builder: (context, paymentsSnapshot) {
-        if (paymentsSnapshot.hasError) {
-          return const Center(
-            child: HeaderThreeText(text: "Error loading payments"),
-          );
-        }
+      PaymentService paymentService) {
+    return SliverList(
+      delegate: SliverChildBuilderDelegate(
+        (context, index) {
+          var payment = paymentService.getRecentlyPaidPayments()[index];
+          var loneStatement = loanStatementService
+              .getLoanStatementById(payment.loanStatementId);
+          var client = clientService.getClientById(payment.clientId);
 
-        if (paymentsSnapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-
-        var payments = paymentsSnapshot.data!;
-
-        if (payments.isEmpty) {
-          return const Center(
-            child: ParagraphOneText(text: "No recent payments ..."),
-          );
-        }
-
-        return Column(
-          children: [
-            ListView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemCount: payments.length,
-              itemBuilder: (context, index) {
-                var payment = payments[index];
-
-                return StreamBuilder<ClientModel>(
-                    stream: clientService.getClientByIdStream(payment.clientId),
-                    builder: (context, clientSnapshot) {
-                      if (clientSnapshot.hasError) {
-                        return const Center(
-                          child: HeaderThreeText(text: "Error loading client"),
-                        );
-                      }
-
-                      if (clientSnapshot.connectionState ==
-                          ConnectionState.waiting) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }
-
-                      var client = clientSnapshot.data!;
-
-                      return StreamBuilder(
-                          stream:
-                              loanStatementService.getLoanStatementByIdStream(
-                                  payment.loanStatementId),
-                          builder: (context, loanStatementSnapshot) {
-                            if (loanStatementSnapshot.hasError) {
-                              return const Center(
-                                child: HeaderThreeText(
-                                    text: "Error loading loan statement"),
-                              );
-                            }
-
-                            if (loanStatementSnapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return const Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            }
-
-                            var loanStatement = loanStatementSnapshot.data!;
-
-                            return RecentPaymentListCard(
-                                payment: payment,
-                                client: client,
-                                loanStatement: loanStatement);
-                          });
-                    });
-              },
-            ),
-          ],
-        );
-      },
+          return PaymentListCard(client: client, loanStatement: loneStatement);
+        },
+        childCount: paymentService.getRecentlyPaidPayments().length,
+      ),
     );
   }
 }

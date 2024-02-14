@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pokinia_lending_manager/components/buttons/my_avatar_component.dart';
 import 'package:pokinia_lending_manager/components/status_boxes/payment_status/dot_payment_status_component.dart';
 import 'package:pokinia_lending_manager/components/texts/amounts/big_amount_text.dart';
 import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_one_text.dart';
@@ -41,11 +42,7 @@ class LoanListCard extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Image.asset(
-              "assets/images/dummy_avatar.png",
-              width: 48,
-              height: 48,
-            ),
+            MyAvatarComponent(client: client),
             const SizedBox(width: 15),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,

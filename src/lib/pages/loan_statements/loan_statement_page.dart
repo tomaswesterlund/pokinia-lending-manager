@@ -20,8 +20,8 @@ import 'package:pokinia_lending_manager/util/double_extensions.dart';
 import 'package:provider/provider.dart';
 
 class LoanStatementPage extends StatefulWidget {
-  final String paymentId;
-  const LoanStatementPage({super.key, required this.paymentId});
+  final String loanStatementId;
+  const LoanStatementPage({super.key, required this.loanStatementId});
 
   @override
   State<LoanStatementPage> createState() => _LoanStatementPageState();
@@ -30,118 +30,110 @@ class LoanStatementPage extends StatefulWidget {
 class _LoanStatementPageState extends State<LoanStatementPage> {
   @override
   Widget build(BuildContext context) {
-    var loanStatementService =
-        Provider.of<LoanStatementService>(context, listen: false);
-
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Loan Statement"),
-        actions: [
-          IconButton(
-            onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const NewClientPage(),
+        appBar: AppBar(
+          title: const Text("Loan Statement"),
+          actions: [
+            IconButton(
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const NewClientPage(),
+                ),
+              ),
+              icon: const Icon(
+                Icons.delete,
+                color: Colors.red,
               ),
             ),
-            icon: const Icon(
-              Icons.delete,
-              color: Colors.red,
-            ),
-          ),
-        ],
-      ),
-      body: StreamBuilder<Object>(
-          stream:
-              loanStatementService.getLoanStatementByIdStream(widget.paymentId),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              var loanStatement = snapshot.data as LoanStatementModel;
+          ],
+        ),
+        body: Consumer<LoanStatementService>(
+          builder: (context, loanStatementService, _) {
+            var loanStatement = loanStatementService
+                .getLoanStatementById(widget.loanStatementId);
 
-              return Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(32.0, 16.0, 32.0, 32.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Column(
-                          children: [
-                            const HeaderFourText(
-                                text: 'Remaining amount to be paid'),
-                            PrimaryAmountText(
-                                text: loanStatement.remainingAmountToBePaid
-                                    .toFormattedCurrency())
-                          ],
-                        )
-                      ],
-                    ),
+            return Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(32.0, 16.0, 32.0, 32.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Column(
+                        children: [
+                          const HeaderFourText(
+                              text: 'Remaining amount to be paid'),
+                          PrimaryAmountText(
+                              text: loanStatement.remainingAmountToBePaid
+                                  .toFormattedCurrency())
+                        ],
+                      )
+                    ],
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 24.0, right: 24.0),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const HeaderFiveText(
-                                text: "Payment status",
-                                fontWeight: FontWeight.normal),
-                            Row(
-                              children: [
-                                DotPaymentStatus(
-                                    paymentStatus: loanStatement.paymentStatus),
-                                const SizedBox(width: 5),
-                                ParagraphTwoText(
-                                    text: loanStatement.paymentStatus.name),
-                              ],
-                            )
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const HeaderFiveText(
-                                text: "Interest paid / expected",
-                                fontWeight: FontWeight.normal),
-                            SmallAmountText(
-                                text:
-                                    "${loanStatement.interestAmountPaid.toFormattedCurrency()} / ${loanStatement.expectedInterestAmount.toFormattedCurrency()}")
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const HeaderFiveText(
-                                text: "Principal paid / expected",
-                                fontWeight: FontWeight.normal),
-                            SmallAmountText(
-                                text:
-                                    "${loanStatement.principalAmountPaid.toFormattedCurrency()} / ${loanStatement.expectedPrincipalAmount.toFormattedCurrency()}")
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const HeaderFiveText(
-                                text: "Interest rate",
-                                fontWeight: FontWeight.normal),
-                            SmallAmountText(
-                                text: "${loanStatement.interestRate}%")
-                          ],
-                        ),
-                      ],
-                    ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 24.0, right: 24.0),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const HeaderFiveText(
+                              text: "Payment status",
+                              fontWeight: FontWeight.normal),
+                          Row(
+                            children: [
+                              DotPaymentStatus(
+                                  paymentStatus: loanStatement.paymentStatus),
+                              const SizedBox(width: 5),
+                              ParagraphTwoText(
+                                  text: loanStatement.paymentStatus.name),
+                            ],
+                          )
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const HeaderFiveText(
+                              text: "Interest paid / expected",
+                              fontWeight: FontWeight.normal),
+                          SmallAmountText(
+                              text:
+                                  "${loanStatement.interestAmountPaid.toFormattedCurrency()} / ${loanStatement.expectedInterestAmount.toFormattedCurrency()}")
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const HeaderFiveText(
+                              text: "Principal paid / expected",
+                              fontWeight: FontWeight.normal),
+                          SmallAmountText(
+                              text:
+                                  "${loanStatement.principalAmountPaid.toFormattedCurrency()} / ${loanStatement.expectedPrincipalAmount.toFormattedCurrency()}")
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const HeaderFiveText(
+                              text: "Interest rate",
+                              fontWeight: FontWeight.normal),
+                          SmallAmountText(
+                              text: "${loanStatement.interestRate}%")
+                        ],
+                      ),
+                    ],
                   ),
-                  const HeaderFiveText(text: "Payments"),
-                  PaymentTable(loanStatementId: loanStatement.id),
-                  AddPaymentModal(loanStatement: loanStatement)
-                ],
-              );
-            } else {
-              return const Center(child: CircularProgressIndicator());
-            }
-          }),
-    );
+                ),
+                const HeaderFiveText(text: "Payments"),
+                PaymentTable(loanStatementId: loanStatement.id),
+                AddPaymentModal(loanStatement: loanStatement)
+              ],
+            );
+          },
+        ));
   }
 }

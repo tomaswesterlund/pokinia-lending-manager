@@ -18,133 +18,116 @@ class LoanStatementTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var loanStatementService =
-        Provider.of<LoanStatementService>(context, listen: false);
-
-    return Expanded(
-      child: Column(
-        children: [
-          // Date - Interest rate - Interest paid - Abono - Status
-           const Padding(
-            padding: EdgeInsets.fromLTRB(32.0, 16.0, 32.0, 0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ParagraphOneText(text: 'Status'),
-                ParagraphOneText(text: 'Date'),
-                ParagraphOneText(text: 'Int. rate'),
-                ParagraphOneText(text: 'Int. paid'),
-                ParagraphOneText(text: 'Pri. paid'),
-              ],
+    return Consumer<LoanStatementService>(
+        builder: (context, loanStatementService, child) {
+      return Expanded(
+        child: Column(
+          children: [
+            // Date - Interest rate - Interest paid - Abono - Status
+            const Padding(
+              padding: EdgeInsets.fromLTRB(32.0, 16.0, 32.0, 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ParagraphOneText(text: 'Status'),
+                  ParagraphOneText(text: 'Date'),
+                  ParagraphOneText(text: 'Int. rate'),
+                  ParagraphOneText(text: 'Int. paid'),
+                  ParagraphOneText(text: 'Pri. paid'),
+                ],
+              ),
             ),
-          ),
-          StreamBuilder(
-            stream: loanStatementService.getLoanStatementsByLoanIdStream(loanId),
-            builder: (context, loanStatementsSnapshot) {
-              if (loanStatementsSnapshot.hasData) {
-                var loanStatements =
-                    loanStatementsSnapshot.data as List<LoanStatementModel>;
-                loanStatements.sort(
-                    (a, b) => a.expectedPayDate.compareTo(b.expectedPayDate));
 
-                return Expanded(
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: loanStatements.length,
-                    itemBuilder: (context, index) {
-                      var loanStatement = loanStatements[index];
+            // loanStatementService.getLoanStatementsByLoanIdStream(loanId)
 
-                      return GestureDetector(
-                        onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                LoanStatementPage(paymentId: loanStatement.id),
-                          ),
-                        ),
+            Expanded(
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: loanStatementService
+                    .getLoanStatementsByLoanId(loanId)
+                    .length,
+                itemBuilder: (context, index) {
+                  var loanStatement = loanStatementService
+                      .getLoanStatementsByLoanId(loanId)[index];
+
+                  return GestureDetector(
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => LoanStatementPage(
+                            loanStatementId: loanStatement.id),
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                      child: Container(
+                        color: index % 2 == 0
+                            ? const Color(0xFFF4FDFD)
+                            : Colors.white,
                         child: Padding(
-                          padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-                          child: Container(
-                            color: index % 2 == 0
-                                ? const Color(0xFFF4FDFD)
-                                : Colors.white,
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.only(top: 8.0, bottom: 8.0),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Expanded(
-                                    child: CompactPaymentStatusBox(
-                                        paymentStatus:
-                                            loanStatement.paymentStatus),
-                                  ),
-
-                         
-                                  Expanded(
-                                    child: FittedBox(
-                                      fit: BoxFit.scaleDown,
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 4.0),
-                                        child: ParagraphTwoText(
-                                            text: loanStatement.expectedPayDate
-                                                .toFormattedDate()),
-                                      ),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: SmallPercentageText(
-                                        percentage: loanStatement.interestRate),
-                                  ),
-                                  Expanded(
-                                    child: FittedBox(
-                                      fit: BoxFit.scaleDown,
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 4.0),
-                                        child: SmallAmountText(
-                                            text: loanStatement.interestAmountPaid
-                                                .toFormattedCurrency()),
-                                      ),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: FittedBox(
-                                      fit: BoxFit.scaleDown,
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 4.0),
-                                        child: SmallAmountText(
-                                            text: loanStatement.principalAmountPaid
-                                                .toFormattedCurrency()),
-                                      ),
-                                    ),
-                                  ),
-                                  const Expanded(
-                                      child: Icon(Icons.arrow_forward_ios,
-                                          size: 12.0))
-                                ],
+                          padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Expanded(
+                                child: CompactPaymentStatusBox(
+                                    paymentStatus: loanStatement.paymentStatus),
                               ),
-                            ),
+                              Expanded(
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 4.0),
+                                    child: ParagraphTwoText(
+                                        text: loanStatement.expectedPayDate
+                                            .toFormattedDate()),
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                child: SmallPercentageText(
+                                    percentage: loanStatement.interestRate),
+                              ),
+                              Expanded(
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 4.0),
+                                    child: SmallAmountText(
+                                        text: loanStatement.interestAmountPaid
+                                            .toFormattedCurrency()),
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 4.0),
+                                    child: SmallAmountText(
+                                        text: loanStatement.principalAmountPaid
+                                            .toFormattedCurrency()),
+                                  ),
+                                ),
+                              ),
+                              const Expanded(
+                                  child:
+                                      Icon(Icons.arrow_forward_ios, size: 12.0))
+                            ],
                           ),
                         ),
-                      );
-                    },
-                  ),
-                );
-              } else if (loanStatementsSnapshot.hasError) {
-                debugPrint(loanStatementsSnapshot.error.toString());
-                return const Center(child: Text('Error loading loan statements'));
-              } 
-              else {
-                return const Text("Loading ...");
-              }
-            },
-          ),
-        ],
-      ),
-    );
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      );
+    });
   }
 }

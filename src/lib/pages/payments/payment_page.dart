@@ -46,18 +46,9 @@ class PaymentPage extends StatelessWidget {
           })
         ],
       ),
-      body: StreamBuilder(
-        stream: paymentService.getPaymentByIdStream(paymentId),
-        builder: (context, paymentSnapshot) {
-          if (paymentSnapshot.hasError) {
-            return const Text("Something went wrong");
-          }
-
-          if (paymentSnapshot.connectionState == ConnectionState.waiting) {
-            return const Text("Loading");
-          }
-
-          var payment = paymentSnapshot.data!;
+      body: Consumer<PaymentService>(
+        builder: (context, paymentService, _) {
+          var payment = paymentService.getPaymentById(paymentId);
 
           return Column(
             children: [

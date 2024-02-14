@@ -17,154 +17,56 @@ class LoansPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var clientService = Provider.of<ClientService>(context, listen: false);
-    var loanService = Provider.of<LoanService>(context, listen: false);
 
-    return Scaffold(
-      body: StreamBuilder(
-        stream: clientService.getClientsStream(),
-        builder: (context, clientsSnapshot) {
-          if (clientsSnapshot.hasData) {
-            if (clientsSnapshot.data!.isNotEmpty) {
-              List<ClientModel> clients = clientsSnapshot.data!;
-              return StreamBuilder(
-                stream: loanService.getLoansStream(),
-                builder: (context, loansSnapshot) {
-                  if (loansSnapshot.hasData) {
-                    if (loansSnapshot.data!.isNotEmpty) {
-                      List<LoanModel> loans = loansSnapshot.data!;
-                      return CustomScrollView(
-                        slivers: [
-                          SliverAppBar(
-                            title: const HeaderTwoText(text: "Loans"),
-                            scrolledUnderElevation: 0,
-                            floating: true,
-                            actions: [
-                              IconButton(
-                                onPressed: () {
-                                  showMaterialModalBottomSheet(
-                                    enableDrag: false,
-                                    isDismissible: false,
-                                    shape: const RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(15.0),
-                                        topRight: Radius.circular(15.0),
-                                      ),
-                                    ),
-                                    context: context,
-                                    builder: (context) => const NewLoanPage(),
-                                  );
-                                },
-                                icon: const Icon(
-                                  Icons.add,
-                                  size: 28.0,
-                                  color: Colors.black,
-                                ),
-                              )
-                            ],
+    return Consumer2<ClientService, LoanService>(builder: 
+      (context, clientService, loanService, _) {
+        return Scaffold(
+          body: CustomScrollView(
+            slivers: [
+              SliverAppBar(
+                title: const HeaderTwoText(text: "Loans"),
+                scrolledUnderElevation: 0,
+                floating: true,
+                actions: [
+                  IconButton(
+                    onPressed: () {
+                      showMaterialModalBottomSheet(
+                        enableDrag: false,
+                        isDismissible: false,
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(15.0),
+                            topRight: Radius.circular(15.0),
                           ),
-                          SliverList(
-                            delegate: SliverChildBuilderDelegate(
-                              (context, index) {
-                                final ClientModel client = clients.firstWhere(
-                                    (client) =>
-                                        client.id == loans[index].clientId);
-                                final LoanModel loan = loans[index];
-
-                                return LoanListCard(client: client, loan: loan);
-                              },
-                              childCount: loans.length,
-                            ),
-                          )
-                        ],
+                        ),
+                        context: context,
+                        builder: (context) => const NewLoanPage(),
                       );
-                    } else if (loansSnapshot.data!.isEmpty) {
-                      return const EmptyLoanList();
-                    } else {
-                      // Error (?)
-                      return const Center(child: CircularProgressIndicator());
-                    }
-                  } else {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-                },
-              );
-            } else if (clientsSnapshot.data!.isEmpty) {
-              return const EmptyLoanList();
-            } else {
-              // Error (?)
-              return const Center(child: CircularProgressIndicator());
-            }
-          } else {
-            return const Center(child: CircularProgressIndicator());
-          }
-        },
+                    },
+                    icon: const Icon(
+                      Icons.add,
+                      size: 28.0,
+                      color: Colors.black,
+                    ),
+                  )
+                ],
+              ),
+              SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (context, index) {
+                    final ClientModel client = clientService.clients[index];
+                    final LoanModel loan = loanService.loans[index];
 
-        // child:
-        // StreamBuilder(
-        //   stream: loanService.getLoansStream(),
-        //   builder: (context, loansSnapshot) {
-        //     if (loansSnapshot.hasData) {
-        //       if (loansSnapshot.data!.isNotEmpty) {
-        //         List<LoanModel> loans = loansSnapshot.data!;
-        //         return CustomScrollView(
-        //           slivers: [
-        //             SliverAppBar(
-        //               title: const HeaderTwoText(text: "Loans"),
-        //               scrolledUnderElevation: 0,
-        //               floating: true,
-        //               actions: [
-        //                 IconButton(
-        //                   onPressed: () {
-        //                     showMaterialModalBottomSheet(
-        //                       enableDrag: false,
-        //                       isDismissible: false,
-        //                       shape: const RoundedRectangleBorder(
-        //                         borderRadius: BorderRadius.only(
-        //                           topLeft: Radius.circular(15.0),
-        //                           topRight: Radius.circular(15.0),
-        //                         ),
-        //                       ),
-        //                       context: context,
-        //                       builder: (context) => const NewClientPage(),
-        //                     );
-        //                   },
-        //                   icon: const Icon(
-        //                     Icons.add,
-        //                     size: 28.0,
-        //                     color: Colors.black,
-        //                   ),
-        //                 )
-        //               ],
-        //             ),
-        //             SliverList(
-        //               delegate: SliverChildBuilderDelegate(
-        //                 (context, index) {
-        //                   final ClientModel client = _getClientById(
-        //                       context, loans[index].clientId).then((value) {
-        //                         return const Text("Test");
-        //                       });
-        //                   final LoanModel loan = loans[index];
-
-        //                   return LoanListCard(client: client, loan: loan);
-        //                 },
-        //                 childCount: loans.length,
-        //               ),
-        //             )
-        //           ],
-        //         );
-        //       } else if (loansSnapshot.data!.isEmpty) {
-        //         return const EmptyLoanList();
-        //       } else {
-        //         // Error (?)
-        //         return const Center(child: CircularProgressIndicator());
-        //       }
-        //     } else {
-        //       return const Center(child: CircularProgressIndicator());
-        //     }
-        //   },
-        // ),
-      ),
+                    return LoanListCard(client: client, loan: loan);
+                  },
+                  childCount: loanService.loans.length,
+                ),
+              )
+            ],
+          ),
+        );
+      },
     );
+
   }
 }

@@ -14,28 +14,16 @@ class ClientListDropdownMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ClientService clientService =
-        Provider.of<ClientService>(context, listen: false);
 
-    return StreamBuilder<List<ClientModel>>(
-      stream: clientService.getClientsStream(),
-      builder: (context, clientsSnapshot) {
-        if (clientsSnapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-
-        var clients = clientsSnapshot.data!;
-
-        return DropdownMenu(
+    return Consumer<ClientService>(builder: (context, clientService, child) {
+      return DropdownMenu(
           // enableSearch: true,
           // enableFilter: true,
           enabled: enabled,
           controller: controller,
           initialSelection: selectedClient,
           dropdownMenuEntries: <DropdownMenuEntry<ClientModel>>[
-            for (var client in clients)
+            for (var client in clientService.clients)
               DropdownMenuEntry(
                 value: client,
                 label: client.name,
@@ -54,7 +42,48 @@ class ClientListDropdownMenu extends StatelessWidget {
             ),
           ),
         );
-      },
-    );
+
+    },);
+    
+    
+    // StreamBuilder<List<ClientModel>>(
+    //   stream: clientService.getClientsStream(),
+    //   builder: (context, clientsSnapshot) {
+    //     if (clientsSnapshot.connectionState == ConnectionState.waiting) {
+    //       return const Center(
+    //         child: CircularProgressIndicator(),
+    //       );
+    //     }
+
+    //     var clients = clientsSnapshot.data!;
+
+    //     return DropdownMenu(
+    //       // enableSearch: true,
+    //       // enableFilter: true,
+    //       enabled: enabled,
+    //       controller: controller,
+    //       initialSelection: selectedClient,
+    //       dropdownMenuEntries: <DropdownMenuEntry<ClientModel>>[
+    //         for (var client in clients)
+    //           DropdownMenuEntry(
+    //             value: client,
+    //             label: client.name,
+    //           )
+    //       ],
+    //       onSelected: (value) {
+    //         selectedClient = value;
+    //         onClientSelected(value);
+    //       },
+    //       inputDecorationTheme: InputDecorationTheme(
+    //         fillColor: Colors.red,
+    //         iconColor: Colors.blue,
+    //         focusColor: Colors.green,
+    //         border: OutlineInputBorder(
+    //           borderRadius: BorderRadius.circular(10),
+    //         ),
+    //       ),
+    //     );
+    //   },
+    // );
   }
 }

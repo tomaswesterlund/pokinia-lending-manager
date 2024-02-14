@@ -1,9 +1,5 @@
-import 'dart:io';
-
-import 'package:circular_profile_avatar/circular_profile_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_avatar/flutter_advanced_avatar.dart';
-import 'package:pokinia_lending_manager/components/buttons/my_avatar_component.dart';
 import 'package:pokinia_lending_manager/components/buttons/my_fab.dart';
 import 'package:pokinia_lending_manager/components/status_boxes/client_payment_status/wide_client_status_box_component.dart';
 import 'package:pokinia_lending_manager/components/status_boxes/loan_payment_status/compact_loan_status_box_component.dart';
@@ -26,84 +22,53 @@ class ClientPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var clientService = Provider.of<ClientService>(context, listen: false);
-    var loanService = Provider.of<LoanService>(context, listen: false);
-
-    // CLIENT - StreamBuilder
     return Scaffold(
-      appBar: AppBar(
-        title: Text(client.name),
-      ),
-      body: StreamBuilder<ClientModel>(
-        stream: clientService.getClientByIdStream(client.id),
-        builder: (context, clientSnapshot) {
-          if (clientSnapshot.hasError) {
-            debugPrint(clientSnapshot.error.toString());
-            return const Center(child: Text('Error loading clients'));
-          } else if (!clientSnapshot.hasData) {
-            return const Center(child: CircularProgressIndicator());
-          } else {
-            var client = clientSnapshot.data!;
+        appBar: AppBar(
+          title: Text(client.name),
+        ),
+        body: Consumer2<ClientService, LoanService>(
+          builder: (context, clientService, loanService, child) {
+            return Column(
+              children: [
+                _getAvatarWidget(client),
+                const SizedBox(height: 16.0),
 
-            // LOAN - StreamBuilder
-            return StreamBuilder<List<LoanModel>>(
-              stream: loanService.getLoansByClientIdStream(client.id),
-              builder: (context, loansSnapshot) {
-                if (loansSnapshot.hasError) {
-                  debugPrint(loansSnapshot.error.toString());
-                  return const Center(child: Text('Error loading loans'));
-                } else if (!loansSnapshot.hasData) {
-                  return const Center(child: CircularProgressIndicator());
-                } else {
-                  var loans = loansSnapshot.data!;
+                // Name
+                HeaderThreeText(text: client.name),
+                const SizedBox(height: 16.0),
 
-                  // SCAFFOLD
-                  return Column(
-                    children: [
-                      _getAvatarWidget(client),
-                      const SizedBox(height: 16.0),
+                // Status
+                WideClientStatusBoxComponent(
+                    paymentStatus: client.paymentStatus),
 
-                      // Name
-                      HeaderThreeText(text: client.name),
-                      const SizedBox(height: 16.0),
+                const SizedBox(height: 16.0),
 
-                      // Status
-                      WideClientStatusBoxComponent(
-                          paymentStatus: client.paymentStatus),
+                _getContactButtonsWidget(),
+                _getContactInformationWidget(),
 
-                      const SizedBox(height: 16.0),
+                //Edit button
+                const Text("Edit"),
 
-                      _getContactButtonsWidget(),
-                      _getContactInformationWidget(),
+                // Separator
+                const Divider(color: Colors.grey, thickness: 2),
 
-                      //Edit button
-                      const Text("Edit"),
+                _getLoansWidget(loanService.getLoansByClientId(client.id)),
 
-                      // Separator
-                      const Divider(color: Colors.grey, thickness: 2),
-
-                      _getLoansWidget(loans),
-
-                      // New loan
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 40),
-                        child: MyFab(
-                            subTitle: "New loan",
-                            onPressed: () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        NewLoanPage(selectedClient: client)))),
-                      ),
-                    ],
-                  );
-                }
-              },
+                // New loan
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 40),
+                  child: MyFab(
+                      subTitle: "New loan",
+                      onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  NewLoanPage(selectedClient: client)))),
+                ),
+              ],
             );
-          }
-        },
-      ),
-    );
+          },
+        ));
   }
 
   Widget _getAvatarWidget(ClientModel client) {
