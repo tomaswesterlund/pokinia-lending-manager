@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pokinia_lending_manager/components/buttons/my_cta_button.dart';
 import 'package:pokinia_lending_manager/components/client/client_list_dropdown_menu_component.dart';
 import 'package:pokinia_lending_manager/components/input/my_text_form_field.dart';
+import 'package:pokinia_lending_manager/components/texts/headers/header_four_text.dart';
 import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_one_text.dart';
 import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_two_text.dart';
 import 'package:pokinia_lending_manager/models/client_model.dart';
@@ -27,6 +28,7 @@ class _NewLoanPageState extends State<NewLoanPage> {
   final TextEditingController _loanPrincipalAmountController =
       TextEditingController();
   final TextEditingController _interestRateController = TextEditingController();
+  bool _isProcessing = false;
   ClientModel? _selectedClient;
 
   Future<void> _selectDate(BuildContext context) async {
@@ -42,7 +44,7 @@ class _NewLoanPageState extends State<NewLoanPage> {
     }
   }
 
-  void _createLoan() async {
+  void _addLoan() async {
     if (_selectedClient == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -53,16 +55,20 @@ class _NewLoanPageState extends State<NewLoanPage> {
     }
 
     if (_formKey.currentState!.validate()) {
-      var initialPrincipalAmount =
-          double.parse(_loanPrincipalAmountController.text);
-      var initialInterestRate = double.parse(_interestRateController.text);
+      setState(() {
+        _isProcessing = true;
+      });
 
       var response = await _loanService.createLoan(
           clientId: _selectedClient!.id,
-          initialPrincipalAmount: initialPrincipalAmount,
-          initialInterestRate: initialInterestRate,
+          initialPrincipalAmount: double.parse(_loanPrincipalAmountController.text),
+          initialInterestRate: double.parse(_interestRateController.text),
           startDate: _startDate,
           paymentPeriod: 'monthly');
+
+      setState(() {
+        _isProcessing = false;
+      });
 
       if (response.statusCode == 200) {
         Navigator.pop(context);
@@ -84,105 +90,128 @@ class _NewLoanPageState extends State<NewLoanPage> {
   Widget build(BuildContext context) {
     _loanService = Provider.of<LoanService>(context, listen: false);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('New Loan'),
+    return Form(
+      key: _formKey,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          _getHeaderWidget(),
+          _getClientDropDownWidget(),
+          _getPrincipalAmountWidget(),
+          _getInterestRateWidget(),
+          _getExpectedPayDateWidget(),
+          _getPaymentPeriodWidget(),
+          _getAddLoanButtonWidget()
+        ],
       ),
-      body: Form(
-        key: _formKey,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
-              children: [
-                ClientListDropdownMenu(
-                  selectedClient: widget.selectedClient,
-                  onClientSelected: onClientSelected,
-                  controller: _clientController,
-                ),
+    );
+  }
 
-                // Loan amount
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-                  child: MyTextFormField(
-                      labelText: "Principal loan amount",
-                      validator: (value) {
-                        if (value == null) {
-                          return "A principal amount is required";
-                        }
+  Widget _getHeaderWidget() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(20, 20, 10, 0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const HeaderFourText(text: "Add loan"),
+          IconButton(
+              disabledColor: Colors.grey,
+              onPressed: _isProcessing ? null : () => Navigator.pop(context),
+              icon: const Icon(Icons.close))
+        ],
+      ),
+    );
+  }
 
-                        if (value.isEmpty) {
-                          return "A principal amount is required";
-                        }
+  Widget _getClientDropDownWidget() {
+    return ClientListDropdownMenu(
+      selectedClient: widget.selectedClient,
+      enabled: !_isProcessing,
+      onClientSelected: onClientSelected,
+      controller: _clientController,
+    );
+  }
 
-                        if (value.isNumeric() == false) {
-                          return "The value must be a number";
-                        }
+  Widget _getPrincipalAmountWidget() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+      child: MyTextFormField(
+          enabled: !_isProcessing,
+          labelText: "Principal amount",
+          validator: (value) {
+            if (value.isNullOrEmpty()) {
+              return "Principal amount can't be empty";
+            }
 
-                        return null;
-                      },
-                      controller: _loanPrincipalAmountController,
-                      keyboardType: TextInputType.number),
-                ),
+            if (value.isNotANumber()) {
+              return "Principal amount must be a number";
+            }
+            return null;
+          },
+          controller: _loanPrincipalAmountController),
+    );
+  }
 
-                // Interest rate
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-                  child: MyTextFormField(
-                      labelText: "Interest rate",
-                      validator: (value) {
-                        if (value == null) {
-                          return "A principal amount is required";
-                        }
+  Widget _getInterestRateWidget() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+      child: MyTextFormField(
+          enabled: !_isProcessing,
+          labelText: "Interest rate",
+          validator: (value) {
+            if (value.isNullOrEmpty()) {
+              return "Interest rate can't be empty";
+            }
 
-                        if (value.isEmpty) {
-                          return "A principal amount is required";
-                        }
+            if (value.isNotANumber()) {
+              return "Interest rate must be a number";
+            }
+            return null;
+          },
+          controller: _interestRateController),
+    );
+  }
 
-                        if (value.isNumeric() == false) {
-                          return "The value must be a number";
-                        }
+  Widget _getExpectedPayDateWidget() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          ElevatedButton(
+            onPressed: _isProcessing ? null : () => _selectDate(context),
+            child: const Text('Select first expected payment date'),
+          ),
+          ParagraphTwoText(
+              text: _startDate.toFormattedDate(), fontWeight: FontWeight.bold)
+        ],
+      ),
+    );
+  }
 
-                        return null;
-                      },
-                      controller: _interestRateController),
-                ),
+  Widget _getPaymentPeriodWidget() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+      child: DropdownButton<String>(
+        items: <String>['monthly', 'weekly'].map((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
+        onChanged: (_) {},
+      ),
+    );
+  }
 
-                Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        ElevatedButton(
-                          onPressed: () => _selectDate(context),
-                          child: const Text('Select first expected payment date'),
-                        ),
-                        ParagraphTwoText(
-                            text: _startDate.toFormattedDate(),
-                            fontWeight: FontWeight.bold)
-                      ],
-                    )),
-
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-                  child: DropdownButton<String>(
-                    items: <String>['monthly', 'weekly'].map((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                    onChanged: (_) {},
-                  ),
-                ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20, 20, 20, 40),
-              child: MyCtaButton(text: "Create loan", onPressed: _createLoan),
-            )
-          ],
-        ),
+  Widget _getAddLoanButtonWidget() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(20, 20, 20, 40),
+      child: MyCtaButton(
+        text: "Add loan",
+        isProcessing: _isProcessing,
+        onPressed: _isProcessing ? null : _addLoan,
       ),
     );
   }

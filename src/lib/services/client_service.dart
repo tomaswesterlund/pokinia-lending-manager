@@ -11,10 +11,17 @@ class ClientService extends ChangeNotifier {
   ClientService({required this.baseApiUrl});
 
   Stream<List<ClientModel>> getClientsStream() {
-    var stream = _db.collection('clients').snapshots().map((snapshot) =>
-        snapshot.docs.map((doc) => ClientModel.fromFirestore(doc)).toList());
+    var stream = _db.collection('clients').orderBy('name').snapshots().map(
+        (snapshot) => snapshot.docs
+            .map((doc) => ClientModel.fromFirestore(doc))
+            .toList());
 
     return stream;
+  }
+
+  Future<ClientModel> getClientById(String id) async {
+    var doc = await _db.collection('clients').doc(id).get();
+    return ClientModel.fromFirestore(doc);
   }
 
   Stream<ClientModel> getClientByIdStream(String id) {
@@ -27,10 +34,18 @@ class ClientService extends ChangeNotifier {
   }
 
   Future<ResponseModel> createClient(
-      {required String name, required phoneNumber, String? address}) async {
+      {required String name,
+      required phoneNumber,
+      String? address,
+      String? avatarImagePath}) async {
     final url = Uri.parse('$baseApiUrl/clients');
 
-    var body = {'name': name, 'phoneNumber': phoneNumber, 'address': address};
+    var body = {
+      'name': name,
+      'phoneNumber': phoneNumber,
+      'address': address,
+      'avatarImagePath': avatarImagePath ?? ''
+    };
 
     final response = await http.post(url, body: body);
 

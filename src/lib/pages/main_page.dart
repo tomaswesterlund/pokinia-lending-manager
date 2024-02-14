@@ -19,7 +19,7 @@ class _MainPageState extends State<MainPage> {
     if (currentPageIndex == 0) {
       return const PaymentsPage();
     } else if (currentPageIndex == 1) {
-      return const LoansPage();
+      return LoansPage();
     } else if (currentPageIndex == 2) {
       return const ClientsPage();
     } else if (currentPageIndex == 3) {

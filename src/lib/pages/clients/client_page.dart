@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:circular_profile_avatar/circular_profile_avatar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_advanced_avatar/flutter_advanced_avatar.dart';
+import 'package:pokinia_lending_manager/components/buttons/my_avatar_component.dart';
 import 'package:pokinia_lending_manager/components/buttons/my_fab.dart';
 import 'package:pokinia_lending_manager/components/status_boxes/client_payment_status/wide_client_status_box_component.dart';
 import 'package:pokinia_lending_manager/components/status_boxes/loan_payment_status/compact_loan_status_box_component.dart';
@@ -56,21 +60,11 @@ class ClientPage extends StatelessWidget {
                   // SCAFFOLD
                   return Column(
                     children: [
-                      // Image
-                      CircularProfileAvatar(
-                        '',
-                        borderColor: const Color(0xFF008080),
-                        borderWidth: 5,
-                        elevation: 2,
-                        radius: 50,
-                        child: Image.asset("assets/images/dummy_avatar_2.webp"),
-                      ),
-
+                      _getAvatarWidget(client),
                       const SizedBox(height: 16.0),
 
                       // Name
                       HeaderThreeText(text: client.name),
-
                       const SizedBox(height: 16.0),
 
                       // Status
@@ -78,78 +72,9 @@ class ClientPage extends StatelessWidget {
                           paymentStatus: client.paymentStatus),
 
                       const SizedBox(height: 16.0),
-                      //Contact buttons
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          // Call button
-                          Container(
-                            decoration: BoxDecoration(
-                              color: const Color(0xFFE3F2F2),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: IconButton(
-                              icon: const Icon(Icons.call),
-                              color: const Color(0xFF008080),
-                              onPressed: () {},
-                            ),
-                          ),
 
-                          const SizedBox(width: 16),
-
-                          Container(
-                            decoration: BoxDecoration(
-                              color: const Color(0xFFF2EEE3),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: IconButton(
-                              icon: const Icon(Icons.message),
-                              color: const Color(0xFFEAB308),
-                              onPressed: () {},
-                            ),
-                          ),
-
-                          const SizedBox(width: 16),
-
-                          Container(
-                            decoration: BoxDecoration(
-                              color: const Color(0xFFF2E3E3),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: IconButton(
-                              icon: const Icon(Icons.map),
-                              color: const Color(0xFFEB5857),
-                              onPressed: () {},
-                            ),
-                          ),
-                        ],
-                      ),
-
-                      // Phone number
-                      Padding(
-                        padding: const EdgeInsets.all(32.0),
-                        child: Column(
-                          children: [
-                            Row(
-                              children: [
-                                const Icon(Icons.phone),
-                                const SizedBox(width: 8.0),
-                                ParagraphOneText(text: client.phoneNumber, fontWeight: FontWeight.bold)
-                              ],
-                            ),
-                            const SizedBox(height: 16.0),
-                            // Address
-                             const Row(
-                              children: [
-                                Icon(Icons.location_on),
-                                SizedBox(width: 8.0),
-                                ParagraphOneText(
-                                    text: "Some direction ...", fontWeight: FontWeight.bold),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
+                      _getContactButtonsWidget(),
+                      _getContactInformationWidget(),
 
                       //Edit button
                       const Text("Edit"),
@@ -157,60 +82,7 @@ class ClientPage extends StatelessWidget {
                       // Separator
                       const Divider(color: Colors.grey, thickness: 2),
 
-                      // Loans
-                      Expanded(
-                        child: ListView.builder(
-                          itemCount: loans.length,
-                          itemBuilder: (context, index) {
-                            var loan = loans[index];
-
-                            return GestureDetector(
-                              onTap: () => Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => LoanPage(
-                                          clientId: client.id,
-                                          loanId: loan.id))),
-                              child: Padding(
-                                padding: const EdgeInsets.all(20.0),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: const Color(0xFFF8F8F8),
-                                    border: const Border(
-                                      bottom: BorderSide(
-                                        color: Color(0xFFD2DEE0),
-                                      ),
-                                    ),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(20.0),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            CompactLoanStatusBoxComponent(
-                                                paymentStatus:
-                                                    loan.paymentStatus),
-                                            const SizedBox(width: 20),
-                                            BigAmountText(
-                                                text: loan
-                                                    .remainingPrincipalAmount.toFormattedCurrency()),
-                                          ],
-                                        ),
-                                        const Icon(Icons.arrow_forward_ios),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
-                          shrinkWrap: true,
-                        ),
-                      ),
+                      _getLoansWidget(loans),
 
                       // New loan
                       Padding(
@@ -230,6 +102,164 @@ class ClientPage extends StatelessWidget {
             );
           }
         },
+      ),
+    );
+  }
+
+  Widget _getAvatarWidget(ClientModel client) {
+    if (client.avatarImagePath != null) {
+      return AdvancedAvatar(
+        size: 96,
+        image: NetworkImage(client.avatarImagePath!),
+        foregroundDecoration: BoxDecoration(
+          shape: BoxShape.circle,
+          border: Border.all(
+            color: const Color(0xFF008080),
+            width: 2.0,
+          ),
+        ),
+      );
+    } else {
+      return AdvancedAvatar(
+        name: client.name,
+        size: 96.0,
+        autoTextSize: true,
+        foregroundDecoration: BoxDecoration(
+          shape: BoxShape.circle,
+          border: Border.all(
+            color: const Color(0xFF008080),
+            width: 2.0,
+          ),
+        ),
+      );
+    }
+  }
+
+  Widget _getContactButtonsWidget() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        // Call button
+        Container(
+          decoration: BoxDecoration(
+            color: const Color(0xFFE3F2F2),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: IconButton(
+            icon: const Icon(Icons.call),
+            color: const Color(0xFF008080),
+            onPressed: () {},
+          ),
+        ),
+
+        const SizedBox(width: 16),
+
+        Container(
+          decoration: BoxDecoration(
+            color: const Color(0xFFF2EEE3),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: IconButton(
+            icon: const Icon(Icons.message),
+            color: const Color(0xFFEAB308),
+            onPressed: () {},
+          ),
+        ),
+
+        const SizedBox(width: 16),
+
+        Container(
+          decoration: BoxDecoration(
+            color: const Color(0xFFF2E3E3),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: IconButton(
+            icon: const Icon(Icons.map),
+            color: const Color(0xFFEB5857),
+            onPressed: () {},
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _getContactInformationWidget() {
+    return Padding(
+      padding: const EdgeInsets.all(32.0),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              const Icon(Icons.phone),
+              const SizedBox(width: 8.0),
+              ParagraphOneText(
+                  text: client.phoneNumber, fontWeight: FontWeight.bold)
+            ],
+          ),
+          const SizedBox(height: 16.0),
+          Row(
+            children: [
+              const Icon(Icons.location_on),
+              const SizedBox(width: 8.0),
+              ParagraphOneText(
+                  text: client.address ?? "No address",
+                  fontWeight: FontWeight.bold),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _getLoansWidget(List<LoanModel> loans) {
+    return Expanded(
+      child: ListView.builder(
+        itemCount: loans.length,
+        itemBuilder: (context, index) {
+          var loan = loans[index];
+
+          return GestureDetector(
+            onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        LoanPage(clientId: client.id, loanId: loan.id))),
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: const Color(0xFFF8F8F8),
+                  border: const Border(
+                    bottom: BorderSide(
+                      color: Color(0xFFD2DEE0),
+                    ),
+                  ),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          CompactLoanStatusBoxComponent(
+                              paymentStatus: loan.paymentStatus),
+                          const SizedBox(width: 20),
+                          BigAmountText(
+                              text: loan.remainingPrincipalAmount
+                                  .toFormattedCurrency()),
+                        ],
+                      ),
+                      const Icon(Icons.arrow_forward_ios),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          );
+        },
+        shrinkWrap: true,
       ),
     );
   }

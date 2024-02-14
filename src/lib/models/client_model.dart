@@ -5,6 +5,8 @@ class ClientModel {
   final String id;
   final String name;
   final String phoneNumber;
+  final String? address;
+  final String? avatarImagePath;
   final PaymentStatus paymentStatus;
 
 
@@ -19,6 +21,8 @@ class ClientModel {
       {required this.id,
       required this.name,
       required this.phoneNumber,
+      this.address,
+      this.avatarImagePath,
       this.paymentStatus = PaymentStatus.empty});
 
   factory ClientModel.fromJson(Map<String, dynamic> json) {
@@ -26,6 +30,8 @@ class ClientModel {
         id: json['id'],
         name: json['name'],
         phoneNumber: json['phoneNumber'],
+        address: json['address'],
+        avatarImagePath: json['avatarImagePath'], 
         paymentStatus: PaymentStatus.fromName(json['paymentStatus']));
   }
 
@@ -36,6 +42,8 @@ class ClientModel {
       id: doc.id,
       name: json['name'],
       phoneNumber: json['phoneNumber'],
+      address: json['address'],
+      avatarImagePath: json['avatarImagePath'],
       paymentStatus: PaymentStatus.fromName(json['paymentStatus']),
     );
   }

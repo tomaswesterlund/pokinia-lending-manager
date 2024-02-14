@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:pokinia_lending_manager/enums/payment_status_enum.dart';
 
 class WideClientStatusBoxComponent extends StatelessWidget {
@@ -57,7 +58,7 @@ class WideClientStatusBoxComponent extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.only(left: 6.0),
-            child: Text(paymentStatus.name),
+            child: Text(toBeginningOfSentenceCase(paymentStatus.name)),
           ),
           Padding(
             padding: const EdgeInsets.only(right: 5.0),

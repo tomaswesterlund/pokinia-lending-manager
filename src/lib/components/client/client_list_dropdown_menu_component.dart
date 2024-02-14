@@ -6,9 +6,11 @@ import 'package:provider/provider.dart';
 class ClientListDropdownMenu extends StatelessWidget {
   final TextEditingController controller;
   final Function(ClientModel? clientSelected) onClientSelected;
+  final bool enabled;
   ClientModel? selectedClient;
-  ClientListDropdownMenu(
-      {super.key, required this.controller, required this.onClientSelected, this.selectedClient});
+
+   ClientListDropdownMenu(
+      {super.key, required this.controller, required this.onClientSelected, this.selectedClient, this.enabled = true});
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +31,7 @@ class ClientListDropdownMenu extends StatelessWidget {
         return DropdownMenu(
           // enableSearch: true,
           // enableFilter: true,
+          enabled: enabled,
           controller: controller,
           initialSelection: selectedClient,
           dropdownMenuEntries: <DropdownMenuEntry<ClientModel>>[

@@ -9,6 +9,8 @@ import 'package:pokinia_lending_manager/components/texts/headers/header_four_tex
 import 'package:pokinia_lending_manager/components/texts/headers/header_three_text.dart';
 import 'package:pokinia_lending_manager/components/texts/headers/header_two_text.dart';
 import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_one_text.dart';
+import 'package:pokinia_lending_manager/services/file_service.dart';
+import 'package:pokinia_lending_manager/services/image_picker_service.dart';
 import 'package:pokinia_lending_manager/services/payment_service.dart';
 import 'package:pokinia_lending_manager/util/string_extensions.dart';
 import 'package:provider/provider.dart';
@@ -45,14 +47,9 @@ class _NewPaymentPageState extends State<NewPaymentPage> {
 
       var paymentService = Provider.of<PaymentService>(context, listen: false);
 
-      var interestAmoudPaid = double.parse(_interestAmountPaidController.text);
-      var principalAmountPaid =
-          double.parse(_principalAmountPaidController.text);
-      var date = DateTime.now();
-
       var urlDownload = "";
       if (_selectedImage != null) {
-        urlDownload = await _uploadFile();
+        urlDownload = await FileService().uploadPaymentReceipt(_selectedImage!);
       }
 
       paymentService
@@ -60,9 +57,11 @@ class _NewPaymentPageState extends State<NewPaymentPage> {
               clientId: widget.clientId,
               loanId: widget.loanId,
               loanStatementId: widget.loanStatementId,
-              interestAmountPaid: interestAmoudPaid,
-              principalAmountPaid: principalAmountPaid,
-              date: date,
+              interestAmountPaid:
+                  double.parse(_interestAmountPaidController.text),
+              principalAmountPaid:
+                  double.parse(_principalAmountPaidController.text),
+              date: DateTime.now(),
               receiptImagePath: urlDownload)
           .then(
         (value) {
@@ -83,52 +82,30 @@ class _NewPaymentPageState extends State<NewPaymentPage> {
     }
   }
 
-  Future _pickImageFromGallery() async {
-    final returnedImage =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
+  Future _pickImage(ImageSource source) async {
+    final returnedImage = await ImagePickerService().pickImage(source);
 
-    if (returnedImage != null) {
-      setState(() {
-        _selectedImage = File(returnedImage.path);
-      });
-    }
-  }
+    if (returnedImage == null) return;
 
-  Future _pickImageFromCamera() async {
-    final returnedImage =
-        await ImagePicker().pickImage(source: ImageSource.camera);
-
-    if (returnedImage != null) {
-      setState(() {
-        _selectedImage = File(returnedImage.path);
-      });
-    }
-  }
-
-  Future<String> _uploadFile() async {
-    final path = 'files/payment_receipts/${UniqueKey().toString()}.png';
-    final file = File(_selectedImage!.path);
-
-    final ref = FirebaseStorage.instance.ref().child(path);
-    var uploadTask = ref.putFile(file);
-
-    final snapshot = await uploadTask.whenComplete(() {});
-
-    final urlDownload = await snapshot.ref.getDownloadURL();
-    return urlDownload;
+    setState(() {
+      _selectedImage = File(returnedImage.path);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Form(
       key: _formKey,
-      child: Column(mainAxisSize: MainAxisSize.min, children: [
-        _getHeaderWidget(),
-        _getInterestAmountWidget(),
-        _getPrincipalAmountWidget(),
-        _getImagePickerWidget(),
-        _getAddPaymentButtonWidget()
-      ]),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _getHeaderWidget(),
+          _getInterestAmountWidget(),
+          _getPrincipalAmountWidget(),
+          _getImagePickerWidget(),
+          _getAddPaymentButtonWidget()
+        ],
+      ),
     );
   }
 
@@ -140,7 +117,8 @@ class _NewPaymentPageState extends State<NewPaymentPage> {
         children: [
           const HeaderFourText(text: "Add payment"),
           IconButton(
-              onPressed: () => Navigator.pop(context),
+              disabledColor: Colors.grey,
+              onPressed: _isProcessing ? null : () => Navigator.pop(context),
               icon: const Icon(Icons.close))
         ],
       ),
@@ -198,11 +176,13 @@ class _NewPaymentPageState extends State<NewPaymentPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             IconButton(
-                onPressed: () => _isProcessing ? null : _pickImageFromGallery(),
+                onPressed: () =>
+                    _isProcessing ? null : _pickImage(ImageSource.gallery),
                 icon: const Icon(Icons.photo, size: 48.0)),
             const SizedBox(width: 20),
             IconButton(
-                onPressed: () => _isProcessing ? null : _pickImageFromCamera(),
+                onPressed: () =>
+                    _isProcessing ? null : _pickImage(ImageSource.camera),
                 icon: const Icon(Icons.camera_alt, size: 48.0)),
           ],
         ),
