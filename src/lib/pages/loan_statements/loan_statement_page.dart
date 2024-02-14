@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:pokinia_lending_manager/components/buttons/my_cta_button.dart';
+import 'package:pokinia_lending_manager/components/payments/add_payment_modal_component.dart';
 import 'package:pokinia_lending_manager/components/payments/payment_table_component.dart';
 import 'package:pokinia_lending_manager/components/status_boxes/payment_status/dot_payment_status_component.dart';
 import 'package:pokinia_lending_manager/components/texts/amounts/primary_amount_text.dart';
@@ -133,22 +135,7 @@ class _LoanStatementPageState extends State<LoanStatementPage> {
                   ),
                   const HeaderFiveText(text: "Payments"),
                   PaymentTable(loanStatementId: loanStatement.id),
-                  Padding(
-                    padding: const EdgeInsets.all(48.0),
-                    child: Column(
-                      children: [
-                        MyCtaButton(
-                            text: "Add payment",
-                            onPressed: () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => NewPaymentPage(
-                                        clientId: loanStatement.clientId,
-                                        loanId: loanStatement.loanId,
-                                        loanStatementId: loanStatement.id)))),
-                      ],
-                    ),
-                  )
+                  AddPaymentModal(loanStatement: loanStatement)
                 ],
               );
             } else {

@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:pokinia_lending_manager/components/buttons/my_fab.dart';
 import 'package:pokinia_lending_manager/components/status_boxes/client_payment_status/compact_client_payment_status_box_component.dart';
 import 'package:pokinia_lending_manager/components/texts/headers/header_four_text.dart';
 import 'package:pokinia_lending_manager/models/client_model.dart';
 import 'package:pokinia_lending_manager/pages/clients/client_page.dart';
-import 'package:pokinia_lending_manager/pages/clients/new_client_page.dart';
 
 class ClientList extends StatelessWidget {
   final List<ClientModel> clients;

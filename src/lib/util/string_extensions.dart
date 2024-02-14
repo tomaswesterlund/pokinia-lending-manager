@@ -15,4 +15,20 @@ extension NullableStringExtensions on String? {
       return false;
     }
   }
+
+  bool isANumber() {
+    if(this == null) {
+      return false;
+    } else {
+      return this!.isNumeric();
+    }
+  }
+
+  bool isNotANumber() {
+    if(this == null) {
+      return false;
+    } else {
+      return !isANumber();
+    }
+  }
 }

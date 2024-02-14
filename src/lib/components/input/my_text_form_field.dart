@@ -6,6 +6,7 @@ class MyTextFormField extends StatelessWidget {
   final String? Function(String?) validator;
   final TextInputType keyboardType;
   final bool readOnly;
+  final bool enabled;
 
   const MyTextFormField(
       {super.key,
@@ -13,12 +14,14 @@ class MyTextFormField extends StatelessWidget {
       required this.controller,
       required this.validator,
       this.keyboardType = TextInputType.text,
-      this.readOnly = false});
+      this.readOnly = false,
+      this.enabled = true});
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       readOnly: readOnly,
+      enabled: enabled,
       controller: controller,
       validator: validator,
       keyboardType: keyboardType,
