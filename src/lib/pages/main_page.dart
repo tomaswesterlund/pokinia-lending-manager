@@ -3,7 +3,6 @@ import 'package:pokinia_lending_manager/pages/clients/clients_page.dart';
 import 'package:pokinia_lending_manager/pages/loans/loans_page.dart';
 import 'package:pokinia_lending_manager/pages/payments/payments_page.dart';
 import 'package:pokinia_lending_manager/pages/reports/reports_page.dart';
-import 'package:pokinia_lending_manager/pages/settings/settings_page.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});

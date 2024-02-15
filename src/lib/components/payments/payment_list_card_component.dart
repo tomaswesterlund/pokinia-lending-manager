@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:pokinia_lending_manager/components/avatars/my_avatar_component.dart';
 import 'package:pokinia_lending_manager/components/status_boxes/payment_status/dot_payment_status_component.dart';

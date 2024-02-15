@@ -5,8 +5,8 @@ import 'package:flutter_advanced_avatar/flutter_advanced_avatar.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pokinia_lending_manager/components/buttons/my_cta_button.dart';
 import 'package:pokinia_lending_manager/components/input/my_text_form_field.dart';
+import 'package:pokinia_lending_manager/components/ovarlays.dart';
 import 'package:pokinia_lending_manager/components/texts/headers/header_four_text.dart';
-import 'package:pokinia_lending_manager/components/texts/headers/header_three_text.dart';
 import 'package:pokinia_lending_manager/services/client_service.dart';
 import 'package:pokinia_lending_manager/services/file_service.dart';
 import 'package:pokinia_lending_manager/services/image_picker_service.dart';
@@ -26,13 +26,12 @@ class _NewClientPageState extends State<NewClientPage> {
   final TextEditingController _phoneNumberController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
   File? _selectedAvatar;
+  OverlayEntry? _loadingOverlay;
   bool _isProcessing = false;
 
   void _addClient() async {
     if (_formKey.currentState!.validate()) {
-      setState(() {
-        _isProcessing = true;
-      });
+      setOnProcessing(true);
 
       var clientService = Provider.of<ClientService>(context, listen: false);
 
@@ -50,13 +49,23 @@ class _NewClientPageState extends State<NewClientPage> {
           phoneNumber: phoneNumber,
           address: address,
           avatarImagePath: avatarImagePath);
-
-      setState(() {
-        _isProcessing = false;
-      });
+      setOnProcessing(false);
 
       Navigator.pop(context);
     }
+  }
+
+  void setOnProcessing(bool newValue) {
+    setState(() {
+      _isProcessing = newValue;
+
+      if (_isProcessing) {
+        _loadingOverlay = createLoadingOverlay(context);
+        Overlay.of(context).insert(_loadingOverlay!);
+      } else {
+        _loadingOverlay?.remove();
+      }
+    });
   }
 
   Future _pickImage(ImageSource source) async {

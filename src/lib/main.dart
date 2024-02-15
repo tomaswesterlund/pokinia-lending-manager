@@ -1,12 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:pokinia_lending_manager/pages/clients/clients_page.dart';
 import 'package:pokinia_lending_manager/pages/main_page.dart';
 import 'package:pokinia_lending_manager/services/client_service.dart';
-import 'package:pokinia_lending_manager/services/file_service.dart';
 import 'package:pokinia_lending_manager/services/loan_service.dart';
 import 'package:pokinia_lending_manager/services/loan_statement_service.dart';
 import 'package:pokinia_lending_manager/services/payment_service.dart';
@@ -55,7 +50,6 @@ void main() async {
       ChangeNotifierProvider(create: (context) => loanService),
       ChangeNotifierProvider(create: (context) => loanStatementService),
       ChangeNotifierProvider(create: (context) => paymentService),
-      
     ],
     child: const MyApp(),
   ));

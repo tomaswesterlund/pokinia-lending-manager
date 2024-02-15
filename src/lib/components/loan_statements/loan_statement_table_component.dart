@@ -4,7 +4,6 @@ import 'package:pokinia_lending_manager/components/texts/amounts/small_amount_te
 import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_one_text.dart';
 import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_two_text.dart';
 import 'package:pokinia_lending_manager/components/texts/percentages/small_percentage_text.dart';
-import 'package:pokinia_lending_manager/models/loan_statement_model.dart';
 import 'package:pokinia_lending_manager/pages/loan_statements/loan_statement_page.dart';
 import 'package:pokinia_lending_manager/services/loan_statement_service.dart';
 import 'package:pokinia_lending_manager/util/date_extensions.dart';

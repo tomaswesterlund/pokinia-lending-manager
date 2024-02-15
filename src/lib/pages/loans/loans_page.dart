@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:pokinia_lending_manager/components/loans/empty_loan_list_component.dart';
+import 'package:pokinia_lending_manager/components/buttons/fabs.dart';
 import 'package:pokinia_lending_manager/components/loans/loan_list_card_component.dart';
 import 'package:pokinia_lending_manager/components/texts/headers/header_two_text.dart';
 import 'package:pokinia_lending_manager/models/client_model.dart';
@@ -13,7 +13,7 @@ import 'package:provider/provider.dart';
 class LoansPage extends StatelessWidget {
   LoansPage({super.key});
 
-  var cachedClients = List<ClientModel>.empty(growable: true);
+  final cachedClients = List<ClientModel>.empty(growable: true);
 
   @override
   Widget build(BuildContext context) {
@@ -23,33 +23,11 @@ class LoansPage extends StatelessWidget {
         return Scaffold(
           body: CustomScrollView(
             slivers: [
-              SliverAppBar(
-                title: const HeaderTwoText(text: "Loans"),
+              const SliverAppBar(
+                title: HeaderTwoText(text: "Loans"),
                 scrolledUnderElevation: 0,
                 floating: true,
-                actions: [
-                  IconButton(
-                    onPressed: () {
-                      showMaterialModalBottomSheet(
-                        enableDrag: false,
-                        isDismissible: false,
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(15.0),
-                            topRight: Radius.circular(15.0),
-                          ),
-                        ),
-                        context: context,
-                        builder: (context) => const NewLoanPage(),
-                      );
-                    },
-                    icon: const Icon(
-                      Icons.add,
-                      size: 28.0,
-                      color: Colors.black,
-                    ),
-                  )
-                ],
+                
               ),
               SliverList(
                 delegate: SliverChildBuilderDelegate(
@@ -64,6 +42,21 @@ class LoansPage extends StatelessWidget {
               )
             ],
           ),
+          floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: getDefaultFab(
+        onPressed: () => showMaterialModalBottomSheet(
+          enableDrag: true,
+          isDismissible: true,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(15.0),
+              topRight: Radius.circular(15.0),
+            ),
+          ),
+          context: context,
+          builder: (context) => const NewLoanPage(),
+        ),
+      ),
         );
       },
     );

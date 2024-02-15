@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class MyFab extends StatelessWidget {
+class MyFabWithSubTitle extends StatelessWidget {
   final String? subTitle;
   final VoidCallback? onPressed;
 
-  const MyFab({super.key, required this.subTitle, this.onPressed});
+  const MyFabWithSubTitle({super.key, required this.subTitle, this.onPressed});
 
   @override
   Widget build(BuildContext context) {

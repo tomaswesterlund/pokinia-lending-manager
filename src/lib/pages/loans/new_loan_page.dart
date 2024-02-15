@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:pokinia_lending_manager/components/buttons/my_cta_button.dart';
 import 'package:pokinia_lending_manager/components/client/client_list_dropdown_menu_component.dart';
 import 'package:pokinia_lending_manager/components/input/my_text_form_field.dart';
+import 'package:pokinia_lending_manager/components/ovarlays.dart';
 import 'package:pokinia_lending_manager/components/texts/headers/header_four_text.dart';
 import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_one_text.dart';
-import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_two_text.dart';
 import 'package:pokinia_lending_manager/models/client_model.dart';
 import 'package:pokinia_lending_manager/services/loan_service.dart';
 import 'package:pokinia_lending_manager/util/date_extensions.dart';
@@ -28,6 +28,7 @@ class _NewLoanPageState extends State<NewLoanPage> {
   final TextEditingController _loanPrincipalAmountController =
       TextEditingController();
   final TextEditingController _interestRateController = TextEditingController();
+  OverlayEntry? _loadingOverlay;
   bool _isProcessing = false;
   ClientModel? _selectedClient;
 
@@ -36,6 +37,49 @@ class _NewLoanPageState extends State<NewLoanPage> {
     super.initState();
     setState(() {
       _selectedClient = widget.selectedClient;
+    });
+  }
+
+  void _addLoan() async {
+    if (_formKey.currentState!.validate()) {
+      setOnProcessing(true);
+
+      var response = await _loanService.createLoan(
+          clientId: _selectedClient!.id,
+          initialPrincipalAmount:
+              double.parse(_loanPrincipalAmountController.text),
+          initialInterestRate: double.parse(_interestRateController.text),
+          startDate: _startDate,
+          paymentPeriod: 'monthly');
+
+      setOnProcessing(false);
+
+      if (response.statusCode == 200) {
+        Navigator.pop(context);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Someting went wrong ..."),
+          ),
+        );
+      }
+    }
+  }
+
+  void onClientSelected(ClientModel? client) {
+    _selectedClient = client;
+  }
+
+  void setOnProcessing(bool newValue) {
+    setState(() {
+      _isProcessing = newValue;
+
+      if (_isProcessing) {
+        _loadingOverlay = createLoadingOverlay(context);
+        Overlay.of(context).insert(_loadingOverlay!);
+      } else {
+        _loadingOverlay?.remove();
+      }
     });
   }
 
@@ -52,60 +96,26 @@ class _NewLoanPageState extends State<NewLoanPage> {
     }
   }
 
-  void _addLoan() async {
-    if (_formKey.currentState!.validate()) {
-      setState(() {
-        _isProcessing = true;
-      });
-
-      var response = await _loanService.createLoan(
-          clientId: _selectedClient!.id,
-          initialPrincipalAmount:
-              double.parse(_loanPrincipalAmountController.text),
-          initialInterestRate: double.parse(_interestRateController.text),
-          startDate: _startDate,
-          paymentPeriod: 'monthly');
-
-      setState(() {
-        _isProcessing = false;
-
-        if (response.statusCode == 200) {
-          Navigator.pop(context);
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text("Someting went wrong ..."),
-            ),
-          );
-        }
-      });
-    }
-  }
-
-  void onClientSelected(ClientModel? client) {
-    _selectedClient = client;
-  }
-
   @override
   Widget build(BuildContext context) {
     _loanService = Provider.of<LoanService>(context, listen: false);
 
     return Form(
-      key: _formKey,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          _getHeaderWidget(),
-          _getClientDropDownWidget(),
-          _getPrincipalAmountWidget(),
-          _getInterestRateWidget(),
-          _getExpectedPayDateWidget(),
-          _getPaymentPeriodWidget(),
-          _getAddLoanButtonWidget()
-        ],
-      ),
-    );
+        key: _formKey,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            _getHeaderWidget(),
+            _getClientDropDownWidget(),
+            _getPrincipalAmountWidget(),
+            _getInterestRateWidget(),
+            _getExpectedPayDateWidget(),
+            _getPaymentPeriodWidget(),
+            _getAddLoanButtonWidget()
+          ],
+        ),
+      );
   }
 
   Widget _getHeaderWidget() {
@@ -203,10 +213,8 @@ class _NewLoanPageState extends State<NewLoanPage> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          ParagraphOneText(
-              text: 'Payment period', fontWeight: FontWeight.bold),
-          ParagraphOneText(
-              text: 'Monthly')
+          ParagraphOneText(text: 'Payment period', fontWeight: FontWeight.bold),
+          ParagraphOneText(text: 'Monthly')
         ],
       ),
     );

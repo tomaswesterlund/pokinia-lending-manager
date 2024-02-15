@@ -1,15 +1,13 @@
 import 'dart:io';
+
 import 'package:circular_image/circular_image.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pokinia_lending_manager/components/buttons/my_cta_button.dart';
 import 'package:pokinia_lending_manager/components/input/my_text_form_field.dart';
+import 'package:pokinia_lending_manager/components/ovarlays.dart';
 import 'package:pokinia_lending_manager/components/texts/headers/header_five_text.dart';
 import 'package:pokinia_lending_manager/components/texts/headers/header_four_text.dart';
-import 'package:pokinia_lending_manager/components/texts/headers/header_three_text.dart';
-import 'package:pokinia_lending_manager/components/texts/headers/header_two_text.dart';
-import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_one_text.dart';
 import 'package:pokinia_lending_manager/services/file_service.dart';
 import 'package:pokinia_lending_manager/services/image_picker_service.dart';
 import 'package:pokinia_lending_manager/services/payment_service.dart';
@@ -38,13 +36,12 @@ class _NewPaymentPageState extends State<NewPaymentPage> {
   final TextEditingController _principalAmountPaidController =
       TextEditingController();
   File? _selectedImage;
+  OverlayEntry? _loadingOverlay;
   bool _isProcessing = false;
 
   void _addPayment() async {
     if (_formKey.currentState!.validate()) {
-      setState(() {
-        _isProcessing = true;
-      });
+      setOnProcessing(true);
 
       var paymentService = Provider.of<PaymentService>(context, listen: false);
 
@@ -67,10 +64,8 @@ class _NewPaymentPageState extends State<NewPaymentPage> {
           .then(
         (value) {
           if (value.statusCode == 200) {
-            setState(() {
-              _isProcessing = false;
-              Navigator.pop(context);
-            });
+            setOnProcessing(false);
+            Navigator.pop(context);
           } else {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
@@ -81,6 +76,19 @@ class _NewPaymentPageState extends State<NewPaymentPage> {
         },
       );
     }
+  }
+
+  void setOnProcessing(bool newValue) {
+    setState(() {
+      _isProcessing = newValue;
+
+      if (_isProcessing) {
+        _loadingOverlay = createLoadingOverlay(context);
+        Overlay.of(context).insert(_loadingOverlay!);
+      } else {
+        _loadingOverlay?.remove();
+      }
+    });
   }
 
   Future _pickImage(ImageSource source) async {
@@ -95,17 +103,19 @@ class _NewPaymentPageState extends State<NewPaymentPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          _getHeaderWidget(),
-          _getImagePickerWidget(),
-          _getInterestAmountWidget(),
-          _getPrincipalAmountWidget(),
-          _getAddPaymentButtonWidget()
-        ],
+    return Container(
+      child: Form(
+        key: _formKey,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _getHeaderWidget(),
+            _getImagePickerWidget(),
+            _getInterestAmountWidget(),
+            _getPrincipalAmountWidget(),
+            _getAddPaymentButtonWidget()
+          ],
+        ),
       ),
     );
   }

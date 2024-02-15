@@ -1,4 +1,3 @@
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:pokinia_lending_manager/models/client_model.dart';
 import 'package:pokinia_lending_manager/services/client_service.dart';

@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:pokinia_lending_manager/components/loan_statements/loan_statement_table_component.dart';
 import 'package:pokinia_lending_manager/components/loans/loan_summary_component.dart';
 import 'package:pokinia_lending_manager/components/loans/loan_usar_status_component.dart';
-import 'package:pokinia_lending_manager/models/client_model.dart';
-import 'package:pokinia_lending_manager/models/loan_model.dart';
 import 'package:pokinia_lending_manager/services/client_service.dart';
 import 'package:pokinia_lending_manager/services/loan_service.dart';
 import 'package:provider/provider.dart';

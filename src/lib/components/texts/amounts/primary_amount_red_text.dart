@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class PrimaryAmountRedText extends StatelessWidget {
-  String text;
+  final String text;
 
-  PrimaryAmountRedText({
-    Key? key,
+  const PrimaryAmountRedText({
+    super.key,
     required this.text,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:pokinia_lending_manager/components/buttons/my_fab.dart';
+import 'package:pokinia_lending_manager/components/buttons/my_fab_with_sub_title.dart';
 import 'package:pokinia_lending_manager/pages/clients/new_client_page.dart';
 
 class AddNewClientModal extends StatelessWidget {
@@ -12,7 +12,7 @@ class AddNewClientModal extends StatelessWidget {
       padding: const EdgeInsets.all(48.0),
       child: Column(
         children: [
-          MyFab(
+          MyFabWithSubTitle(
               subTitle: "New client",
               onPressed: () => {
                     showMaterialModalBottomSheet(

@@ -4,9 +4,15 @@ import 'package:pokinia_lending_manager/components/buttons/my_cta_button.dart';
 import 'package:pokinia_lending_manager/models/loan_statement_model.dart';
 import 'package:pokinia_lending_manager/pages/payments/new_payment_page.dart';
 
-class AddPaymentModal extends StatelessWidget {
+class AddPaymentModal extends StatefulWidget {
   final LoanStatementModel loanStatement;
   const AddPaymentModal({super.key, required this.loanStatement});
+
+  @override
+  State<AddPaymentModal> createState() => _AddPaymentModalState();
+}
+
+class _AddPaymentModalState extends State<AddPaymentModal> {
 
   @override
   Widget build(BuildContext context) {
@@ -18,8 +24,9 @@ class AddPaymentModal extends StatelessWidget {
               text: "Add payment",
               onPressed: () => {
                     showMaterialModalBottomSheet(
-                      enableDrag: false,
-                      isDismissible: false,
+                      enableDrag: true,
+                      isDismissible: true,
+                      
                       shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(15.0),
@@ -27,10 +34,13 @@ class AddPaymentModal extends StatelessWidget {
                         ),
                       ),
                       context: context,
-                      builder: (context) => NewPaymentPage(
-                        clientId: loanStatement.clientId,
-                        loanId: loanStatement.loanId,
-                        loanStatementId: loanStatement.id
+                      builder: (context) => Padding(
+                        padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+                        child: NewPaymentPage(
+                          clientId: widget.loanStatement.clientId,
+                          loanId: widget.loanStatement.loanId,
+                          loanStatementId: widget.loanStatement.id
+                        ),
                       ),
                     ),
                   }),
@@ -38,6 +48,5 @@ class AddPaymentModal extends StatelessWidget {
       ),
     );
   }
-
 }
 

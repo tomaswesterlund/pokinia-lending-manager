@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class PrimaryAmountText extends StatelessWidget {
-  String text;
+  final String text;
 
-  PrimaryAmountText({super.key, required this.text});
+  const PrimaryAmountText({super.key, required this.text});
 
   @override
   Widget build(BuildContext context) {

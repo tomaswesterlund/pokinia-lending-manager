@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:pokinia_lending_manager/components/buttons/my_cta_button.dart';
 import 'package:pokinia_lending_manager/components/payments/add_payment_modal_component.dart';
 import 'package:pokinia_lending_manager/components/payments/payment_table_component.dart';
 import 'package:pokinia_lending_manager/components/status_boxes/payment_status/dot_payment_status_component.dart';
@@ -8,14 +6,9 @@ import 'package:pokinia_lending_manager/components/texts/amounts/primary_amount_
 import 'package:pokinia_lending_manager/components/texts/amounts/small_amount_text.dart';
 import 'package:pokinia_lending_manager/components/texts/headers/header_five_text.dart';
 import 'package:pokinia_lending_manager/components/texts/headers/header_four_text.dart';
-import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_one_text.dart';
 import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_two_text.dart';
-import 'package:pokinia_lending_manager/components/texts/percentages/small_percentage_text.dart';
-import 'package:pokinia_lending_manager/models/loan_statement_model.dart';
 import 'package:pokinia_lending_manager/pages/clients/new_client_page.dart';
-import 'package:pokinia_lending_manager/pages/payments/new_payment_page.dart';
 import 'package:pokinia_lending_manager/services/loan_statement_service.dart';
-import 'package:pokinia_lending_manager/util/date_extensions.dart';
 import 'package:pokinia_lending_manager/util/double_extensions.dart';
 import 'package:provider/provider.dart';
 
