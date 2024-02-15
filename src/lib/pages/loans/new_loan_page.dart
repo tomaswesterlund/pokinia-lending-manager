@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pokinia_lending_manager/components/buttons/my_cta_button.dart';
 import 'package:pokinia_lending_manager/components/client/client_list_dropdown_menu_component.dart';
 import 'package:pokinia_lending_manager/components/input/my_text_form_field.dart';
-import 'package:pokinia_lending_manager/components/ovarlays.dart';
+import 'package:pokinia_lending_manager/components/overlays.dart';
 import 'package:pokinia_lending_manager/components/texts/headers/header_four_text.dart';
 import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_one_text.dart';
 import 'package:pokinia_lending_manager/models/client_model.dart';

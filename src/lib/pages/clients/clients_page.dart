@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:pokinia_lending_manager/components/avatars/my_avatar_component.dart';
 import 'package:pokinia_lending_manager/components/buttons/fabs.dart';
+import 'package:pokinia_lending_manager/components/client/empty_list_client_component.dart';
 import 'package:pokinia_lending_manager/components/status_boxes/payment_status/squared_payment_status_box_component.dart';
 import 'package:pokinia_lending_manager/components/texts/headers/header_four_text.dart';
 import 'package:pokinia_lending_manager/components/texts/headers/header_two_text.dart';
@@ -24,51 +25,57 @@ class ClientsPage extends StatelessWidget {
               const SliverAppBar(
                 title: HeaderTwoText(text: "Clients"),
                 scrolledUnderElevation: 0,
-
               ),
-              SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  (context, index) {
-                    final ClientModel client = clientService.clients[index];
+              clientService.clients.isEmpty
+                  ? const SliverFillRemaining(
+                      child: Center(child: EmptyClientList()),
+                    )
+                  : SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        (context, index) {
+                          final ClientModel client =
+                              clientService.clients[index];
 
-                    return GestureDetector(
-                      onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (ctx) => ClientPage(client: client))),
-                      child: Container(
-                        margin: const EdgeInsets.all(10),
-                        padding: const EdgeInsets.all(10),
-                        // height: 50,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: const Color(0xFFF8F8F8),
-                          border: Border(
-                            bottom: BorderSide(
-                              color: Colors.grey[300]!,
+                          return GestureDetector(
+                            onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (ctx) =>
+                                        ClientPage(client: client))),
+                            child: Container(
+                              margin: const EdgeInsets.all(10),
+                              padding: const EdgeInsets.all(10),
+                              // height: 50,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: const Color(0xFFF8F8F8),
+                                border: Border(
+                                  bottom: BorderSide(
+                                    color: Colors.grey[300]!,
+                                  ),
+                                ),
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      MyAvatarComponent(client: client),
+                                      const SizedBox(width: 10),
+                                      HeaderFourText(text: client.name),
+                                    ],
+                                  ),
+                                  SquaredPaymentStatusBoxComponent(
+                                      paymentStatus: client.paymentStatus)
+                                ],
+                              ),
                             ),
-                          ),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                MyAvatarComponent(client: client),
-                                const SizedBox(width: 10),
-                                HeaderFourText(text: client.name),
-                              ],
-                            ),
-                            SquaredPaymentStatusBoxComponent(
-                                paymentStatus: client.paymentStatus)
-                          ],
-                        ),
+                          );
+                        },
+                        childCount: clientService.clients.length,
                       ),
-                    );
-                  },
-                  childCount: clientService.clients.length,
-                ),
-              )
+                    )
             ],
           );
         },

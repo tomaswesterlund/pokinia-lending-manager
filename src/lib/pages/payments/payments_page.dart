@@ -7,6 +7,7 @@ import 'package:pokinia_lending_manager/services/loan_service.dart';
 import 'package:pokinia_lending_manager/services/loan_statement_service.dart';
 import 'package:pokinia_lending_manager/services/payment_service.dart';
 import 'package:provider/provider.dart';
+import 'package:sliver_tools/sliver_tools.dart';
 
 class PaymentsPage extends StatelessWidget {
   const PaymentsPage({super.key});
@@ -25,11 +26,19 @@ class PaymentsPage extends StatelessWidget {
                 scrolledUnderElevation: 0,
                 floating: true,
               ),
-              SliverToBoxAdapter(child: _getTitleWidget("Overdue payments")),
-              _getOverduePayments(clientService, loanStatementService),
-              SliverToBoxAdapter(child: _getTitleWidget("Recent payments")),
-              _getRecentlyPaidPayments(
-                  clientService, loanStatementService, paymentService),
+              loanStatementService.getOverdueLoanStatements().isEmpty &&
+                      paymentService.getRecentlyPaidPayments().isEmpty
+                  ? const SliverFillRemaining(
+                      child: Center(child: Text("No payments")),
+                    )
+                  : MultiSliver(
+                      children: [
+                        _getTitleWidget("Overdue payments"),
+                        _getOverduePaymentsWidget(clientService, loanStatementService),
+                        _getTitleWidget("Recent payments"),
+                        _getRecentlyPaidPaymentsWidget(clientService, loanStatementService, paymentService)
+                      ],
+                    )
             ],
           );
         },
@@ -47,7 +56,7 @@ class PaymentsPage extends StatelessWidget {
     );
   }
 
-  SliverList _getOverduePayments(
+  SliverList _getOverduePaymentsWidget(
       ClientService clientService, LoanStatementService loanStatementService) {
     return SliverList(
       delegate: SliverChildBuilderDelegate(
@@ -63,7 +72,7 @@ class PaymentsPage extends StatelessWidget {
     );
   }
 
-  SliverList _getRecentlyPaidPayments(
+  SliverList _getRecentlyPaidPaymentsWidget(
       ClientService clientService,
       LoanStatementService loanStatementService,
       PaymentService paymentService) {
