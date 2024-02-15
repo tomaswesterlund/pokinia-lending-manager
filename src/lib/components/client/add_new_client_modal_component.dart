@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:pokinia_lending_manager/components/buttons/my_cta_button.dart';
 import 'package:pokinia_lending_manager/components/buttons/my_fab.dart';
 import 'package:pokinia_lending_manager/pages/clients/new_client_page.dart';
 

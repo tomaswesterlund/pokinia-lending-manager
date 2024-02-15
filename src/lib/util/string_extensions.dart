@@ -3,32 +3,66 @@ extension StringExtensions on String {
     RegExp numeric = RegExp(r'^-?[0-9]+$');
     return numeric.hasMatch(this);
   }
+
+  String getInitials() {
+    if (isEmpty) {
+      return '';
+    } else {
+      return trim().split(RegExp(' +')).map((s) => s[0]).take(2).join();
+    }
+  }
 }
 
 extension NullableStringExtensions on String? {
   bool isNullOrEmpty() {
-    if(this == null) {
-      return true;
-    } else if (this!.isEmpty) {
+    if (null == this || this!.isEmpty) {
       return true;
     } else {
       return false;
     }
   }
 
-  bool isANumber() {
-    if(this == null) {
+  bool isNotNullOrEmpty() {
+    return !isNullOrEmpty();
+  }
+
+  bool isNumeric() {
+    try {
+      if (this == null) return false;
+
+      var res = int.tryParse(this!);
+
+      if (res == null) {
+        return false;
+      } else {
+        return true;
+      }
+    } catch (e) {
       return false;
-    } else {
-      return this!.isNumeric();
     }
   }
 
-  bool isNotANumber() {
-    if(this == null) {
+  bool isNotNumeric() {
+    return !isNumeric();
+  }
+
+  bool isNumericOrFloating() {
+    try {
+      if (this == null) return false;
+
+      var res = double.tryParse(this!);
+
+      if (res == null) {
+        return false;
+      } else {
+        return true;
+      }
+    } catch (e) {
       return false;
-    } else {
-      return !isANumber();
     }
+  }
+
+  bool isNotNumericOrFloating() {
+    return !isNumericOrFloating();
   }
 }

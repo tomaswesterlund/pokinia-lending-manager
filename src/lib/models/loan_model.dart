@@ -23,31 +23,41 @@ class LoanModel {
   });
 
   factory LoanModel.fromFirestore(DocumentSnapshot doc) {
-    Map<String, dynamic> json = doc.data() as Map<String, dynamic>;
+    try {
+      Map<String, dynamic> json = doc.data() as Map<String, dynamic>;
 
-    return LoanModel(
-      id: doc.id,
-      clientId: json['clientId'],
-      initialPrincipalAmount: (json['initialPrincipalAmount'] as num).toDouble(),
-      initialInterestRate: (json['initialInterestRate'] as num).toDouble(),
-      remainingPrincipalAmount:
-          (json['remainingPrincipalAmount'] as num).toDouble(),
-      interestAmountPaid: (json['interestAmountPaid'] as num).toDouble(),
-      principalAmountPaid: (json['principalAmountPaid'] as num).toDouble(),
-      paymentStatus: PaymentStatus.fromName(json['paymentStatus']),
-    );
+      return LoanModel(
+        id: doc.id,
+        clientId: json['clientId'],
+        initialPrincipalAmount:
+            (json['initialPrincipalAmount'] as num).toDouble(),
+        initialInterestRate: json['initialInterestRate'].toDouble(),
+        remainingPrincipalAmount:
+            (json['remainingPrincipalAmount'] as num).toDouble(),
+        interestAmountPaid: (json['interestAmountPaid'] as num).toDouble(),
+        principalAmountPaid: (json['principalAmountPaid'] as num).toDouble(),
+        paymentStatus: PaymentStatus.fromName(json['paymentStatus']),
+      );
+    } catch (e) {
+      print(e);
+      rethrow;
+    }
   }
 
   toJson() {
-    return {
-      'id': id,
-      'clientId': clientId,
-      'initialPrincipalAmount': initialPrincipalAmount,
-      'initialInterestRate': initialInterestRate,
-      'remainingPrincipalAmount': remainingPrincipalAmount,
-      'interestAmountPaid': interestAmountPaid,
-      'principalAmountPaid': principalAmountPaid,
-      'paymentStatus': paymentStatus.name.toString(),
-    };
+    try {
+      return {
+        'id': id,
+        'clientId': clientId,
+        'initialPrincipalAmount': initialPrincipalAmount,
+        'initialInterestRate': initialInterestRate,
+        'remainingPrincipalAmount': remainingPrincipalAmount,
+        'interestAmountPaid': interestAmountPaid,
+        'principalAmountPaid': principalAmountPaid,
+        'paymentStatus': paymentStatus.name.toString(),
+      };
+    } catch (e) {
+      print(e);
+    }
   }
 }

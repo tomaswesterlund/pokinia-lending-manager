@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pokinia_lending_manager/components/avatars/my_avatar_component.dart';
 import 'package:pokinia_lending_manager/components/status_boxes/loan_payment_status/compact_loan_status_box_component.dart';
 import 'package:pokinia_lending_manager/components/texts/headers/header_four_text.dart';
 import 'package:pokinia_lending_manager/models/client_model.dart';
@@ -22,11 +23,7 @@ class LoanUserStatus extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Image.asset(
-                    "assets/images/dummy_avatar.png",
-                    width: 48,
-                    height: 48,
-                  ),
+                  MyAvatarComponent(client: client),
                   const SizedBox(width: 16.0),
 
                   // Name

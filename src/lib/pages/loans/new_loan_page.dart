@@ -31,6 +31,14 @@ class _NewLoanPageState extends State<NewLoanPage> {
   bool _isProcessing = false;
   ClientModel? _selectedClient;
 
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      _selectedClient = widget.selectedClient;
+    });
+  }
+
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
         context: context,
@@ -45,15 +53,6 @@ class _NewLoanPageState extends State<NewLoanPage> {
   }
 
   void _addLoan() async {
-    if (_selectedClient == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Please select a client!"),
-        ),
-      );
-      return;
-    }
-
     if (_formKey.currentState!.validate()) {
       setState(() {
         _isProcessing = true;
@@ -61,24 +60,25 @@ class _NewLoanPageState extends State<NewLoanPage> {
 
       var response = await _loanService.createLoan(
           clientId: _selectedClient!.id,
-          initialPrincipalAmount: double.parse(_loanPrincipalAmountController.text),
+          initialPrincipalAmount:
+              double.parse(_loanPrincipalAmountController.text),
           initialInterestRate: double.parse(_interestRateController.text),
           startDate: _startDate,
           paymentPeriod: 'monthly');
 
       setState(() {
         _isProcessing = false;
-      });
 
-      if (response.statusCode == 200) {
-        Navigator.pop(context);
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text("Please validate your input!"),
-          ),
-        );
-      }
+        if (response.statusCode == 200) {
+          Navigator.pop(context);
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text("Someting went wrong ..."),
+            ),
+          );
+        }
+      });
     }
   }
 
@@ -125,11 +125,14 @@ class _NewLoanPageState extends State<NewLoanPage> {
   }
 
   Widget _getClientDropDownWidget() {
-    return ClientListDropdownMenu(
-      selectedClient: widget.selectedClient,
-      enabled: !_isProcessing,
-      onClientSelected: onClientSelected,
-      controller: _clientController,
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+      child: ClientListDropdownMenu(
+        selectedClient: widget.selectedClient,
+        enabled: !_isProcessing,
+        onClientSelected: onClientSelected,
+        controller: _clientController,
+      ),
     );
   }
 
@@ -144,7 +147,7 @@ class _NewLoanPageState extends State<NewLoanPage> {
               return "Principal amount can't be empty";
             }
 
-            if (value.isNotANumber()) {
+            if (value.isNotNumeric()) {
               return "Principal amount must be a number";
             }
             return null;
@@ -164,7 +167,7 @@ class _NewLoanPageState extends State<NewLoanPage> {
               return "Interest rate can't be empty";
             }
 
-            if (value.isNotANumber()) {
+            if (value.isNotNumericOrFloating()) {
               return "Interest rate must be a number";
             }
             return null;
@@ -177,30 +180,34 @@ class _NewLoanPageState extends State<NewLoanPage> {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          ElevatedButton(
-            onPressed: _isProcessing ? null : () => _selectDate(context),
-            child: const Text('Select first expected payment date'),
+          const ParagraphOneText(
+              text: 'First expected payment date', fontWeight: FontWeight.bold),
+          Row(
+            children: [
+              IconButton(
+                  onPressed: _isProcessing ? null : () => _selectDate(context),
+                  icon: const Icon(Icons.calendar_month)),
+              ParagraphOneText(text: _startDate.toFormattedDate()),
+            ],
           ),
-          ParagraphTwoText(
-              text: _startDate.toFormattedDate(), fontWeight: FontWeight.bold)
         ],
       ),
     );
   }
 
   Widget _getPaymentPeriodWidget() {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-      child: DropdownButton<String>(
-        items: <String>['monthly', 'weekly'].map((String value) {
-          return DropdownMenuItem<String>(
-            value: value,
-            child: Text(value),
-          );
-        }).toList(),
-        onChanged: (_) {},
+    return const Padding(
+      padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          ParagraphOneText(
+              text: 'Payment period', fontWeight: FontWeight.bold),
+          ParagraphOneText(
+              text: 'Monthly')
+        ],
       ),
     );
   }

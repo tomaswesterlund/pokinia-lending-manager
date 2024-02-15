@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_avatar/flutter_advanced_avatar.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:pokinia_lending_manager/components/avatars/my_avatar_component.dart';
 import 'package:pokinia_lending_manager/components/buttons/my_fab.dart';
+import 'package:pokinia_lending_manager/components/loans/empty_loan_list_component.dart';
 import 'package:pokinia_lending_manager/components/status_boxes/client_payment_status/wide_client_status_box_component.dart';
 import 'package:pokinia_lending_manager/components/status_boxes/loan_payment_status/compact_loan_status_box_component.dart';
 import 'package:pokinia_lending_manager/components/texts/amounts/big_amount_text.dart';
+import 'package:pokinia_lending_manager/components/texts/headers/header_five_text.dart';
+import 'package:pokinia_lending_manager/components/texts/headers/header_four_text.dart';
 import 'package:pokinia_lending_manager/components/texts/headers/header_three_text.dart';
 import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_one_text.dart';
 import 'package:pokinia_lending_manager/models/client_model.dart';
 import 'package:pokinia_lending_manager/models/loan_model.dart';
+import 'package:pokinia_lending_manager/pages/clients/new_client_page.dart';
 import 'package:pokinia_lending_manager/pages/loans/loan_page.dart';
 import 'package:pokinia_lending_manager/pages/loans/new_loan_page.dart';
 import 'package:pokinia_lending_manager/services/client_service.dart';
@@ -30,7 +36,7 @@ class ClientPage extends StatelessWidget {
           builder: (context, clientService, loanService, child) {
             return Column(
               children: [
-                _getAvatarWidget(client),
+                MyAvatarComponent(client: client, size: 96.0, strokeWidth: 2.0),
                 const SizedBox(height: 16.0),
 
                 // Name
@@ -46,58 +52,43 @@ class ClientPage extends StatelessWidget {
                 _getContactButtonsWidget(),
                 _getContactInformationWidget(),
 
-                //Edit button
-                const Text("Edit"),
-
-                // Separator
-                const Divider(color: Colors.grey, thickness: 2),
-
-                _getLoansWidget(loanService.getLoansByClientId(client.id)),
-
-                // New loan
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 40),
-                  child: MyFab(
-                      subTitle: "New loan",
-                      onPressed: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  NewLoanPage(selectedClient: client)))),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    //Container(),
+                    const Center(
+                      child: HeaderThreeText(text: "Loans"),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        showMaterialModalBottomSheet(
+                          enableDrag: false,
+                          isDismissible: false,
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(15.0),
+                              topRight: Radius.circular(15.0),
+                            ),
+                          ),
+                          context: context,
+                          builder: (context) => NewLoanPage(
+                            selectedClient: client,
+                          ),
+                        );
+                      },
+                      icon: const Icon(
+                        Icons.add,
+                        size: 28.0,
+                        color: Colors.black,
+                      ),
+                    )
+                  ],
                 ),
+                _getLoansWidget(loanService.getLoansByClientId(client.id)),
               ],
             );
           },
         ));
-  }
-
-  Widget _getAvatarWidget(ClientModel client) {
-    if (client.avatarImagePath != null) {
-      return AdvancedAvatar(
-        size: 96,
-        image: NetworkImage(client.avatarImagePath!),
-        foregroundDecoration: BoxDecoration(
-          shape: BoxShape.circle,
-          border: Border.all(
-            color: const Color(0xFF008080),
-            width: 2.0,
-          ),
-        ),
-      );
-    } else {
-      return AdvancedAvatar(
-        name: client.name,
-        size: 96.0,
-        autoTextSize: true,
-        foregroundDecoration: BoxDecoration(
-          shape: BoxShape.circle,
-          border: Border.all(
-            color: const Color(0xFF008080),
-            width: 2.0,
-          ),
-        ),
-      );
-    }
   }
 
   Widget _getContactButtonsWidget() {
@@ -177,55 +168,69 @@ class ClientPage extends StatelessWidget {
   }
 
   Widget _getLoansWidget(List<LoanModel> loans) {
-    return Expanded(
-      child: ListView.builder(
-        itemCount: loans.length,
-        itemBuilder: (context, index) {
-          var loan = loans[index];
+    if (loans.isEmpty) {
+      return Column(
+        children: [
+          const SizedBox(height: 25),
+          Image.asset(
+            'assets/images/empty_list_loans.png',
+            width: 256,
+          ),
+          const SizedBox(height: 25),
+          const HeaderFiveText(text: "No active loans were found."),
+        ],
+      );
+    } else {
+      return Expanded(
+        child: ListView.builder(
+          itemCount: loans.length,
+          itemBuilder: (context, index) {
+            var loan = loans[index];
 
-          return GestureDetector(
-            onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        LoanPage(clientId: client.id, loanId: loan.id))),
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: const Color(0xFFF8F8F8),
-                  border: const Border(
-                    bottom: BorderSide(
-                      color: Color(0xFFD2DEE0),
+            return GestureDetector(
+              onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          LoanPage(clientId: client.id, loanId: loan.id))),
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: const Color(0xFFF8F8F8),
+                    border: const Border(
+                      bottom: BorderSide(
+                        color: Color(0xFFD2DEE0),
+                      ),
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            CompactLoanStatusBoxComponent(
+                                paymentStatus: loan.paymentStatus),
+                            const SizedBox(width: 20),
+                            BigAmountText(
+                                text: loan.remainingPrincipalAmount
+                                    .toFormattedCurrency()),
+                          ],
+                        ),
+                        const Icon(Icons.arrow_forward_ios),
+                      ],
                     ),
                   ),
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          CompactLoanStatusBoxComponent(
-                              paymentStatus: loan.paymentStatus),
-                          const SizedBox(width: 20),
-                          BigAmountText(
-                              text: loan.remainingPrincipalAmount
-                                  .toFormattedCurrency()),
-                        ],
-                      ),
-                      const Icon(Icons.arrow_forward_ios),
-                    ],
-                  ),
-                ),
               ),
-            ),
-          );
-        },
-        shrinkWrap: true,
-      ),
-    );
+            );
+          },
+          shrinkWrap: true,
+        ),
+      );
+    }
   }
 }

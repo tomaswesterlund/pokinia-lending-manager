@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pokinia_lending_manager/components/buttons/my_cta_button.dart';
 import 'package:pokinia_lending_manager/components/input/my_text_form_field.dart';
+import 'package:pokinia_lending_manager/components/texts/headers/header_five_text.dart';
 import 'package:pokinia_lending_manager/components/texts/headers/header_four_text.dart';
 import 'package:pokinia_lending_manager/components/texts/headers/header_three_text.dart';
 import 'package:pokinia_lending_manager/components/texts/headers/header_two_text.dart';
@@ -100,9 +101,9 @@ class _NewPaymentPageState extends State<NewPaymentPage> {
         mainAxisSize: MainAxisSize.min,
         children: [
           _getHeaderWidget(),
+          _getImagePickerWidget(),
           _getInterestAmountWidget(),
           _getPrincipalAmountWidget(),
-          _getImagePickerWidget(),
           _getAddPaymentButtonWidget()
         ],
       ),
@@ -125,6 +126,66 @@ class _NewPaymentPageState extends State<NewPaymentPage> {
     );
   }
 
+  Widget _getImagePickerWidget() {
+    return Column(
+      children: [
+        const Padding(
+          padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
+          child: HeaderFiveText(text: "Receipt"),
+        ),
+        if (_selectedImage != null)
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+            child: CircularImage(
+                source: _selectedImage!.path,
+                radius: 50,
+                borderWidth: 2,
+                borderColor: Colors.grey),
+          )
+        else
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+            child: Center(
+              child: Container(
+                width: 100,
+                height: 100,
+                decoration: BoxDecoration(
+                  color: const Color(0xFFE5EAEB),
+                  shape: BoxShape.circle,
+                  border: Border.all(color: const Color(0xFF008080), width: 2),
+                ),
+                child: const Center(
+                  child: Icon(
+                    Icons.receipt,
+                    color: Color(0xFF008080),
+                    size: 72, // You can adjust the size of the icon as needed
+                  ),
+                ),
+              ),
+            ),
+          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            IconButton(
+              onPressed: () =>
+                  _isProcessing ? null : _pickImage(ImageSource.gallery),
+              icon: const Icon(Icons.photo, size: 48.0),
+              color: const Color(0xFF008080),
+            ),
+            const SizedBox(width: 20),
+            IconButton(
+              onPressed: () =>
+                  _isProcessing ? null : _pickImage(ImageSource.camera),
+              icon: const Icon(Icons.camera_alt, size: 48.0),
+              color: const Color(0xFF008080),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
   Widget _getInterestAmountWidget() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
@@ -136,7 +197,7 @@ class _NewPaymentPageState extends State<NewPaymentPage> {
               return "Interest amount paid can't be empty";
             }
 
-            if (value.isNotANumber()) {
+            if (value.isNotNumeric()) {
               return "Interest amount paid must be a number";
             }
             return null;
@@ -156,55 +217,12 @@ class _NewPaymentPageState extends State<NewPaymentPage> {
               return "Principal amount paid can't be empty";
             }
 
-            if (value.isNotANumber()) {
+            if (value.isNotNumeric()) {
               return "Principal amount paid must be a number";
             }
             return null;
           },
           controller: _principalAmountPaidController),
-    );
-  }
-
-  Widget _getImagePickerWidget() {
-    return Column(
-      children: [
-        const Padding(
-          padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
-          child: ParagraphOneText(text: "Upload receipt image (optional)?"),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            IconButton(
-                onPressed: () =>
-                    _isProcessing ? null : _pickImage(ImageSource.gallery),
-                icon: const Icon(Icons.photo, size: 48.0)),
-            const SizedBox(width: 20),
-            IconButton(
-                onPressed: () =>
-                    _isProcessing ? null : _pickImage(ImageSource.camera),
-                icon: const Icon(Icons.camera_alt, size: 48.0)),
-          ],
-        ),
-        if (_selectedImage != null)
-          Padding(
-            padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-            child: CircularImage(
-                source: _selectedImage!.path,
-                radius: 50,
-                borderWidth: 2,
-                borderColor: Colors.grey),
-          )
-        else
-          Padding(
-            padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-            child: CircularImage(
-                source: 'assets/images/empty_image.png',
-                radius: 50,
-                borderWidth: 2,
-                borderColor: Colors.grey),
-          ),
-      ],
     );
   }
 

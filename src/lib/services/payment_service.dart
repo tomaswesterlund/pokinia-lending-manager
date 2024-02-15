@@ -10,7 +10,9 @@ class PaymentService extends ChangeNotifier {
 
   List<PaymentModel> payments = [];
 
-  PaymentService({required this.baseApiUrl});
+  PaymentService({required this.baseApiUrl}) {
+    listenToPayments();
+  }
 
   listenToPayments() {
     _db.collection('payments').snapshots().listen((snapshot) {
@@ -88,4 +90,6 @@ class PaymentService extends ChangeNotifier {
 
     return ResponseModel(statusCode: response.statusCode, body: response.body);
   }
+
+  
 }

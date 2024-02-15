@@ -15,7 +15,7 @@ class ClientService extends ChangeNotifier {
   }
 
   void listenToClients() {
-    _db.collection('clients').snapshots().listen((snapshot) {
+    _db.collection('clients').orderBy('name').snapshots().listen((snapshot) {
       var clients =
           snapshot.docs.map((doc) => ClientModel.fromFirestore(doc)).toList();
 

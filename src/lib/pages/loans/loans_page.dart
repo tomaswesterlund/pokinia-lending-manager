@@ -54,8 +54,8 @@ class LoansPage extends StatelessWidget {
               SliverList(
                 delegate: SliverChildBuilderDelegate(
                   (context, index) {
-                    final ClientModel client = clientService.clients[index];
                     final LoanModel loan = loanService.loans[index];
+                    final ClientModel client = clientService.getClientById(loan.clientId);
 
                     return LoanListCard(client: client, loan: loan);
                   },
