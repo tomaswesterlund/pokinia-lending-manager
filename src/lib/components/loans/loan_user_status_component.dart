@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pokinia_lending_manager/components/avatars/my_avatar_component.dart';
-import 'package:pokinia_lending_manager/components/status_boxes/loan_payment_status/compact_loan_status_box_component.dart';
+import 'package:pokinia_lending_manager/components/status_boxes/payment_status/compact_payment_status_box_component.dart';
 import 'package:pokinia_lending_manager/components/texts/headers/header_four_text.dart';
 import 'package:pokinia_lending_manager/models/client_model.dart';
 import 'package:pokinia_lending_manager/models/loan_model.dart';
@@ -30,7 +30,7 @@ class LoanUserStatus extends StatelessWidget {
                   HeaderFourText(text: client.name),
                 ],
               ),
-              CompactLoanStatusBoxComponent(
+              CompactPaymentStatusBox(
                   paymentStatus: loan.paymentStatus)
             ],
           ),

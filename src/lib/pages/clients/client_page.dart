@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:pokinia_lending_manager/components/avatars/my_avatar_component.dart';
-import 'package:pokinia_lending_manager/components/status_boxes/client_payment_status/wide_client_status_box_component.dart';
-import 'package:pokinia_lending_manager/components/status_boxes/loan_payment_status/compact_loan_status_box_component.dart';
+import 'package:pokinia_lending_manager/components/status_boxes/payment_status/compact_payment_status_box_component.dart';
+import 'package:pokinia_lending_manager/components/status_boxes/payment_status/squared_payment_status_box_component.dart';
+import 'package:pokinia_lending_manager/components/status_boxes/payment_status/wide_payment_status_box_component.dart';
 import 'package:pokinia_lending_manager/components/texts/amounts/big_amount_text.dart';
 import 'package:pokinia_lending_manager/components/texts/headers/header_five_text.dart';
 import 'package:pokinia_lending_manager/components/texts/headers/header_three_text.dart';
@@ -39,7 +40,7 @@ class ClientPage extends StatelessWidget {
                 const SizedBox(height: 16.0),
 
                 // Status
-                WideClientStatusBoxComponent(
+                WidePaymentStatusBoxComponent(
                     paymentStatus: client.paymentStatus),
 
                 const SizedBox(height: 16.0),
@@ -207,7 +208,7 @@ class ClientPage extends StatelessWidget {
                       children: [
                         Row(
                           children: [
-                            CompactLoanStatusBoxComponent(
+                            SquaredPaymentStatusBoxComponent(
                                 paymentStatus: loan.paymentStatus),
                             const SizedBox(width: 20),
                             BigAmountText(

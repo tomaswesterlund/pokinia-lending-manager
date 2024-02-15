@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:pokinia_lending_manager/components/avatars/my_avatar_component.dart';
 import 'package:pokinia_lending_manager/components/buttons/fabs.dart';
-import 'package:pokinia_lending_manager/components/status_boxes/client_payment_status/compact_client_payment_status_box_component.dart';
+import 'package:pokinia_lending_manager/components/status_boxes/payment_status/squared_payment_status_box_component.dart';
 import 'package:pokinia_lending_manager/components/texts/headers/header_four_text.dart';
 import 'package:pokinia_lending_manager/components/texts/headers/header_two_text.dart';
 import 'package:pokinia_lending_manager/models/client_model.dart';
@@ -24,6 +24,7 @@ class ClientsPage extends StatelessWidget {
               const SliverAppBar(
                 title: HeaderTwoText(text: "Clients"),
                 scrolledUnderElevation: 0,
+
               ),
               SliverList(
                 delegate: SliverChildBuilderDelegate(
@@ -58,7 +59,7 @@ class ClientsPage extends StatelessWidget {
                                 HeaderFourText(text: client.name),
                               ],
                             ),
-                            CompactClientPaymentStatusBoxComponent(
+                            SquaredPaymentStatusBoxComponent(
                                 paymentStatus: client.paymentStatus)
                           ],
                         ),
