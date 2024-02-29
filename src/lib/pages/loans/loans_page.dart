@@ -4,20 +4,25 @@ import 'package:pokinia_lending_manager/components/buttons/fabs.dart';
 import 'package:pokinia_lending_manager/components/loans/empty_loan_list_component.dart';
 import 'package:pokinia_lending_manager/components/loans/loan_list_card_component.dart';
 import 'package:pokinia_lending_manager/components/texts/headers/header_two_text.dart';
-import 'package:pokinia_lending_manager/models/client_model.dart';
-import 'package:pokinia_lending_manager/models/loan_model.dart';
+import 'package:pokinia_lending_manager/models/client.dart';
+import 'package:pokinia_lending_manager/models/loan.dart';
 import 'package:pokinia_lending_manager/pages/loans/new_loan_page.dart';
 import 'package:pokinia_lending_manager/services/client_service.dart';
 import 'package:pokinia_lending_manager/services/loan_service.dart';
+import 'package:pokinia_lending_manager/services/logger.dart';
 import 'package:provider/provider.dart';
 
 class LoansPage extends StatelessWidget {
   LoansPage({super.key});
 
-  final cachedClients = List<ClientModel>.empty(growable: true);
+  final cachedClients = List<Client>.empty(growable: true);
 
   @override
   Widget build(BuildContext context) {
+
+    var logger = getLogger('LoansPage');
+    logger.i('Building LoansPage');
+    
     return Consumer2<ClientService, LoanService>(
       builder: (context, clientService, loanService, _) {
         return Scaffold(
@@ -36,7 +41,7 @@ class LoansPage extends StatelessWidget {
                       delegate: SliverChildBuilderDelegate(
                         (context, index) {
                           final LoanModel loan = loanService.loans[index];
-                          final ClientModel client =
+                          final Client client =
                               clientService.getClientById(loan.clientId);
 
                           return LoanListCard(client: client, loan: loan);
@@ -59,7 +64,10 @@ class LoansPage extends StatelessWidget {
                 ),
               ),
               context: context,
-              builder: (context) => const NewLoanPage(),
+              builder: (context) => Padding(
+                padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+                child: const NewLoanPage(),
+              ),
             ),
           ),
         );

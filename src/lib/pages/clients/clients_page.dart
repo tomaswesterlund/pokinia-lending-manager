@@ -6,7 +6,7 @@ import 'package:pokinia_lending_manager/components/client/empty_list_client_comp
 import 'package:pokinia_lending_manager/components/status_boxes/payment_status/squared_payment_status_box_component.dart';
 import 'package:pokinia_lending_manager/components/texts/headers/header_four_text.dart';
 import 'package:pokinia_lending_manager/components/texts/headers/header_two_text.dart';
-import 'package:pokinia_lending_manager/models/client_model.dart';
+import 'package:pokinia_lending_manager/models/client.dart';
 import 'package:pokinia_lending_manager/pages/clients/client_page.dart';
 import 'package:pokinia_lending_manager/pages/clients/new_client_page.dart';
 import 'package:pokinia_lending_manager/services/client_service.dart';
@@ -33,7 +33,7 @@ class ClientsPage extends StatelessWidget {
                   : SliverList(
                       delegate: SliverChildBuilderDelegate(
                         (context, index) {
-                          final ClientModel client =
+                          final Client client =
                               clientService.clients[index];
 
                           return GestureDetector(
@@ -41,7 +41,7 @@ class ClientsPage extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                     builder: (ctx) =>
-                                        ClientPage(client: client))),
+                                        ClientPage(clientId: client.id))),
                             child: Container(
                               margin: const EdgeInsets.all(10),
                               padding: const EdgeInsets.all(10),
@@ -81,8 +81,10 @@ class ClientsPage extends StatelessWidget {
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: getDefaultFab(
-        onPressed: () => showMaterialModalBottomSheet(
+      floatingActionButton: 
+      getDefaultFab(
+        onPressed: () => 
+        showMaterialModalBottomSheet(
           enableDrag: true,
           isDismissible: true,
           shape: const RoundedRectangleBorder(
@@ -92,7 +94,11 @@ class ClientsPage extends StatelessWidget {
             ),
           ),
           context: context,
-          builder: (context) => const NewClientPage(),
+          
+          builder: (context) => Padding(
+            padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+            child: const NewClientPage(),
+          ),
         ),
       ),
     );

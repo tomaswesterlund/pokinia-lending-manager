@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:457013140749:android:4fdb20085af96fa11ee444",
+        "mobilesdk_app_id": "1:457013140749:android:20357aa36ad92f371ee444",
         "android_client_info": {
-          "package_name": "com.example.pokinia_lending_manager"
+          "package_name": "com.pokinia.lending_manager"
         }
       },
       "oauth_client": [
@@ -27,7 +27,7 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "457013140749-lr0vk85cqb4g9du06qim2oe21es5uh4r.apps.googleusercontent.com",
+              "client_id": "457013140749-c7lbu0b9n6c99n10a9raslgl8vf2ilj6.apps.googleusercontent.com",
               "client_type": 3
             },
             {
@@ -43,9 +43,9 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:457013140749:android:b14d0fba45c63c2c1ee444",
+        "mobilesdk_app_id": "1:457013140749:android:912023ea6e794adb1ee444",
         "android_client_info": {
-          "package_name": "com.pokinia.lending_manager.pokinia_lending_manager"
+          "package_name": "com.pokinia.lendingmanager"
         }
       },
       "oauth_client": [
@@ -63,7 +63,7 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "457013140749-lr0vk85cqb4g9du06qim2oe21es5uh4r.apps.googleusercontent.com",
+              "client_id": "457013140749-c7lbu0b9n6c99n10a9raslgl8vf2ilj6.apps.googleusercontent.com",
               "client_type": 3
             },
             {

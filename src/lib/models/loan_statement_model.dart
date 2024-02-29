@@ -1,7 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:logger/logger.dart';
 import 'package:pokinia_lending_manager/enums/payment_status_enum.dart';
+import 'package:pokinia_lending_manager/services/logger.dart';
+import 'package:pokinia_lending_manager/util/string_extensions.dart';
 
 class LoanStatementModel {
+  final Logger _logger = getLogger('LoanStatementModel');
+  
   final String id;
   final String loanId;
   final String clientId;
@@ -44,57 +48,18 @@ class LoanStatementModel {
 
   bool get deleted => deleteDate != null;
 
-  factory LoanStatementModel.fromJson(Map<String, dynamic> json) {
-    return LoanStatementModel(
-      id: json['id'],
-      loanId: json['loanId'],
-      clientId: json['clientId'],
-      expectedInterestAmount: json['expectedInterestAmount'],
-      expectedPrincipalAmount: json['expectedPrincipalAmount'],
-      interestAmountPaid: json['interestAmountPaid'],
-      principalAmountPaid: json['principalAmountPaid'],
-      remainingAmountToBePaid: json['remainingAmountToBePaid'],
-      interestRate: json['interestRate'],
-      expectedPayDate: json['expectedPayDate'],
-      // actualPayDate: json['actualPayDate'],
-      deleteDate: json['deleteDate'],
-      deleteReason: json['deleteReason'],
-      paymentStatus:
-          PaymentStatus.fromName(json['paymentStatus']),
-    );
-  }
-
-  factory LoanStatementModel.fromFirestore(DocumentSnapshot doc) {
-    try {
-      Map<String, dynamic> json = doc.data() as Map<String, dynamic>;
-      return LoanStatementModel(
-        id: doc.id,
-        loanId: json['loanId'],
-        clientId: json['clientId'],
-        expectedInterestAmount:
-            (json['expectedInterestAmount'] as num).toDouble(),
-        expectedPrincipalAmount:
-            (json['expectedPrincipalAmount'] as num).toDouble(),
-        interestAmountPaid: json['interestAmountPaid'] == null
-            ? 0
-            : (json['interestAmountPaid'] as num).toDouble(),
-        principalAmountPaid: json['principalAmountPaid'] == null
-            ? 0
-            : (json['principalAmountPaid'] as num).toDouble(),
-        remainingAmountToBePaid: (json['remainingAmountToBePaid'] as num).toDouble(),
-        interestRate: (json['interestRate'] as num).toDouble(),
-        expectedPayDate: json['expectedPayDate'].toDate(),
-        // actualPayDate:
-        //    json['actualPayDate'] == null ? null : json['actualPayDate'].toDate(),
-        deleteDate: json['deleteDate'],
-        deleteReason: json['deleteReason'],
-        paymentStatus: json['paymentStatus'] == null
-            ? PaymentStatus.unknown
-            : PaymentStatus.fromName(json['paymentStatus']),
-      );
-    } catch (e) {
-      print(e);
-      rethrow;
-    }
-  }
+  LoanStatementModel.fromMap(Map<String, dynamic> map)
+      : id = map['id'],
+        loanId = map['loan_id'],
+        clientId = map['client_id'],
+        expectedInterestAmount = map['expected_interest_amount'].toDouble(),
+        expectedPrincipalAmount = map['expected_principal_amount'].toDouble(),
+        interestAmountPaid = map['interest_amount_paid'].toDouble(),
+        principalAmountPaid = map['principal_amount_paid'].toDouble(),
+        remainingAmountToBePaid = map['remaining_amount_to_be_paid'].toDouble(),
+        interestRate = map['interest_rate'].toDouble(),
+        expectedPayDate = map['expected_pay_date'].toString().toDate(),
+        deleteDate = map['delete_date']?.toDate(),
+        deleteReason = map['delete_reason'],
+        paymentStatus = PaymentStatus.fromName(map['payment_status']);
 }

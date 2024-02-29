@@ -1,26 +1,25 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:pokinia_lending_manager/components/status_boxes/payment_status/dot_payment_status_component.dart';
 import 'package:pokinia_lending_manager/components/texts/amounts/big_amount_text.dart';
 import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_one_text.dart';
 import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_two_text.dart';
-import 'package:pokinia_lending_manager/models/client_model.dart';
+import 'package:pokinia_lending_manager/models/client.dart';
 import 'package:pokinia_lending_manager/models/loan_statement_model.dart';
-import 'package:pokinia_lending_manager/models/payment_model.dart';
+import 'package:pokinia_lending_manager/models/payment.dart';
 import 'package:pokinia_lending_manager/util/date_extensions.dart';
 import 'package:pokinia_lending_manager/util/double_extensions.dart';
 
 class RecentPaymentListCard extends StatelessWidget {
-  final ClientModel client;
+  final Client client;
   final LoanStatementModel loanStatement;
-  final PaymentModel payment;
+  final Payment payment;
 
   const RecentPaymentListCard({
-    Key? key,
+    super.key,
     required this.client,
     required this.loanStatement,
     required this.payment,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +64,7 @@ class RecentPaymentListCard extends StatelessWidget {
                       text: "Fecha", fillColor: Color(0xff9EA6A7)),
                   const SizedBox(width: 10),
                   ParagraphTwoText(
-                      text: payment.date.toFormattedDate()),
+                      text: payment.payDate.toFormattedDate()),
                 ],
               ),
             ],

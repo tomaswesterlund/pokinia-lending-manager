@@ -11,6 +11,10 @@ extension StringExtensions on String {
       return trim().split(RegExp(' +')).map((s) => s[0]).take(2).join();
     }
   }
+
+  DateTime toDate() {
+    return DateTime.parse(this);
+  }
 }
 
 extension NullableStringExtensions on String? {
@@ -64,5 +68,9 @@ extension NullableStringExtensions on String? {
 
   bool isNotNumericOrFloating() {
     return !isNumericOrFloating();
+  }
+
+  double toDouble() {
+    return double.parse(this!);
   }
 }

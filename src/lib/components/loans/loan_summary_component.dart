@@ -4,7 +4,7 @@ import 'package:pokinia_lending_manager/components/texts/amounts/big_amount_text
 import 'package:pokinia_lending_manager/components/texts/amounts/primary_amount_text.dart';
 import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_one_text.dart';
 import 'package:pokinia_lending_manager/components/texts/percentages/big_percentage_text.dart';
-import 'package:pokinia_lending_manager/models/loan_model.dart';
+import 'package:pokinia_lending_manager/models/loan.dart';
 import 'package:pokinia_lending_manager/services/loan_service.dart';
 import 'package:pokinia_lending_manager/util/double_extensions.dart';
 import 'package:pokinia_lending_manager/util/string_extensions.dart';
@@ -117,7 +117,7 @@ class _InterestRateComponentState extends State<InterestRateComponent> {
           var loanService = Provider.of<LoanService>(context, listen: false);
           var interestRate = double.parse(value);
 
-          loanService.recalculateLoan(widget.loan.id, interestRate);
+          // loanService.recalculateLoan(widget.loan.id, interestRate);
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(

@@ -1,10 +1,11 @@
 import 'package:circular_profile_avatar/circular_profile_avatar.dart';
 import 'package:flutter/material.dart';
-import 'package:pokinia_lending_manager/models/client_model.dart';
+import 'package:pokinia_lending_manager/models/client.dart';
+import 'package:pokinia_lending_manager/services/avatar_service.dart';
 import 'package:pokinia_lending_manager/util/string_extensions.dart';
 
 class MyAvatarComponent extends StatelessWidget {
-  final ClientModel client;
+  final Client client;
   final double size;
   final double strokeWidth;
 
@@ -16,9 +17,10 @@ class MyAvatarComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     return client.avatarImagePath.isNotNullOrEmpty()
         ? CircularProfileAvatar(
-            client.avatarImagePath!,
+            AvatarService().getAvatarUrl(client),
             borderColor: const Color(0xFF008080),
             borderWidth: strokeWidth,
             elevation: 0,
@@ -31,7 +33,10 @@ class MyAvatarComponent extends StatelessWidget {
             borderWidth: strokeWidth,
             elevation: 0,
             radius: size / 2,
-            child:  Center(child: Text(client.name.getInitials().toUpperCase())
+            child: Center(
+              child: Text(
+                client.name.getInitials().toUpperCase(),
+              ),
             ),
           );
   }

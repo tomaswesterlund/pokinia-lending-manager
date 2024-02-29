@@ -1,25 +1,26 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:pokinia_lending_manager/models/loan_model.dart';
-import 'package:pokinia_lending_manager/models/repsonse_model.dart';
+import 'package:pokinia_lending_manager/models/loan.dart';
+import 'package:pokinia_lending_manager/models/repsonse.dart';
+import 'package:pokinia_lending_manager/services/logger.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class LoanService extends ChangeNotifier {
-  final String baseApiUrl;
-  final FirebaseFirestore _db = FirebaseFirestore.instance;
+  final _logger = getLogger('LoanService');
+  final supabase = Supabase.instance.client;
 
-  List<LoanModel> loans = [];
+  final List<LoanModel> _loans = [];
+  List<LoanModel> get loans => _loans;
 
-  LoanService({required this.baseApiUrl}) {
+  LoanService() {
     listenToLoans();
   }
 
   void listenToLoans() {
-    _db.collection('loans').snapshots().listen((snapshot) {
-      var loans =
-          snapshot.docs.map((doc) => LoanModel.fromFirestore(doc)).toList();
-
-      this.loans = loans;
+    supabase.from('loans').stream(primaryKey: ['id']).listen((data) {
+      var loans = data.map((map) => LoanModel.fromMap(map)).toList();
+      _loans
+        ..clear()
+        ..addAll(loans);
       notifyListeners();
     });
   }
@@ -32,55 +33,27 @@ class LoanService extends ChangeNotifier {
     return loans.where((loan) => loan.clientId == clientId).toList();
   }
 
-  Future<ResponseModel> createLoan(
+  Future<Response> createLoan(
       {required String clientId,
       required double initialPrincipalAmount,
       required double initialInterestRate,
       required startDate,
       required paymentPeriod}) async {
-    final url = Uri.parse('$baseApiUrl/loans');
-    var body = {
-      'clientId': clientId,
-      'initialPrincipalAmount': initialPrincipalAmount.toString(),
-      'initialInterestRate': initialInterestRate.toString(),
-      'startDate': startDate?.toIso8601String(),
-      'paymentPeriod': paymentPeriod
-    };
+    try {
+      
+      var values = {
+        'client_id': clientId,
+        'initial_principal_amount': initialPrincipalAmount.toString(),
+        'initial_interest_rate': initialInterestRate.toString(),
+        'start_date': startDate?.toIso8601String(),
+      };
 
-    final response = await http.post(url, body: body);
+      await supabase.from('loans').insert(values);
 
-    if (response.statusCode == 200) {
-      // Successful response, handle the result
-      print('Function executed successfully. Response: ${response.body}');
-    } else {
-      // Handle the error
-      print(
-          'Error calling Firebase function. Status code: ${response.statusCode}');
-      print('Response body: ${response.body}');
+      return Response.success();
+    } catch (e) {
+      _logger.e(e.toString());
+      return Response.error(e.toString());
     }
-
-    return ResponseModel(statusCode: response.statusCode, body: response.body);
-  }
-
-  Future<ResponseModel> recalculateLoan(String loanId, double interestRate) async {
-    final url = Uri.parse('$baseApiUrl/loans/recalculate');
-    var body = {
-      'loanId': loanId,
-      'interestRate': interestRate.toString(),
-    };
-
-    final response = await http.post(url, body: body);
-
-    if (response.statusCode == 200) {
-      // Successful response, handle the result
-      print('Function executed successfully. Response: ${response.body}');
-    } else {
-      // Handle the error
-      print(
-          'Error calling Firebase function. Status code: ${response.statusCode}');
-      print('Response body: ${response.body}');
-    }
-
-    return ResponseModel(statusCode: response.statusCode, body: response.body);
   }
 }

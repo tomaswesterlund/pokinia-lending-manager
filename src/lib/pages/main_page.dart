@@ -30,22 +30,24 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: currentPageIndex,
-        destinations: const [
-          NavigationDestination(icon: Icon(Icons.payments), label: "Payments"),
-          NavigationDestination(icon: Icon(Icons.monetization_on), label: "Loans"),
-          NavigationDestination(icon: Icon(Icons.group), label: "Clients"),
-          NavigationDestination(icon: Icon(Icons.bar_chart), label: "Reports"),
-        ],
-        onDestinationSelected: (value) {
-          setState(() {
-            currentPageIndex = value;
-          });
-        },
+    return SafeArea(
+      child: Scaffold(
+        bottomNavigationBar: NavigationBar(
+          selectedIndex: currentPageIndex,
+          destinations: const [
+            NavigationDestination(icon: Icon(Icons.payments), label: "Payments"),
+            NavigationDestination(icon: Icon(Icons.monetization_on), label: "Loans"),
+            NavigationDestination(icon: Icon(Icons.group), label: "Clients"),
+            NavigationDestination(icon: Icon(Icons.bar_chart), label: "Reports"),
+          ],
+          onDestinationSelected: (value) {
+            setState(() {
+              currentPageIndex = value;
+            });
+          },
+        ),
+        body: _getPage(),
       ),
-      body: _getPage(),
     );
   }
 }

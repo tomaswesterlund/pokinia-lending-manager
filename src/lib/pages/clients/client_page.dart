@@ -1,93 +1,105 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:pokinia_lending_manager/components/avatars/my_avatar_component.dart';
-import 'package:pokinia_lending_manager/components/status_boxes/payment_status/compact_payment_status_box_component.dart';
+import 'package:pokinia_lending_manager/components/buttons/fabs.dart';
 import 'package:pokinia_lending_manager/components/status_boxes/payment_status/squared_payment_status_box_component.dart';
 import 'package:pokinia_lending_manager/components/status_boxes/payment_status/wide_payment_status_box_component.dart';
 import 'package:pokinia_lending_manager/components/texts/amounts/big_amount_text.dart';
 import 'package:pokinia_lending_manager/components/texts/headers/header_five_text.dart';
 import 'package:pokinia_lending_manager/components/texts/headers/header_three_text.dart';
+import 'package:pokinia_lending_manager/components/texts/headers/header_two_text.dart';
 import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_one_text.dart';
-import 'package:pokinia_lending_manager/models/client_model.dart';
-import 'package:pokinia_lending_manager/models/loan_model.dart';
+import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_two_text.dart';
+import 'package:pokinia_lending_manager/models/client.dart';
+import 'package:pokinia_lending_manager/models/loan.dart';
 import 'package:pokinia_lending_manager/pages/loans/loan_page.dart';
 import 'package:pokinia_lending_manager/pages/loans/new_loan_page.dart';
 import 'package:pokinia_lending_manager/services/client_service.dart';
 import 'package:pokinia_lending_manager/services/loan_service.dart';
+import 'package:pokinia_lending_manager/services/logger.dart';
 import 'package:pokinia_lending_manager/util/double_extensions.dart';
 import 'package:provider/provider.dart';
+import 'package:sliver_tools/sliver_tools.dart';
 
 class ClientPage extends StatelessWidget {
-  final ClientModel client;
+  final String clientId;
+  final Logger _logger = getLogger('ClientPage');
 
-  const ClientPage({super.key, required this.client});
+  ClientPage({super.key, required this.clientId});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text(client.name),
-        ),
-        body: Consumer2<ClientService, LoanService>(
-          builder: (context, clientService, loanService, child) {
-            return Column(
-              children: [
-                MyAvatarComponent(client: client, size: 96.0, strokeWidth: 2.0),
-                const SizedBox(height: 16.0),
+    return Consumer2<ClientService, LoanService>(
+      builder: (context, clientService, loanService, child) {
+        var client = clientService.getClientById(clientId);
+        var loans = loanService.getLoansByClientId(clientId);
 
-                // Name
-                HeaderThreeText(text: client.name),
-                const SizedBox(height: 16.0),
+        return Scaffold(
+          // appBar: AppBar(
+          //   title: Text(client.name),
+          // ),
+          body: CustomScrollView(
+            slivers: [
+              const SliverAppBar(
+                title: HeaderTwoText(text: "Client"),
+                scrolledUnderElevation: 0,
+                floating: true,
+              ),
+              MultiSliver(
+                children: [
+                  Column(
+                    children: [
+                      MyAvatarComponent(
+                          client: client, size: 96.0, strokeWidth: 2.0),
+                      const SizedBox(height: 16.0),
 
-                // Status
-                WidePaymentStatusBoxComponent(
-                    paymentStatus: client.paymentStatus),
+                      // Name
+                      HeaderThreeText(text: client.name),
+                      const SizedBox(height: 16.0),
 
-                const SizedBox(height: 16.0),
+                      // Status
+                      WidePaymentStatusBoxComponent(
+                          paymentStatus: client.paymentStatus),
 
-                _getContactButtonsWidget(),
-                _getContactInformationWidget(),
+                      const SizedBox(height: 16.0),
 
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    //Container(),
-                    const Center(
-                      child: HeaderThreeText(text: "Loans"),
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        showMaterialModalBottomSheet(
-                          enableDrag: false,
-                          isDismissible: false,
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(15.0),
-                              topRight: Radius.circular(15.0),
-                            ),
-                          ),
-                          context: context,
-                          builder: (context) => NewLoanPage(
-                            selectedClient: client,
-                          ),
-                        );
-                      },
-                      icon: const Icon(
-                        Icons.add,
-                        size: 28.0,
-                        color: Colors.black,
+                      _getContactButtonsWidget(client),
+                      _getContactInformationWidget(client),
+                    ],
+                  ),
+                  const Center(child: HeaderThreeText(text: "Loans")),
+                  _getLoansWidget(context, client, loans),
+                  const SizedBox(height: 128.0)
+                ],
+              )
+            ],
+          ),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerFloat,
+          floatingActionButton: getDefaultFab(
+              onPressed: () => showMaterialModalBottomSheet(
+                    enableDrag: true,
+                    isDismissible: true,
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(15.0),
+                        topRight: Radius.circular(15.0),
                       ),
-                    )
-                  ],
-                ),
-                _getLoansWidget(loanService.getLoansByClientId(client.id)),
-              ],
-            );
-          },
-        ));
+                    ),
+                    context: context,
+                    builder: (context) => Padding(
+                      padding: EdgeInsets.only(
+                          bottom: MediaQuery.of(context).viewInsets.bottom),
+                      child: NewLoanPage(selectedClient: client),
+                    ),
+                  )),
+        );
+      },
+    );
   }
 
-  Widget _getContactButtonsWidget() {
+  Widget _getContactButtonsWidget(Client client) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -135,7 +147,7 @@ class ClientPage extends StatelessWidget {
     );
   }
 
-  Widget _getContactInformationWidget() {
+  Widget _getContactInformationWidget(Client client) {
     return Padding(
       padding: const EdgeInsets.all(32.0),
       child: Column(
@@ -163,70 +175,83 @@ class ClientPage extends StatelessWidget {
     );
   }
 
-  Widget _getLoansWidget(List<LoanModel> loans) {
-    if (loans.isEmpty) {
-      return Column(
-        children: [
-          const SizedBox(height: 25),
-          Image.asset(
-            'assets/images/empty_list_loans.png',
-            width: 256,
+  Widget _getLoansWidget(
+      BuildContext context, Client client, List<LoanModel> loans) {
+    try {
+      if (loans.isEmpty) {
+        return Column(
+          children: [
+            const SizedBox(height: 25),
+            Image.asset(
+              'assets/images/empty_list_loans.png',
+              width: 256,
+            ),
+            const SizedBox(height: 25),
+            const HeaderFiveText(text: "No active loans were found."),
+          ],
+        );
+      } else {
+        // return const Text("Test");
+        return SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (context, index) {
+              var loan = loans[index];
+              return _getLoanListCard(context, client, loan);
+            },
+            childCount: loans.length,
           ),
-          const SizedBox(height: 25),
-          const HeaderFiveText(text: "No active loans were found."),
-        ],
-      );
-    } else {
-      return Expanded(
-        child: ListView.builder(
-          itemCount: loans.length,
-          itemBuilder: (context, index) {
-            var loan = loans[index];
-
-            return GestureDetector(
-              onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          LoanPage(clientId: client.id, loanId: loan.id))),
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: const Color(0xFFF8F8F8),
-                    border: const Border(
-                      bottom: BorderSide(
-                        color: Color(0xFFD2DEE0),
-                      ),
-                    ),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            SquaredPaymentStatusBoxComponent(
-                                paymentStatus: loan.paymentStatus),
-                            const SizedBox(width: 20),
-                            BigAmountText(
-                                text: loan.remainingPrincipalAmount
-                                    .toFormattedCurrency()),
-                          ],
-                        ),
-                        const Icon(Icons.arrow_forward_ios),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            );
-          },
-          shrinkWrap: true,
-        ),
+        );
+      }
+    } catch (e) {
+      _logger.e(e);
+      return const Center(
+        child: ParagraphTwoText(
+            text: "An error occurred while loading the loans."),
       );
     }
   }
+}
+
+Widget _getLoanListCard(
+    BuildContext context, Client client, LoanModel loan) {
+  return GestureDetector(
+    onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                LoanPage(clientId: client.id, loanId: loan.id))),
+    child: Padding(
+      padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: const Color(0xFFF8F8F8),
+          border: const Border(
+            bottom: BorderSide(
+              color: Color(0xFFD2DEE0),
+            ),
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  SquaredPaymentStatusBoxComponent(
+                      paymentStatus: loan.paymentStatus),
+                  const SizedBox(width: 20),
+                  BigAmountText(
+                      text:
+                          loan.remainingPrincipalAmount.toFormattedCurrency()),
+                ],
+              ),
+              const Icon(Icons.arrow_forward_ios),
+            ],
+          ),
+        ),
+      ),
+    ),
+  );
 }

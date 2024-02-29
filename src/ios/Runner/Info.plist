@@ -53,5 +53,20 @@
 	<string>This app requires access to the photo library.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>We need access to camera so that photos can be taken</string>
+	<!-- Google Sign-in Section -->
+	<key>CFBundleURLTypes</key>
+		<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+			<!-- Copied from GoogleService-Info.plist key REVERSED_CLIENT_ID -->
+			<string>com.googleusercontent.apps.457013140749-iohkfcca3rdp5p818meervts0qmguent</string>
+			<!-- <string>com.googleusercontent.apps.457013140749-c7lbu0b9n6c99n10a9raslgl8vf2ilj6</string> -->
+			</array>
+		</dict>
+	</array>
+	<!-- End of the Google Sign-in Section -->
 </dict>
 </plist>

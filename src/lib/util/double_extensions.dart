@@ -10,4 +10,5 @@ extension DoubleExtension on double {
 
     return numberFormat.format(this);
   }
+
 }

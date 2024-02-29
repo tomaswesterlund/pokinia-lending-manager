@@ -8,7 +8,11 @@ enum PaymentStatus {
   overdue,
   prompt;
 
-  static PaymentStatus fromName(String name) {
+  static PaymentStatus fromName(String? name) {
+    if (name == null || name.isEmpty) {
+      return PaymentStatus.unknown;
+    }
+    
     for (PaymentStatus enumVariant in PaymentStatus.values) {
       if (enumVariant.name == name) {
         return enumVariant;

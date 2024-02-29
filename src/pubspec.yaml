@@ -39,12 +39,8 @@ dependencies:
   google_fonts: ^6.1.0
   intl: ^0.19.0
   circular_profile_avatar: ^2.0.5
-  firebase_core: ^2.24.2
-  cloud_firestore: ^4.14.0
-  firebase_auth: ^4.16.0
   http: ^1.2.0
   file_picker: ^6.1.1
-  firebase_storage: ^11.6.5
   image_picker: ^1.0.7
   modal_bottom_sheet: ^3.0.0-pre
   circular_image: ^0.0.6
@@ -54,6 +50,12 @@ dependencies:
   namefully: ^0.2.1
   flutter_spinkit: ^5.2.0
   sliver_tools: ^0.2.12
+  logger: ^2.0.2+1
+  google_sign_in: ^6.2.1
+  change_app_package_name: ^1.1.0
+  supabase_flutter: ^2.3.4
+  get_it: ^7.6.7
+  uuid: ^4.3.3
 
 dev_dependencies:
   flutter_test:

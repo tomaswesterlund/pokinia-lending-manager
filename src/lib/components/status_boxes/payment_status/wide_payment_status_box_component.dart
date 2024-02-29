@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:pokinia_lending_manager/components/status_boxes/payment_status/base_payment_status_box_component.dart';
 import 'package:pokinia_lending_manager/enums/payment_status_enum.dart';
 

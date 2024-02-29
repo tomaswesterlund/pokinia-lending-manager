@@ -7,9 +7,10 @@ import 'package:pokinia_lending_manager/components/buttons/my_cta_button.dart';
 import 'package:pokinia_lending_manager/components/input/my_text_form_field.dart';
 import 'package:pokinia_lending_manager/components/overlays.dart';
 import 'package:pokinia_lending_manager/components/texts/headers/header_four_text.dart';
+import 'package:pokinia_lending_manager/services/avatar_service.dart';
 import 'package:pokinia_lending_manager/services/client_service.dart';
-import 'package:pokinia_lending_manager/services/file_service.dart';
 import 'package:pokinia_lending_manager/services/image_picker_service.dart';
+import 'package:pokinia_lending_manager/services/user_settings_service.dart';
 import 'package:pokinia_lending_manager/util/string_extensions.dart';
 import 'package:provider/provider.dart';
 
@@ -25,6 +26,7 @@ class _NewClientPageState extends State<NewClientPage> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
+  String? _selectedCustomerId;
   File? _selectedAvatar;
   OverlayEntry? _loadingOverlay;
   bool _isProcessing = false;
@@ -37,21 +39,32 @@ class _NewClientPageState extends State<NewClientPage> {
 
       var avatarImagePath = "";
       if (_selectedAvatar != null) {
-        avatarImagePath = await FileService().uploadAvatar(_selectedAvatar!);
+        avatarImagePath = await AvatarService().uploadAvatar(_selectedAvatar!);
       }
 
       var name = _nameController.text;
       var phoneNumber = _phoneNumberController.text;
       var address = _addressController.text;
 
-      await clientService.createClient(
+      var response = await clientService.addClient(
+          customerId: _selectedCustomerId!,
           name: name,
           phoneNumber: phoneNumber,
           address: address,
           avatarImagePath: avatarImagePath);
+
       setOnProcessing(false);
 
-      Navigator.pop(context);
+      if (response.statusCode == 200) {
+        Navigator.pop(context);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error adding client: ${response.body}'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
   }
 
@@ -82,21 +95,27 @@ class _NewClientPageState extends State<NewClientPage> {
   Widget build(BuildContext context) {
     var clientService = Provider.of<ClientService>(context, listen: false);
 
-    return Form(
-      key: _formKey,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          _getHeaderWidget(),
-          _getAvatarWidget(),
-          _getNameWidget(),
-          _getPhoneNumberWidget(),
-          _getAddressWidget(),
-          _getAddClientButtonWidget(clientService)
-        ],
-      ),
-    );
+    return Consumer<UserSettingsService>(builder: (context, userSettingsService, _) {
+      var userSettings = userSettingsService.userSettings;
+
+      _selectedCustomerId = userSettings!.selectedCustomerId;
+
+      return Form(
+        key: _formKey,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            _getHeaderWidget(),
+            _getAvatarWidget(),
+            _getNameWidget(),
+            _getPhoneNumberWidget(),
+            _getAddressWidget(),
+            _getAddClientButtonWidget(clientService)
+          ],
+        ),
+      );
+    });
   }
 
   Widget _getHeaderWidget() {

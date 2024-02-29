@@ -8,9 +8,9 @@ import 'package:pokinia_lending_manager/components/input/my_text_form_field.dart
 import 'package:pokinia_lending_manager/components/overlays.dart';
 import 'package:pokinia_lending_manager/components/texts/headers/header_five_text.dart';
 import 'package:pokinia_lending_manager/components/texts/headers/header_four_text.dart';
-import 'package:pokinia_lending_manager/services/file_service.dart';
 import 'package:pokinia_lending_manager/services/image_picker_service.dart';
 import 'package:pokinia_lending_manager/services/payment_service.dart';
+import 'package:pokinia_lending_manager/services/receipt_service.dart';
 import 'package:pokinia_lending_manager/util/string_extensions.dart';
 import 'package:provider/provider.dart';
 
@@ -47,7 +47,7 @@ class _NewPaymentPageState extends State<NewPaymentPage> {
 
       var urlDownload = "";
       if (_selectedImage != null) {
-        urlDownload = await FileService().uploadPaymentReceipt(_selectedImage!);
+        urlDownload = await ReceiptService().uploadReceipt(_selectedImage!);
       }
 
       paymentService
@@ -67,6 +67,7 @@ class _NewPaymentPageState extends State<NewPaymentPage> {
             setOnProcessing(false);
             Navigator.pop(context);
           } else {
+            setOnProcessing(false);
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
                 content: Text("Please validate your input!"),
@@ -103,19 +104,17 @@ class _NewPaymentPageState extends State<NewPaymentPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Form(
-        key: _formKey,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            _getHeaderWidget(),
-            _getImagePickerWidget(),
-            _getInterestAmountWidget(),
-            _getPrincipalAmountWidget(),
-            _getAddPaymentButtonWidget()
-          ],
-        ),
+    return Form(
+      key: _formKey,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _getHeaderWidget(),
+          _getImagePickerWidget(),
+          _getInterestAmountWidget(),
+          _getPrincipalAmountWidget(),
+          _getAddPaymentButtonWidget()
+        ],
       ),
     );
   }

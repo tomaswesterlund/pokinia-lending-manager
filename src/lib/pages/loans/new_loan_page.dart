@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:pokinia_lending_manager/components/buttons/my_cta_button.dart';
 import 'package:pokinia_lending_manager/components/client/client_list_dropdown_menu_component.dart';
 import 'package:pokinia_lending_manager/components/input/my_text_form_field.dart';
 import 'package:pokinia_lending_manager/components/overlays.dart';
 import 'package:pokinia_lending_manager/components/texts/headers/header_four_text.dart';
 import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_one_text.dart';
-import 'package:pokinia_lending_manager/models/client_model.dart';
+import 'package:pokinia_lending_manager/models/client.dart';
 import 'package:pokinia_lending_manager/services/loan_service.dart';
+import 'package:pokinia_lending_manager/services/logger.dart';
 import 'package:pokinia_lending_manager/util/date_extensions.dart';
 import 'package:pokinia_lending_manager/util/string_extensions.dart';
 import 'package:provider/provider.dart';
 
 class NewLoanPage extends StatefulWidget {
-  final ClientModel? selectedClient;
+  final Client? selectedClient;
 
   const NewLoanPage({super.key, this.selectedClient});
 
@@ -21,6 +23,8 @@ class NewLoanPage extends StatefulWidget {
 }
 
 class _NewLoanPageState extends State<NewLoanPage> {
+  final Logger _logger = getLogger('NewLoanPage');
+
   DateTime _startDate = DateTime.now();
   late LoanService _loanService;
   final _formKey = GlobalKey<FormState>();
@@ -30,7 +34,7 @@ class _NewLoanPageState extends State<NewLoanPage> {
   final TextEditingController _interestRateController = TextEditingController();
   OverlayEntry? _loadingOverlay;
   bool _isProcessing = false;
-  ClientModel? _selectedClient;
+  Client? _selectedClient;
 
   @override
   void initState() {
@@ -40,33 +44,50 @@ class _NewLoanPageState extends State<NewLoanPage> {
     });
   }
 
-  void _addLoan() async {
-    if (_formKey.currentState!.validate()) {
-      setOnProcessing(true);
+  Future<bool> createLoan() async {
+    if (!_formKey.currentState!.validate()) {
+      return false; // Validation failed
+    }
 
+    setOnProcessing(true);
+    
+    try {
       var response = await _loanService.createLoan(
-          clientId: _selectedClient!.id,
-          initialPrincipalAmount:
-              double.parse(_loanPrincipalAmountController.text),
-          initialInterestRate: double.parse(_interestRateController.text),
-          startDate: _startDate,
-          paymentPeriod: 'monthly');
+        clientId: _selectedClient!.id,
+        initialPrincipalAmount:
+            double.parse(_loanPrincipalAmountController.text),
+        initialInterestRate: double.parse(_interestRateController.text),
+        startDate: _startDate,
+        paymentPeriod: 'monthly',
+      );
 
+      // Check the response status code for success
+      return response.statusCode == 200;
+    } catch (e) {
+      _logger.e(e.toString());
+      return false;
+    } finally {
       setOnProcessing(false);
+    }
+  }
 
-      if (response.statusCode == 200) {
+  void _addLoan() async {
+    bool isSuccess = await createLoan();
+
+    if (isSuccess) {
+      if (mounted) {
         Navigator.pop(context);
-      } else {
+      }
+    } else {
+      if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text("Someting went wrong ..."),
-          ),
+          const SnackBar(content: Text("Something went wrong ...")),
         );
       }
     }
   }
 
-  void onClientSelected(ClientModel? client) {
+  void onClientSelected(Client? client) {
     _selectedClient = client;
   }
 
@@ -101,21 +122,21 @@ class _NewLoanPageState extends State<NewLoanPage> {
     _loanService = Provider.of<LoanService>(context, listen: false);
 
     return Form(
-        key: _formKey,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            _getHeaderWidget(),
-            _getClientDropDownWidget(),
-            _getPrincipalAmountWidget(),
-            _getInterestRateWidget(),
-            _getExpectedPayDateWidget(),
-            _getPaymentPeriodWidget(),
-            _getAddLoanButtonWidget()
-          ],
-        ),
-      );
+      key: _formKey,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          _getHeaderWidget(),
+          _getClientDropDownWidget(),
+          _getPrincipalAmountWidget(),
+          _getInterestRateWidget(),
+          _getExpectedPayDateWidget(),
+          _getPaymentPeriodWidget(),
+          _getAddLoanButtonWidget()
+        ],
+      ),
+    );
   }
 
   Widget _getHeaderWidget() {

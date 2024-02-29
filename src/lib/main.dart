@@ -1,13 +1,13 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:pokinia_lending_manager/pages/main_page.dart';
+import 'package:pokinia_lending_manager/pages/auth/auth_page.dart';
 import 'package:pokinia_lending_manager/services/client_service.dart';
+import 'package:pokinia_lending_manager/services/customer_service.dart';
 import 'package:pokinia_lending_manager/services/loan_service.dart';
 import 'package:pokinia_lending_manager/services/loan_statement_service.dart';
 import 'package:pokinia_lending_manager/services/payment_service.dart';
+import 'package:pokinia_lending_manager/services/user_settings_service.dart';
 import 'package:provider/provider.dart';
-
-import 'firebase_options.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 // TODO: Att start date to loan (?)
 // TODO: Show "Remaining Amount" under the loan list?
@@ -19,37 +19,38 @@ import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  
+  // SUPABASE
+  await Supabase.initialize(
+      url: 'https://gjgdunpydpudivcfohxv.supabase.co',
+      anonKey:
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdqZ2R1bnB5ZHB1ZGl2Y2ZvaHh2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDg2ODk0MDAsImV4cCI6MjAyNDI2NTQwMH0.E92dy2RI0h4kgJxTZOTuAIICPKhXGKy2Fk2QZgGDjNM',
+    );
 
-// FIRESTORE EMULATOR
   // if (kDebugMode) {
-  //   try {
-  //     FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8080);
-  //     await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
-  //   } catch (e) {
-  //     // ignore: avoid_print
-  //     print(e);
-  //   }
+  //   await Supabase.initialize(
+  //     url: 'http://127.0.0.1:54321',
+  //     anonKey:
+  //         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0',
+  //   );
+  // } else {
+  //   await Supabase.initialize(
+  //     url: 'https://gjgdunpydpudivcfohxv.supabase.co',
+  //     anonKey:
+  //         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdqZ2R1bnB5ZHB1ZGl2Y2ZvaHh2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDg2ODk0MDAsImV4cCI6MjAyNDI2NTQwMH0.E92dy2RI0h4kgJxTZOTuAIICPKhXGKy2Fk2QZgGDjNM',
+  //   );
   // }
 
-// Needs to change depending on being runned locally or not!
-// String baseApiUrl = "http://127.0.0.1:5001/pokinia-lending-manager-c66c7/us-central1/api";
-  String baseApiUrl =
-      "https://us-central1-pokinia-lending-manager-c66c7.cloudfunctions.net/api";
 
-  ClientService clientService = ClientService(baseApiUrl: baseApiUrl);
-  LoanService loanService = LoanService(baseApiUrl: baseApiUrl);
-  LoanStatementService loanStatementService = LoanStatementService();
-  PaymentService paymentService = PaymentService(baseApiUrl: baseApiUrl);
 
   runApp(MultiProvider(
     providers: [
-      ChangeNotifierProvider(create: (context) => clientService),
-      ChangeNotifierProvider(create: (context) => loanService),
-      ChangeNotifierProvider(create: (context) => loanStatementService),
-      ChangeNotifierProvider(create: (context) => paymentService),
+      ChangeNotifierProvider(create: (context) => UserSettingsService()),
+      ChangeNotifierProvider(create: (context) => CustomerService()),
+      ChangeNotifierProvider(create: (context) => ClientService()),
+      ChangeNotifierProvider(create: (context) => LoanService()),
+      ChangeNotifierProvider(create: (context) => LoanStatementService()),
+      ChangeNotifierProvider(create: (context) => PaymentService()),
     ],
     child: const MyApp(),
   ));
@@ -62,12 +63,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Pokinia Lending Manager',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MainPage(),
+      home: const AuthPage(),
     );
   }
 }

@@ -1,25 +1,27 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:pokinia_lending_manager/enums/payment_status_enum.dart';
 import 'package:pokinia_lending_manager/models/loan_statement_model.dart';
+import 'package:pokinia_lending_manager/services/logger.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class LoanStatementService extends ChangeNotifier {
-  final FirebaseFirestore _db = FirebaseFirestore.instance;
+  final _logger = getLogger('LoanStatementService');
+  final supabase = Supabase.instance.client;
 
-  List<LoanStatementModel> loanStatements = [];
+  final List<LoanStatementModel> _loanStatements = [];
+  List<LoanStatementModel> get loanStatements => _loanStatements;
 
   LoanStatementService() {
     listenToLoanStatements();
   }
 
-  listenToLoanStatements() {
-    _db.collection('loan_statements').snapshots().listen((snapshot) {
-      var loanStatements = snapshot.docs
-          .map((doc) => LoanStatementModel.fromFirestore(doc))
-          .toList();
-
-      this.loanStatements = loanStatements;
+  void listenToLoanStatements() {
+    supabase.from('loan_statements').stream(primaryKey: ['id']).listen((data) {
+      var loans = data.map((map) => LoanStatementModel.fromMap(map)).toList();
+      _loanStatements
+        ..clear()
+        ..addAll(loans);
       notifyListeners();
     });
   }

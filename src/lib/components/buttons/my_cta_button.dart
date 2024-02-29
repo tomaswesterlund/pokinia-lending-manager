@@ -39,7 +39,8 @@ class MyCtaButton extends StatelessWidget {
                     ),
                   ),
                 )
-              : MySubHeadingText(text: text.toUpperCase())),
+              :  MySubHeadingText(text: text.toUpperCase())
+          ),
     );
   }
 }

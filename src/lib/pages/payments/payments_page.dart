@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pokinia_lending_manager/components/my_drawer.dart';
 import 'package:pokinia_lending_manager/components/payments/payment_list_card_component.dart';
 import 'package:pokinia_lending_manager/components/texts/headers/header_four_text.dart';
 import 'package:pokinia_lending_manager/components/texts/headers/header_two_text.dart';
@@ -43,6 +44,9 @@ class PaymentsPage extends StatelessWidget {
           );
         },
       ),
+      endDrawer:  Drawer(
+        child: MyDrawer(),
+      )
     );
   }
 
