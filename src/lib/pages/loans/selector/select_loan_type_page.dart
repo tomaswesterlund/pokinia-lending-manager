@@ -3,7 +3,8 @@ import 'package:logger/logger.dart';
 import 'package:pokinia_lending_manager/components/texts/headers/header_three_text.dart';
 import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_two_text.dart';
 import 'package:pokinia_lending_manager/enums/loan_types.dart';
-import 'package:pokinia_lending_manager/pages/loans/new/new_zero_interest_loan_page.dart';
+import 'package:pokinia_lending_manager/pages/loans/selector/select_payment_period_page.dart';
+import 'package:pokinia_lending_manager/pages/loans/zero_interest/new_zero_interest_loan_page.dart';
 import 'package:pokinia_lending_manager/services/logger.dart';
 
 class SelectLoanTypePage extends StatelessWidget {
@@ -15,7 +16,8 @@ class SelectLoanTypePage extends StatelessWidget {
     _logger.i('Loan type selected: $loanType');
 
     if (loanType == LoanTypes.openEndedLoan) {
-      // Open-ended loan
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => SelectPaymentPeriodPage()));
     } else if (loanType == LoanTypes.termLoan) {
       // Term loan
     } else if (loanType == LoanTypes.ballonLoan) {
@@ -24,7 +26,7 @@ class SelectLoanTypePage extends StatelessWidget {
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) =>  const NewZerointerestLoanPage()));
+              builder: (context) => const NewZerointerestLoanPage()));
     }
   }
 
@@ -41,22 +43,22 @@ class SelectLoanTypePage extends StatelessWidget {
           _getLoanTypeWidget(
               context,
               'Open-ended loan',
-              'This loan does not require an end-date. \n\nLoan statements will be generated according to parameters with expected pay dates with an expected principal and interest amount to be paid on those dates.',
+              'A loan with a principal amount and on-going (automatically generated) loan statements with an expected interest amount to be paid on the expected pay dates. This loan does not require an end-date.',
               LoanTypes.openEndedLoan),
           _getLoanTypeWidget(
               context,
               'Term loan',
-              'This loan requires an end-date. \n\nLoan statements will be generated with expected principal and interest amount to be paid as well as expected pay dates.',
+              'A loan with a principal amount and several loan statements with an expected principal and interest amount to be paid on the expected pay dates. This loan requires an end-date.',
               LoanTypes.termLoan),
           _getLoanTypeWidget(
               context,
               'Ballon loan',
-              'Generates one loan statement with a principal amount and interest amount as well as an expected pay date.',
+              'Generates a loan with a principal amount with a fixed interest amount that should be paid no later then the expected end pay date.',
               LoanTypes.ballonLoan),
           _getLoanTypeWidget(
               context,
               'Zero-interest loan',
-              'Generates one loan statement with a principal amount but no interest amount with an optional expected pay date.',
+              'Generates a loan with a principal amount but no interest amount with an optional expected end pay date.',
               LoanTypes.zeroInterestLoan),
         ],
       )),

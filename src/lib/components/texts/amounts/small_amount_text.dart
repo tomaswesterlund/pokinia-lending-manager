@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:pokinia_lending_manager/util/double_extensions.dart';
 
 class SmallAmountText extends StatelessWidget {
-  final String text;
+  late String text;
 
-  const SmallAmountText({super.key, required this.text});
+  SmallAmountText({super.key, required this.text});
+
+  SmallAmountText.withAmount({super.key, required double amount})
+      : text = amount.toFormattedCurrency();
+
+      SmallAmountText.withText({super.key, required this.text});
+
+  
 
   @override
   Widget build(BuildContext context) {

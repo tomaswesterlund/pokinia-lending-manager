@@ -84,7 +84,7 @@ class _LoanStatementPageState extends State<LoanStatementPage> {
         var loanStatement =
             loanStatementService.getLoanStatementById(widget.loanStatementId);
 
-        var loan = loanService.getLoanById(loanStatement.id);
+        var loan = loanService.getLoanById(loanStatement.loanId);
 
         var payments =
             paymentService.getPaymentsByLoanStatementId(widget.loanStatementId);

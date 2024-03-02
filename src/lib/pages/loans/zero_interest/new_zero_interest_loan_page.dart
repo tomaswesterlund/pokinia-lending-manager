@@ -19,12 +19,13 @@ class NewZerointerestLoanPage extends StatefulWidget {
 }
 
 class _NewZerointerestLoanPageState extends State<NewZerointerestLoanPage> {
-  bool _isProcessing = false;
-  bool _isIndefinitely = true;
+  
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _clientController = TextEditingController();
-  final TextEditingController _amountController = TextEditingController();
+  final TextEditingController _principalAmountController = TextEditingController();
   DateTime _expectedPayDate = DateTime.now();
+  bool _isIndefinitely = true;
+  bool _isProcessing = false;
 
   Client? _selectedClient;
   void _onClientSelected(client) {
@@ -43,7 +44,7 @@ class _NewZerointerestLoanPageState extends State<NewZerointerestLoanPage> {
 
       var response = await loanService.createZeroInterestLoan(
           clientId: _selectedClient!.id,
-          principalAmount: double.parse(_amountController.text),
+          principalAmount: double.parse(_principalAmountController.text),
           expectedPayDate: _isIndefinitely ? null : _expectedPayDate);
 
       setIsProcessing(false);
@@ -115,7 +116,7 @@ class _NewZerointerestLoanPageState extends State<NewZerointerestLoanPage> {
 
                           return null;
                         },
-                        controller: _amountController),
+                        controller: _principalAmountController),
                   ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),

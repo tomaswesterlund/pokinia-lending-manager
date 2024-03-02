@@ -14,7 +14,7 @@ import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_tw
 import 'package:pokinia_lending_manager/models/client.dart';
 import 'package:pokinia_lending_manager/models/loan.dart';
 import 'package:pokinia_lending_manager/pages/loans/loan_page.dart';
-import 'package:pokinia_lending_manager/pages/loans/new/new_loan_page_old.dart';
+import 'package:pokinia_lending_manager/pages/loans/selector/new_loan_page_old.dart';
 import 'package:pokinia_lending_manager/services/client_service.dart';
 import 'package:pokinia_lending_manager/services/loan_service.dart';
 import 'package:pokinia_lending_manager/services/logger.dart';

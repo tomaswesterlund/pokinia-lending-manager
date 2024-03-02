@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pokinia_lending_manager/enums/loan_types.dart';
 import 'package:pokinia_lending_manager/models/loan.dart';
-import 'package:pokinia_lending_manager/pages/loans/new/zero_interest_loan_page.dart';
+import 'package:pokinia_lending_manager/pages/loans/open_ended/open_ended_loan_page.dart';
+import 'package:pokinia_lending_manager/pages/loans/zero_interest/zero_interest_loan_page.dart';
 
 class LoanPage extends StatelessWidget {
   final Loan loan;
@@ -11,8 +12,15 @@ class LoanPage extends StatelessWidget {
   Widget build(BuildContext context) {
     if (loan.type == LoanTypes.zeroInterestLoan) {
       return ZeroInterestLoanPage(loan: loan);
-    } else {
-      return const Scaffold(body: Text("Loan page not implemented!"));
+    } else if (loan.type == LoanTypes.openEndedLoan) {
+      return OpenEndedLoanPage(loan: loan);
+    } 
+    else {
+      return  Scaffold(
+        appBar: AppBar(
+          title: const Text("Under construction ..."),
+        ),
+        body: const Text("Loan page not implemented!"));
     }
 
     // return Consumer2<ClientService, LoanService>(

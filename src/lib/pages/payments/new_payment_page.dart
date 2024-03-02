@@ -39,6 +39,17 @@ class _NewPaymentPageState extends State<NewPaymentPage> {
   File? _selectedImage;
   OverlayEntry? _loadingOverlay;
   bool _isProcessing = false;
+  late bool showInterests;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.loan.type == LoanTypes.zeroInterestLoan) {
+      showInterests = false;
+    } else {
+      showInterests = true;
+    }
+  }
 
   void _addPayment() async {
     if (_formKey.currentState!.validate()) {
@@ -68,7 +79,7 @@ class _NewPaymentPageState extends State<NewPaymentPage> {
             } else {
               _logger.e(response.body.toString());
               setOnProcessing(false);
-              
+
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
                   content: Text("Please validate your input!"),
@@ -116,13 +127,14 @@ class _NewPaymentPageState extends State<NewPaymentPage> {
           mainAxisSize: MainAxisSize.min,
           children: [
             _getImagePickerWidget(),
-            _getInterestAmountWidget(),
+            if (showInterests) _getInterestAmountWidget(),
             _getPrincipalAmountWidget(),
+            const Spacer(),
             _getAddPaymentButtonWidget()
           ],
         ),
       ),
-    );  
+    );
   }
 
   Widget _getHeaderWidget() {
