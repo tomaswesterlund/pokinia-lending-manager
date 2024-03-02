@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:pokinia_lending_manager/components/buttons/my_cta_button.dart';
-import 'package:pokinia_lending_manager/models/loan_statement_model.dart';
-import 'package:pokinia_lending_manager/pages/payments/new_payment_page.dart';
+import 'package:pokinia_lending_manager/models/loan_statement.dart';
 
 class AddPaymentModal extends StatefulWidget {
-  final LoanStatementModel loanStatement;
+  final LoanStatement loanStatement;
   const AddPaymentModal({super.key, required this.loanStatement});
 
   @override
@@ -36,11 +35,12 @@ class _AddPaymentModalState extends State<AddPaymentModal> {
                       context: context,
                       builder: (context) => Padding(
                         padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-                        child: NewPaymentPage(
-                          clientId: widget.loanStatement.clientId,
-                          loanId: widget.loanStatement.loanId,
-                          loanStatementId: widget.loanStatement.id
-                        ),
+                        child: const Text("NA"),
+                        // child: NewPaymentPage(
+                        //   clientId: widget.loanStatement.clientId,
+                        //   loanId: widget.loanStatement.loanId,
+                        //   loanStatementId: widget.loanStatement.id
+                        // ),
                       ),
                     ),
                   }),

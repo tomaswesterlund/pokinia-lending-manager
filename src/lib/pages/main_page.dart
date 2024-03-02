@@ -16,11 +16,11 @@ class _MainPageState extends State<MainPage> {
 
   Widget _getPage() {
     if (currentPageIndex == 0) {
-      return const PaymentsPage();
-    } else if (currentPageIndex == 1) {
-      return LoansPage();
-    } else if (currentPageIndex == 2) {
       return const ClientsPage();
+    } else if (currentPageIndex == 1) {
+      return const LoansPage();
+    } else if (currentPageIndex == 2) {
+      return const PaymentsPage();
     } else if (currentPageIndex == 3) {
       return const ReportsPage();
     } else {
@@ -35,10 +35,13 @@ class _MainPageState extends State<MainPage> {
         bottomNavigationBar: NavigationBar(
           selectedIndex: currentPageIndex,
           destinations: const [
-            NavigationDestination(icon: Icon(Icons.payments), label: "Payments"),
-            NavigationDestination(icon: Icon(Icons.monetization_on), label: "Loans"),
             NavigationDestination(icon: Icon(Icons.group), label: "Clients"),
-            NavigationDestination(icon: Icon(Icons.bar_chart), label: "Reports"),
+            NavigationDestination(
+                icon: Icon(Icons.monetization_on), label: "Loans"),
+            NavigationDestination(
+                icon: Icon(Icons.payments), label: "Payments"),
+            NavigationDestination(
+                icon: Icon(Icons.bar_chart), label: "Reports"),
           ],
           onDestinationSelected: (value) {
             setState(() {

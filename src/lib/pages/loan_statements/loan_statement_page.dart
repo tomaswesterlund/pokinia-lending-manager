@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:logger/logger.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:pokinia_lending_manager/components/buttons/fabs.dart';
+import 'package:pokinia_lending_manager/components/payments/small_payment_list_card.dart';
 import 'package:pokinia_lending_manager/components/status_boxes/payment_status/dot_payment_status_component.dart';
 import 'package:pokinia_lending_manager/components/texts/amounts/primary_amount_text.dart';
 import 'package:pokinia_lending_manager/components/texts/amounts/small_amount_text.dart';
 import 'package:pokinia_lending_manager/components/texts/headers/header_five_text.dart';
 import 'package:pokinia_lending_manager/components/texts/headers/header_four_text.dart';
 import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_two_text.dart';
-import 'package:pokinia_lending_manager/models/payment.dart';
-import 'package:pokinia_lending_manager/pages/clients/new_client_page.dart';
+import 'package:pokinia_lending_manager/enums/payment_status_enum.dart';
+import 'package:pokinia_lending_manager/models/loan_statement.dart';
 import 'package:pokinia_lending_manager/pages/payments/new_payment_page.dart';
-import 'package:pokinia_lending_manager/pages/payments/payment_page.dart';
+import 'package:pokinia_lending_manager/services/loan_service.dart';
 import 'package:pokinia_lending_manager/services/loan_statement_service.dart';
+import 'package:pokinia_lending_manager/services/logger.dart';
 import 'package:pokinia_lending_manager/services/payment_service.dart';
 import 'package:pokinia_lending_manager/util/date_extensions.dart';
 import 'package:pokinia_lending_manager/util/double_extensions.dart';
@@ -27,12 +31,60 @@ class LoanStatementPage extends StatefulWidget {
 }
 
 class _LoanStatementPageState extends State<LoanStatementPage> {
+  final Logger _logger = getLogger('LoanStatementPage');
+
+  void _deleteLoanStatement(LoanStatementService loanStatementService) {
+    _logger.i('_deleteLoanStatement - id: ${widget.loanStatementId}');
+    // Are you sure you want to delete?
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Delete loan statement'),
+          content: const Text(
+              'Are you sure you want to delete this loan statement?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(), // Close the dialog
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () async {
+                // Add your deletion logic here
+                var response = await loanStatementService.deleteLoanStatement(
+                    widget.loanStatementId,
+                    'Deleted by user from loan statement page');
+
+                if (response.succeeded) {
+                  Navigator.of(context).pop();
+                } else {
+                  Fluttertoast.showToast(
+                      msg: response.body!,
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.CENTER,
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: Colors.red,
+                      textColor: Colors.white,
+                      fontSize: 16.0);
+                }
+              },
+              child: const Text('Yes'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Consumer2<LoanStatementService, PaymentService>(
-      builder: (context, loanStatementService, paymentService, _) {
+    return Consumer3<LoanService, LoanStatementService, PaymentService>(
+      builder: (context, loanService, loanStatementService, paymentService, _) {
         var loanStatement =
             loanStatementService.getLoanStatementById(widget.loanStatementId);
+
+        var loan = loanService.getLoanById(loanStatement.id);
 
         var payments =
             paymentService.getPaymentsByLoanStatementId(widget.loanStatementId);
@@ -40,102 +92,14 @@ class _LoanStatementPageState extends State<LoanStatementPage> {
         return Scaffold(
           body: CustomScrollView(
             slivers: [
-              SliverAppBar(
-                title: const Text("Loan Statement"),
-                actions: [
-                  IconButton(
-                    onPressed: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const NewClientPage(),
-                      ),
-                    ),
-                    icon: const Icon(
-                      Icons.delete,
-                      color: Colors.red,
-                    ),
-                  ),
-                ],
-              ),
+              _appBar(loanStatementService, loanStatement),
               MultiSliver(
                 children: [
                   Column(
                     children: [
-                      Padding(
-                        padding:
-                            const EdgeInsets.fromLTRB(32.0, 16.0, 32.0, 32.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Column(
-                              children: [
-                                const HeaderFourText(
-                                    text: 'Remaining amount to be paid'),
-                                PrimaryAmountText(
-                                    text: loanStatement.remainingAmountToBePaid
-                                        .toFormattedCurrency())
-                              ],
-                            )
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 24.0, right: 24.0),
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const HeaderFiveText(
-                                    text: "Payment status",
-                                    fontWeight: FontWeight.normal),
-                                Row(
-                                  children: [
-                                    DotPaymentStatus(
-                                        paymentStatus:
-                                            loanStatement.paymentStatus),
-                                    const SizedBox(width: 5),
-                                    ParagraphTwoText(
-                                        text: loanStatement.paymentStatus.name),
-                                  ],
-                                )
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const HeaderFiveText(
-                                    text: "Interest paid / expected",
-                                    fontWeight: FontWeight.normal),
-                                SmallAmountText(
-                                    text:
-                                        "${loanStatement.interestAmountPaid.toFormattedCurrency()} / ${loanStatement.expectedInterestAmount.toFormattedCurrency()}")
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const HeaderFiveText(
-                                    text: "Principal paid / expected",
-                                    fontWeight: FontWeight.normal),
-                                SmallAmountText(
-                                    text:
-                                        "${loanStatement.principalAmountPaid.toFormattedCurrency()} / ${loanStatement.expectedPrincipalAmount.toFormattedCurrency()}")
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const HeaderFiveText(
-                                    text: "Interest rate",
-                                    fontWeight: FontWeight.normal),
-                                SmallAmountText(
-                                    text: "${loanStatement.interestRate}%")
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
+                      _getDeletedWidget(loanStatement),
+                      _getRemainingAmountWidget(loanStatement),
+                      _getInfoRowsWidget(loanStatement),
                     ],
                   ),
                   const SizedBox(height: 32),
@@ -146,7 +110,7 @@ class _LoanStatementPageState extends State<LoanStatementPage> {
                     delegate: SliverChildBuilderDelegate(
                       (context, index) {
                         final payment = payments[index];
-                        return _paymentListCard(context, payment);
+                        return SmallPaymentListCard(payment: payment);
                       },
                       childCount: payments.length,
                     ),
@@ -172,10 +136,8 @@ class _LoanStatementPageState extends State<LoanStatementPage> {
               builder: (context) => Padding(
                   padding: EdgeInsets.only(
                       bottom: MediaQuery.of(context).viewInsets.bottom),
-                  child: NewPaymentPage(
-                      clientId: loanStatement.clientId,
-                      loanId: loanStatement.loanId,
-                      loanStatementId: loanStatement.id)),
+                  child:
+                      NewPaymentPage(loan: loan, loanStatement: loanStatement)),
             ),
           ),
         );
@@ -183,88 +145,215 @@ class _LoanStatementPageState extends State<LoanStatementPage> {
     );
   }
 
-  Widget _paymentListCard(BuildContext context, Payment payment) {
-    return GestureDetector(
-      onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => PaymentPage(paymentId: payment.id),
-        ),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12.0),
-        child: Container(
-          margin: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: const Color(0xFFF8F8F8),
-            border: Border(
-              bottom: BorderSide(
-                color: Colors.grey[300]!,
+  Widget _appBar(
+      LoanStatementService loanStatementService, LoanStatement loanStatement) {
+    return SliverAppBar(
+      title: const Text("Loan Statement"),
+      actions: [
+        PopupMenuButton<int>(
+          onSelected: (value) async {
+            if (value == 0) {
+              await loanStatementService
+                  .calculateLoanStatementValues(widget.loanStatementId);
+            }
+            if (value == 2) {
+              _deleteLoanStatement(loanStatementService);
+            }
+          },
+          itemBuilder: (context) => [
+            const PopupMenuItem<int>(
+              value: 0,
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Icon(Icons.calculate),
+                      SizedBox(width: 12.0),
+                      Text(
+                        "Recalculate loan statement",
+                      )
+                    ],
+                  ),
+                ],
               ),
             ),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        if (payment.deleted)
-                          const Icon(Icons.delete, color: Colors.red)
-                        else
-                          const Icon(Icons.money)
-                      ],
-                    ),
-                    const SizedBox(width: 16),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const ParagraphTwoText(
-                            text: "Date", fontWeight: FontWeight.bold),
-                        SmallAmountText(text: payment.payDate.toFormattedDate()),
-                      ],
-                    ),
-                    const SizedBox(width: 16),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const ParagraphTwoText(
-                            text: "Interest paid", fontWeight: FontWeight.bold),
-                        SmallAmountText(
-                            text: payment.interestAmountPaid
-                                .toFormattedCurrency()),
-                      ],
-                    ),
-                    const SizedBox(width: 16),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const ParagraphTwoText(
-                            text: "Principal paid",
-                            fontWeight: FontWeight.bold),
-                        SmallAmountText(
-                            text: payment.principalAmountPaid
-                                .toFormattedCurrency()),
-                      ],
-                    ),
-                  ],
-                ),
-                const Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Icon(Icons.arrow_forward_ios),
-                  ],
-                )
-              ],
+            const PopupMenuDivider(),
+            const PopupMenuItem<int>(
+              value: 1,
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Icon(Icons.edit),
+                      SizedBox(width: 12.0),
+                      Text(
+                        "Edit loan statement",
+                      )
+                    ],
+                  ),
+                ],
+              ),
             ),
+            const PopupMenuDivider(),
+            loanStatement.deleted == true
+                ? const PopupMenuItem<int>(
+                    value: 2,
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.delete,
+                              color: Colors.red,
+                            ),
+                            SizedBox(width: 12.0),
+                            Text(
+                              "Delete loan statement",
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
+                  )
+                : const PopupMenuItem<int>(
+                    value: 3,
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.undo,
+                              color: Colors.red,
+                            ),
+                            SizedBox(width: 12.0),
+                            Text(
+                              "Un-delete loan statement",
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
+                  )
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _getDeletedWidget(LoanStatement loanStatement) {
+    if (loanStatement.paymentStatus == PaymentStatus.deleted) {
+      return Padding(
+        padding: const EdgeInsets.fromLTRB(32.0, 16.0, 32.0, 32.0),
+        child: Center(
+          child: Column(
+            children: [
+              const HeaderFourText(
+                text: "This loan statement has been deleted",
+                color: Colors.red,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  const ParagraphTwoText(
+                    text: "Delete date: ",
+                    fontWeight: FontWeight.bold,
+                  ),
+                  ParagraphTwoText(
+                      text: loanStatement.deleteDate!.toFormattedDate()),
+                ],
+              ),
+              const ParagraphTwoText(
+                text: "Delete reason: ",
+                fontWeight: FontWeight.bold,
+              ),
+              ParagraphTwoText(text: loanStatement.deleteReason ?? ''),
+            ],
           ),
         ),
+      );
+    } else {
+      return const SizedBox.shrink();
+    }
+  }
+
+  Widget _getRemainingAmountWidget(LoanStatement loanStatement) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(32.0, 16.0, 32.0, 32.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Column(
+            children: [
+              const HeaderFourText(text: 'Remaining amount to be paid'),
+              PrimaryAmountText(
+                  text: loanStatement.remainingAmountToBePaid
+                      .toFormattedCurrency())
+            ],
+          )
+        ],
       ),
     );
   }
+
+  Widget _getInfoRowsWidget(LoanStatement loanStatement) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 24.0, right: 24.0),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const HeaderFiveText(
+                  text: "Payment status", fontWeight: FontWeight.normal),
+              Row(
+                children: [
+                  DotPaymentStatus(paymentStatus: loanStatement.paymentStatus),
+                  const SizedBox(width: 5),
+                  loanStatement.paymentStatus == PaymentStatus.deleted
+                      ? ParagraphTwoText(
+                          text: loanStatement.paymentStatus.name,
+                          fillColor: Colors.red,
+                        )
+                      : ParagraphTwoText(
+                          text: loanStatement.paymentStatus.name,
+                        ),
+                ],
+              )
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const HeaderFiveText(
+                  text: "Interest paid / expected",
+                  fontWeight: FontWeight.normal),
+              SmallAmountText(
+                  text:
+                      "${loanStatement.interestAmountPaid.toFormattedCurrency()} / ${loanStatement.expectedInterestAmount.toFormattedCurrency()}")
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const HeaderFiveText(
+                  text: "Principal paid / expected",
+                  fontWeight: FontWeight.normal),
+              SmallAmountText(
+                  text:
+                      "${loanStatement.principalAmountPaid.toFormattedCurrency()} / ${loanStatement.expectedPrincipalAmount.toFormattedCurrency()}")
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const HeaderFiveText(
+                  text: "Interest rate", fontWeight: FontWeight.normal),
+              SmallAmountText(text: "${loanStatement.interestRate}%")
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
 }

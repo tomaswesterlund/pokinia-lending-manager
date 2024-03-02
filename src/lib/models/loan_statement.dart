@@ -3,7 +3,7 @@ import 'package:pokinia_lending_manager/enums/payment_status_enum.dart';
 import 'package:pokinia_lending_manager/services/logger.dart';
 import 'package:pokinia_lending_manager/util/string_extensions.dart';
 
-class LoanStatementModel {
+class LoanStatement {
   final Logger _logger = getLogger('LoanStatementModel');
   
   final String id;
@@ -30,7 +30,7 @@ class LoanStatementModel {
   // Calculated
   final PaymentStatus paymentStatus;
 
-  LoanStatementModel({
+  LoanStatement({
     required this.id,
     required this.loanId,
     required this.clientId,
@@ -48,7 +48,7 @@ class LoanStatementModel {
 
   bool get deleted => deleteDate != null;
 
-  LoanStatementModel.fromMap(Map<String, dynamic> map)
+  LoanStatement.fromMap(Map<String, dynamic> map)
       : id = map['id'],
         loanId = map['loan_id'],
         clientId = map['client_id'],
@@ -59,7 +59,7 @@ class LoanStatementModel {
         remainingAmountToBePaid = map['remaining_amount_to_be_paid'].toDouble(),
         interestRate = map['interest_rate'].toDouble(),
         expectedPayDate = map['expected_pay_date'].toString().toDate(),
-        deleteDate = map['delete_date']?.toDate(),
+        deleteDate = map['delete_date']?.toString().toDate(),
         deleteReason = map['delete_reason'],
         paymentStatus = PaymentStatus.fromName(map['payment_status']);
 }

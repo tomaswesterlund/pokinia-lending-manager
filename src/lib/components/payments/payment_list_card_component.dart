@@ -5,14 +5,14 @@ import 'package:pokinia_lending_manager/components/texts/amounts/big_amount_text
 import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_one_text.dart';
 import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_two_text.dart';
 import 'package:pokinia_lending_manager/models/client.dart';
-import 'package:pokinia_lending_manager/models/loan_statement_model.dart';
+import 'package:pokinia_lending_manager/models/loan_statement.dart';
 import 'package:pokinia_lending_manager/pages/loan_statements/loan_statement_page.dart';
 import 'package:pokinia_lending_manager/util/date_extensions.dart';
 import 'package:pokinia_lending_manager/util/double_extensions.dart';
 
 class PaymentListCard extends StatelessWidget {
   final Client client;
-  final LoanStatementModel loanStatement;
+  final LoanStatement loanStatement;
   const PaymentListCard(
       {super.key, required this.client, required this.loanStatement});
 

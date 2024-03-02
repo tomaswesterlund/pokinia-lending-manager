@@ -7,7 +7,7 @@ import 'package:pokinia_lending_manager/models/loan.dart';
 
 class LoanUserStatus extends StatelessWidget {
   final Client client;
-  final LoanModel loan;
+  final Loan loan;
 
   const LoanUserStatus({super.key, required this.client, required this.loan});
 
@@ -16,9 +16,9 @@ class LoanUserStatus extends StatelessWidget {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.fromLTRB(32.0, 32.0, 32.0, 0.0),
+          padding: const EdgeInsets.fromLTRB(32.0, 16.0, 32.0, 0.0),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -30,6 +30,7 @@ class LoanUserStatus extends StatelessWidget {
                   HeaderFourText(text: client.name),
                 ],
               ),
+              const SizedBox(width: 48.0),
               CompactPaymentStatusBox(
                   paymentStatus: loan.paymentStatus)
             ],

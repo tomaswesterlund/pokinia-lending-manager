@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:pokinia_lending_manager/components/buttons/my_fab_with_sub_title.dart';
-import 'package:pokinia_lending_manager/pages/loans/new_loan_page.dart';
+import 'package:pokinia_lending_manager/pages/loans/new/new_loan_page_old.dart';
 
 class AddLoanModal extends StatelessWidget {
   const AddLoanModal({super.key});
@@ -25,7 +25,7 @@ class AddLoanModal extends StatelessWidget {
                   ),
                 ),
                 context: context,
-                builder: (context) => const NewLoanPage(),
+                builder: (context) => const NewLoanPageOld(),
               ),
             },
           ),

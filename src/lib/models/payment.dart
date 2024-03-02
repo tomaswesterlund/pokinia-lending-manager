@@ -4,7 +4,7 @@ class Payment {
   final String id;
   final String clientId;
   final String loanId;
-  final String loanStatementId;
+  final String? loanStatementId;
   final double interestAmountPaid;
   final double principalAmountPaid;
   final DateTime payDate;

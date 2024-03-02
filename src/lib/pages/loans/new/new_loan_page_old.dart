@@ -13,16 +13,16 @@ import 'package:pokinia_lending_manager/util/date_extensions.dart';
 import 'package:pokinia_lending_manager/util/string_extensions.dart';
 import 'package:provider/provider.dart';
 
-class NewLoanPage extends StatefulWidget {
+class NewLoanPageOld extends StatefulWidget {
   final Client? selectedClient;
 
-  const NewLoanPage({super.key, this.selectedClient});
+  const NewLoanPageOld({super.key, this.selectedClient});
 
   @override
-  State<NewLoanPage> createState() => _NewLoanPageState();
+  State<NewLoanPageOld> createState() => _NewLoanPageOldState();
 }
 
-class _NewLoanPageState extends State<NewLoanPage> {
+class _NewLoanPageOldState extends State<NewLoanPageOld> {
   final Logger _logger = getLogger('NewLoanPage');
 
   DateTime _startDate = DateTime.now();
@@ -160,7 +160,7 @@ class _NewLoanPageState extends State<NewLoanPage> {
       padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
       child: ClientListDropdownMenu(
         selectedClient: widget.selectedClient,
-        enabled: !_isProcessing,
+        // enabled: !_isProcessing,
         onClientSelected: onClientSelected,
         controller: _clientController,
       ),

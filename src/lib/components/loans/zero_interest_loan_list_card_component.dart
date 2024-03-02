@@ -6,14 +6,21 @@ import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_on
 import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_two_text.dart';
 import 'package:pokinia_lending_manager/models/client.dart';
 import 'package:pokinia_lending_manager/models/loan.dart';
+import 'package:pokinia_lending_manager/models/loans/zero_interest_loan.dart';
 import 'package:pokinia_lending_manager/pages/loans/loan_page.dart';
+import 'package:pokinia_lending_manager/util/date_extensions.dart';
 import 'package:pokinia_lending_manager/util/double_extensions.dart';
 
-class LoanListCard extends StatelessWidget {
+class ZeroInterestLoanListCard extends StatelessWidget {
   final Client client;
   final Loan loan;
+  final ZeroInterestLoan zeroInterestLoan;
 
-  const LoanListCard({super.key, required this.client, required this.loan});
+  const ZeroInterestLoanListCard(
+      {super.key,
+      required this.client,
+      required this.loan,
+      required this.zeroInterestLoan});
 
   @override
   Widget build(BuildContext context) {
@@ -22,8 +29,7 @@ class LoanListCard extends StatelessWidget {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) =>
-                  LoanPage(loan: loan),
+              builder: (context) => LoanPage(loan: loan),
             ));
       },
       child: Container(
@@ -55,17 +61,25 @@ class LoanListCard extends StatelessWidget {
                         text: client.name, fontWeight: FontWeight.bold),
                   ],
                 ),
+                const Row(
+                  children: [
+                    ParagraphTwoText(
+                        text: "Type: ",
+                        fillColor: Color(0xFF9EA6A7)),
+                    ParagraphTwoText(text: "Zero interest loan", fillColor: Color(0xFF1C2829)),
+                  ],
+                ),
                 Row(
                   children: [
                     const ParagraphTwoText(
-                        text: "Interest: ", fillColor: Color(0xFF9EA6A7)),
+                        text: "Expected pay date: ",
+                        fillColor: Color(0xFF9EA6A7)),
                     ParagraphTwoText(
-                        text: "${loan.initialInterestRate}% ",
+                        text: zeroInterestLoan.expectedPayDate != null
+                            ? zeroInterestLoan.expectedPayDate!
+                                .toFormattedDate()
+                            : "N/A",
                         fillColor: const Color(0xFF1C2829)),
-                    const ParagraphTwoText(
-                        text: "| ", fillColor: Color(0xFF9EA6A7)),
-                    const ParagraphTwoText(
-                        text: "Monthly", fillColor: Color(0xFF1C2829)),
                   ],
                 ),
               ],
@@ -79,7 +93,8 @@ class LoanListCard extends StatelessWidget {
                     children: [
                       const ParagraphTwoText(text: "Remaining"),
                       BigAmountText(
-                          text: loan.remainingPrincipalAmount.toFormattedCurrency())
+                          text: zeroInterestLoan.remainingPrincipalAmount
+                              .toFormattedCurrency())
                     ],
                   ),
                 ],

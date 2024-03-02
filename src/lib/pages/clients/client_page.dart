@@ -14,11 +14,10 @@ import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_tw
 import 'package:pokinia_lending_manager/models/client.dart';
 import 'package:pokinia_lending_manager/models/loan.dart';
 import 'package:pokinia_lending_manager/pages/loans/loan_page.dart';
-import 'package:pokinia_lending_manager/pages/loans/new_loan_page.dart';
+import 'package:pokinia_lending_manager/pages/loans/new/new_loan_page_old.dart';
 import 'package:pokinia_lending_manager/services/client_service.dart';
 import 'package:pokinia_lending_manager/services/loan_service.dart';
 import 'package:pokinia_lending_manager/services/logger.dart';
-import 'package:pokinia_lending_manager/util/double_extensions.dart';
 import 'package:provider/provider.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
@@ -91,7 +90,7 @@ class ClientPage extends StatelessWidget {
                     builder: (context) => Padding(
                       padding: EdgeInsets.only(
                           bottom: MediaQuery.of(context).viewInsets.bottom),
-                      child: NewLoanPage(selectedClient: client),
+                      child: NewLoanPageOld(selectedClient: client),
                     ),
                   )),
         );
@@ -176,7 +175,7 @@ class ClientPage extends StatelessWidget {
   }
 
   Widget _getLoansWidget(
-      BuildContext context, Client client, List<LoanModel> loans) {
+      BuildContext context, Client client, List<Loan> loans) {
     try {
       if (loans.isEmpty) {
         return Column(
@@ -213,13 +212,13 @@ class ClientPage extends StatelessWidget {
 }
 
 Widget _getLoanListCard(
-    BuildContext context, Client client, LoanModel loan) {
+    BuildContext context, Client client, Loan loan) {
   return GestureDetector(
     onTap: () => Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) =>
-                LoanPage(clientId: client.id, loanId: loan.id))),
+                LoanPage(loan: loan))),
     child: Padding(
       padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
       child: Container(
@@ -242,9 +241,9 @@ Widget _getLoanListCard(
                   SquaredPaymentStatusBoxComponent(
                       paymentStatus: loan.paymentStatus),
                   const SizedBox(width: 20),
-                  BigAmountText(
+                  const BigAmountText(
                       text:
-                          loan.remainingPrincipalAmount.toFormattedCurrency()),
+                          "-1"),
                 ],
               ),
               const Icon(Icons.arrow_forward_ios),

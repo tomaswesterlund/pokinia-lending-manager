@@ -83,12 +83,14 @@ class PaymentsPage extends StatelessWidget {
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         (context, index) {
-          var payment = paymentService.getRecentlyPaidPayments()[index];
-          var loneStatement = loanStatementService
-              .getLoanStatementById(payment.loanStatementId);
-          var client = clientService.getClientById(payment.clientId);
+          // var payment = paymentService.getRecentlyPaidPayments()[index];
+          // var loneStatement = loanStatementService
+          //     .getLoanStatementById(payment.loanStatementId!);
+          // var client = clientService.getClientById(payment.clientId);
 
-          return PaymentListCard(client: client, loanStatement: loneStatement);
+          // return PaymentListCard(client: client, loanStatement: loneStatement);
+
+          return const Text("Not implemented!");
         },
         childCount: paymentService.getRecentlyPaidPayments().length,
       ),

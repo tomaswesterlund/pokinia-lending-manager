@@ -11,7 +11,7 @@ import 'package:pokinia_lending_manager/util/string_extensions.dart';
 import 'package:provider/provider.dart';
 
 class LoanSummary extends StatelessWidget {
-  final LoanModel loan;
+  final Loan loan;
   const LoanSummary({super.key, required this.loan});
 
   @override
@@ -92,7 +92,7 @@ class InterestRateComponent extends StatefulWidget {
     required this.loan,
   });
 
-  final LoanModel loan;
+  final Loan loan;
 
   @override
   State<InterestRateComponent> createState() => _InterestRateComponentState();

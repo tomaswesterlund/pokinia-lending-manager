@@ -148,7 +148,7 @@ class BasePaymentStatusBox extends StatelessWidget {
       case PaymentStatus.overdue:
         return const Color(0xFFEB5857);
       case PaymentStatus.deleted:
-        return Colors.transparent;
+        return const Color(0xFFEB5857);
       case PaymentStatus.unknown:
         return const Color(0xFF57878B);
       case PaymentStatus.empty:
@@ -192,7 +192,7 @@ class BasePaymentStatusBox extends StatelessWidget {
 
   Color _getIconColor() {
     if (paymentStatus == PaymentStatus.deleted) {
-      return Colors.grey;
+      return Colors.white;
     } else {
       return Colors.white;
     }

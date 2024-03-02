@@ -3,33 +3,34 @@ import 'dart:io';
 import 'package:circular_image/circular_image.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:logger/logger.dart';
 import 'package:pokinia_lending_manager/components/buttons/my_cta_button.dart';
 import 'package:pokinia_lending_manager/components/input/my_text_form_field.dart';
 import 'package:pokinia_lending_manager/components/overlays.dart';
 import 'package:pokinia_lending_manager/components/texts/headers/header_five_text.dart';
 import 'package:pokinia_lending_manager/components/texts/headers/header_four_text.dart';
+import 'package:pokinia_lending_manager/enums/loan_types.dart';
+import 'package:pokinia_lending_manager/models/loan.dart';
+import 'package:pokinia_lending_manager/models/loan_statement.dart';
 import 'package:pokinia_lending_manager/services/image_picker_service.dart';
+import 'package:pokinia_lending_manager/services/logger.dart';
 import 'package:pokinia_lending_manager/services/payment_service.dart';
 import 'package:pokinia_lending_manager/services/receipt_service.dart';
 import 'package:pokinia_lending_manager/util/string_extensions.dart';
 import 'package:provider/provider.dart';
 
 class NewPaymentPage extends StatefulWidget {
-  final String clientId;
-  final String loanId;
-  final String loanStatementId;
+  final Loan loan;
+  final LoanStatement? loanStatement;
 
-  const NewPaymentPage(
-      {super.key,
-      required this.clientId,
-      required this.loanId,
-      required this.loanStatementId});
+  const NewPaymentPage({super.key, required this.loan, this.loanStatement});
 
   @override
   State<NewPaymentPage> createState() => _NewPaymentPageState();
 }
 
 class _NewPaymentPageState extends State<NewPaymentPage> {
+  final Logger _logger = getLogger('NewPaymentPage');
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _interestAmountPaidController =
       TextEditingController();
@@ -50,32 +51,33 @@ class _NewPaymentPageState extends State<NewPaymentPage> {
         urlDownload = await ReceiptService().uploadReceipt(_selectedImage!);
       }
 
-      paymentService
-          .createPayment(
-              clientId: widget.clientId,
-              loanId: widget.loanId,
-              loanStatementId: widget.loanStatementId,
-              interestAmountPaid:
-                  double.parse(_interestAmountPaidController.text),
-              principalAmountPaid:
-                  double.parse(_principalAmountPaidController.text),
-              date: DateTime.now(),
-              receiptImagePath: urlDownload)
-          .then(
-        (value) {
-          if (value.statusCode == 200) {
-            setOnProcessing(false);
-            Navigator.pop(context);
-          } else {
-            setOnProcessing(false);
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text("Please validate your input!"),
-              ),
-            );
-          }
-        },
-      );
+      if (widget.loan.type == LoanTypes.zeroInterestLoan) {
+        paymentService
+            .createPaymentForZeroInterestLoan(
+                clientId: widget.loan.clientId,
+                loanId: widget.loan.id,
+                principalAmountPaid:
+                    double.parse(_principalAmountPaidController.text),
+                date: DateTime.now(),
+                receiptImagePath: urlDownload)
+            .then(
+          (response) {
+            if (response.succeeded) {
+              setOnProcessing(false);
+              Navigator.pop(context);
+            } else {
+              _logger.e(response.body.toString());
+              setOnProcessing(false);
+              
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text("Please validate your input!"),
+                ),
+              );
+            }
+          },
+        );
+      }
     }
   }
 
@@ -104,19 +106,23 @@ class _NewPaymentPageState extends State<NewPaymentPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          _getHeaderWidget(),
-          _getImagePickerWidget(),
-          _getInterestAmountWidget(),
-          _getPrincipalAmountWidget(),
-          _getAddPaymentButtonWidget()
-        ],
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Add payment'),
       ),
-    );
+      body: Form(
+        key: _formKey,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _getImagePickerWidget(),
+            _getInterestAmountWidget(),
+            _getPrincipalAmountWidget(),
+            _getAddPaymentButtonWidget()
+          ],
+        ),
+      ),
+    );  
   }
 
   Widget _getHeaderWidget() {
@@ -199,6 +205,7 @@ class _NewPaymentPageState extends State<NewPaymentPage> {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
       child: MyTextFormField(
+          keyboardType: TextInputType.number,
           enabled: !_isProcessing,
           labelText: "Interest amount paid",
           validator: (value) {
@@ -219,6 +226,7 @@ class _NewPaymentPageState extends State<NewPaymentPage> {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
       child: MyTextFormField(
+          keyboardType: TextInputType.number,
           enabled: !_isProcessing,
           labelText: "Principal amount paid",
           validator: (value) {
