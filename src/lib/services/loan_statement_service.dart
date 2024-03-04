@@ -1,8 +1,8 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:pokinia_lending_manager/enums/payment_status_enum.dart';
-import 'package:pokinia_lending_manager/models/loan_statement.dart';
-import 'package:pokinia_lending_manager/models/repsonse.dart';
+import 'package:pokinia_lending_manager/models/data/loan_statement.dart';
+import 'package:pokinia_lending_manager/models/data/repsonse.dart';
 import 'package:pokinia_lending_manager/services/logger.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 

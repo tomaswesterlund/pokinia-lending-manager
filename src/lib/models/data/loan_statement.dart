@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:logger/logger.dart';
 import 'package:pokinia_lending_manager/enums/payment_status_enum.dart';
 import 'package:pokinia_lending_manager/services/logger.dart';
@@ -5,7 +7,7 @@ import 'package:pokinia_lending_manager/util/string_extensions.dart';
 
 class LoanStatement {
   final Logger _logger = getLogger('LoanStatementModel');
-  
+
   final String id;
   final String loanId;
   final String clientId;
@@ -19,9 +21,7 @@ class LoanStatement {
   // final DateTime? actualPayDate;
   final double interestAmountPaid;
   final double principalAmountPaid;
-  final double remainingAmountToBePaid;
   final double interestRate;
-
 
   // Deleted
   final DateTime? deleteDate;
@@ -29,6 +29,13 @@ class LoanStatement {
 
   // Calculated
   final PaymentStatus paymentStatus;
+
+  double get remainingAmountToBePaid {
+    var i = max(0, expectedInterestAmount - interestAmountPaid);
+    var p = max(0, expectedPrincipalAmount - principalAmountPaid);
+
+    return (i + p).toDouble();
+  }
 
   LoanStatement({
     required this.id,
@@ -38,7 +45,7 @@ class LoanStatement {
     required this.expectedPrincipalAmount,
     required this.interestAmountPaid,
     required this.principalAmountPaid,
-    required this.remainingAmountToBePaid,
+    //required this.remainingAmountToBePaid,
     required this.interestRate,
     required this.expectedPayDate,
     required this.deleteDate,
@@ -56,7 +63,7 @@ class LoanStatement {
         expectedPrincipalAmount = map['expected_principal_amount'].toDouble(),
         interestAmountPaid = map['interest_amount_paid'].toDouble(),
         principalAmountPaid = map['principal_amount_paid'].toDouble(),
-        remainingAmountToBePaid = map['remaining_amount_to_be_paid'].toDouble(),
+        //remainingAmountToBePaid = map['remaining_amount_to_be_paid'].toDouble(),
         interestRate = map['interest_rate'].toDouble(),
         expectedPayDate = map['expected_pay_date'].toString().toDate(),
         deleteDate = map['delete_date']?.toString().toDate(),

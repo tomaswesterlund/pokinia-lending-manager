@@ -1,4 +1,4 @@
-import 'package:pokinia_lending_manager/models/client.dart';
+import 'package:pokinia_lending_manager/models/data/client.dart';
 
 class NewOpenEndedLoanParameters {
   Client? client;

@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:logger/logger.dart';
-import 'package:pokinia_lending_manager/models/payment.dart';
-import 'package:pokinia_lending_manager/models/repsonse.dart';
+import 'package:pokinia_lending_manager/models/data/payment.dart';
+import 'package:pokinia_lending_manager/models/data/repsonse.dart';
 import 'package:pokinia_lending_manager/services/logger.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -22,6 +22,7 @@ class PaymentService extends ChangeNotifier {
       _payments
         ..clear()
         ..addAll(loans);
+
       notifyListeners();
     });
   }
@@ -99,6 +100,39 @@ class PaymentService extends ChangeNotifier {
       };
 
       await supabase.from('payments').insert(values);
+
+      return Response.success();
+    } catch (e) {
+      _logger.e('Error adding payment: $e');
+      return Response.error(e.toString());
+    }
+  }
+
+  Future<Response> createPaymentForOpenEndedLoan(
+      {required String clientId,
+      required String loanId,
+      required String loanStatementId,
+      required double interestAmountPaid,
+      required double principalAmountPaid,
+      required DateTime date,
+      required String receiptImagePath}) async {
+    try {
+      _logger.i(
+          'createPaymentForOpenEndedLoan: Adding payment with clientId: $clientId, loanId: $loanId, principalAmountPaid: $principalAmountPaid, date: $date, receiptImagePath: $receiptImagePath');
+
+      var values = {
+        'v_client_id': clientId,
+        'v_loan_id': loanId,
+        'v_loan_statement_id': loanStatementId,
+        'v_interest_amount_paid': interestAmountPaid.toString(),
+        'v_principal_amount_paid': principalAmountPaid.toString(),
+        'v_pay_date': date.toIso8601String(),
+        'v_receipt_image_path': receiptImagePath,
+      };
+
+      await supabase.rpc('create_payment_for_open_ended_loan', params: values);
+
+      notifyListeners();
 
       return Response.success();
     } catch (e) {

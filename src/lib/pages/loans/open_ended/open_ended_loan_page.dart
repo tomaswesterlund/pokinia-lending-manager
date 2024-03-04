@@ -8,7 +8,7 @@ import 'package:pokinia_lending_manager/components/texts/amounts/small_amount_te
 import 'package:pokinia_lending_manager/components/texts/headers/header_four_text.dart';
 import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_one_text.dart';
 import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_two_text.dart';
-import 'package:pokinia_lending_manager/models/loan.dart';
+import 'package:pokinia_lending_manager/models/data/loan.dart';
 import 'package:pokinia_lending_manager/pages/loan_statements/loan_statement_page.dart';
 import 'package:pokinia_lending_manager/services/client_service.dart';
 import 'package:pokinia_lending_manager/services/loan_service.dart';

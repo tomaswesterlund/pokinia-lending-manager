@@ -4,8 +4,8 @@ import 'package:pokinia_lending_manager/components/status_boxes/payment_status/d
 import 'package:pokinia_lending_manager/components/texts/amounts/big_amount_text.dart';
 import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_one_text.dart';
 import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_two_text.dart';
-import 'package:pokinia_lending_manager/models/client.dart';
-import 'package:pokinia_lending_manager/models/loan_statement.dart';
+import 'package:pokinia_lending_manager/models/data/client.dart';
+import 'package:pokinia_lending_manager/models/data/loan_statement.dart';
 import 'package:pokinia_lending_manager/pages/loan_statements/loan_statement_page.dart';
 import 'package:pokinia_lending_manager/util/date_extensions.dart';
 import 'package:pokinia_lending_manager/util/double_extensions.dart';

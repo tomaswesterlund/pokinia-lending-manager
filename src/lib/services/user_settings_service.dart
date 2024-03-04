@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:logger/logger.dart';
-import 'package:pokinia_lending_manager/models/user_settings.dart';
+import 'package:pokinia_lending_manager/models/data/user_settings.dart';
 import 'package:pokinia_lending_manager/services/logger.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 

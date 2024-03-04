@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pokinia_lending_manager/components/payments/empty_payment_list_component.dart';
 import 'package:pokinia_lending_manager/components/texts/amounts/small_amount_text.dart';
 import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_two_text.dart';
-import 'package:pokinia_lending_manager/models/payment.dart';
+import 'package:pokinia_lending_manager/models/data/payment.dart';
 import 'package:pokinia_lending_manager/pages/payments/payment_page.dart';
 import 'package:pokinia_lending_manager/services/payment_service.dart';
 import 'package:pokinia_lending_manager/util/date_extensions.dart';

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:pokinia_lending_manager/models/loan.dart';
-import 'package:pokinia_lending_manager/models/loans/new_open_ended_loan_parameters.dart';
-import 'package:pokinia_lending_manager/models/loans/open_ended_loan.dart';
-import 'package:pokinia_lending_manager/models/loans/zero_interest_loan.dart';
-import 'package:pokinia_lending_manager/models/repsonse.dart';
+import 'package:pokinia_lending_manager/models/data/loan.dart';
+import 'package:pokinia_lending_manager/models/data/loans/new_open_ended_loan_parameters.dart';
+import 'package:pokinia_lending_manager/models/data/loans/open_ended_loan.dart';
+import 'package:pokinia_lending_manager/models/data/loans/zero_interest_loan.dart';
+import 'package:pokinia_lending_manager/models/data/repsonse.dart';
 import 'package:pokinia_lending_manager/services/logger.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -146,4 +146,20 @@ class LoanService extends ChangeNotifier {
       return Response.error(e.toString());
     }
   }
+
+  // double getRemainingAmount(String loanId) {
+  //   var loan = getLoanById(loanId);
+
+  //   if (loan.type == LoanTypes.openEndedLoan) {
+  //     var openEndedLoan = getOpenEndedLoanByLoanId(loan.id);
+
+  //     // We need to get Loan Statements and loop over them as well
+  //     return -1;
+  //   } else if (loan.type == LoanTypes.zeroInterestLoan) {
+  //     var zeroInterestLoan = getZeroInterestLoanByLoanId(loan.id);
+  //     return zeroInterestLoan.principalAmountRemaining;
+  //   } else {
+  //     throw Exception('Loan type not supported');
+  //   }
+  // }
 }

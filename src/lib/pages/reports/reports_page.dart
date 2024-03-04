@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pokinia_lending_manager/components/my_drawer.dart';
 import 'package:pokinia_lending_manager/components/texts/headers/header_two_text.dart';
 
 class ReportsPage extends StatelessWidget {
@@ -13,6 +14,9 @@ class ReportsPage extends StatelessWidget {
       body: const Center(
         child: Text("Report page"),
       ),
+      endDrawer:  Drawer(
+        child: MyDrawer(),
+      )
     );
   }
 }

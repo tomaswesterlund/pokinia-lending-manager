@@ -11,8 +11,8 @@ import 'package:pokinia_lending_manager/components/texts/headers/header_three_te
 import 'package:pokinia_lending_manager/components/texts/headers/header_two_text.dart';
 import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_one_text.dart';
 import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_two_text.dart';
-import 'package:pokinia_lending_manager/models/client.dart';
-import 'package:pokinia_lending_manager/models/loan.dart';
+import 'package:pokinia_lending_manager/models/data/client.dart';
+import 'package:pokinia_lending_manager/models/data/loan.dart';
 import 'package:pokinia_lending_manager/pages/loans/loan_page.dart';
 import 'package:pokinia_lending_manager/pages/loans/selector/new_loan_page_old.dart';
 import 'package:pokinia_lending_manager/services/client_service.dart';
@@ -211,14 +211,10 @@ class ClientPage extends StatelessWidget {
   }
 }
 
-Widget _getLoanListCard(
-    BuildContext context, Client client, Loan loan) {
+Widget _getLoanListCard(BuildContext context, Client client, Loan loan) {
   return GestureDetector(
     onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) =>
-                LoanPage(loan: loan))),
+        context, MaterialPageRoute(builder: (context) => LoanPage(loan: loan))),
     child: Padding(
       padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
       child: Container(
@@ -241,9 +237,7 @@ Widget _getLoanListCard(
                   SquaredPaymentStatusBoxComponent(
                       paymentStatus: loan.paymentStatus),
                   const SizedBox(width: 20),
-                  const BigAmountText(
-                      text:
-                          "-1"),
+                  const BigAmountText(text: "-1"),
                 ],
               ),
               const Icon(Icons.arrow_forward_ios),

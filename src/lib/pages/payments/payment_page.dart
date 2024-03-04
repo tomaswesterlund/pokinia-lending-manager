@@ -6,7 +6,7 @@ import 'package:pokinia_lending_manager/components/texts/amounts/primary_amount_
 import 'package:pokinia_lending_manager/components/texts/amounts/small_amount_text.dart';
 import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_one_text.dart';
 import 'package:pokinia_lending_manager/components/texts/paragraphs/red_paragraph_one_regular_text.dart';
-import 'package:pokinia_lending_manager/models/payment.dart';
+import 'package:pokinia_lending_manager/models/data/payment.dart';
 import 'package:pokinia_lending_manager/services/logger.dart';
 import 'package:pokinia_lending_manager/services/payment_service.dart';
 import 'package:pokinia_lending_manager/util/date_extensions.dart';

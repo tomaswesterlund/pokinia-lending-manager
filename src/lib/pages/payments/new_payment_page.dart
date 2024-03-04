@@ -10,8 +10,9 @@ import 'package:pokinia_lending_manager/components/overlays.dart';
 import 'package:pokinia_lending_manager/components/texts/headers/header_five_text.dart';
 import 'package:pokinia_lending_manager/components/texts/headers/header_four_text.dart';
 import 'package:pokinia_lending_manager/enums/loan_types.dart';
-import 'package:pokinia_lending_manager/models/loan.dart';
-import 'package:pokinia_lending_manager/models/loan_statement.dart';
+import 'package:pokinia_lending_manager/models/data/loan.dart';
+import 'package:pokinia_lending_manager/models/data/loan_statement.dart';
+import 'package:pokinia_lending_manager/models/data/repsonse.dart';
 import 'package:pokinia_lending_manager/services/image_picker_service.dart';
 import 'package:pokinia_lending_manager/services/logger.dart';
 import 'package:pokinia_lending_manager/services/payment_service.dart';
@@ -62,31 +63,41 @@ class _NewPaymentPageState extends State<NewPaymentPage> {
         urlDownload = await ReceiptService().uploadReceipt(_selectedImage!);
       }
 
-      if (widget.loan.type == LoanTypes.zeroInterestLoan) {
-        paymentService
-            .createPaymentForZeroInterestLoan(
-                clientId: widget.loan.clientId,
-                loanId: widget.loan.id,
-                principalAmountPaid:
-                    double.parse(_principalAmountPaidController.text),
-                date: DateTime.now(),
-                receiptImagePath: urlDownload)
-            .then(
-          (response) {
-            if (response.succeeded) {
-              setOnProcessing(false);
-              Navigator.pop(context);
-            } else {
-              _logger.e(response.body.toString());
-              setOnProcessing(false);
+      Response? response;
 
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text("Please validate your input!"),
-                ),
-              );
-            }
-          },
+      if (widget.loan.type == LoanTypes.openEndedLoan) {
+        response = await paymentService.createPaymentForOpenEndedLoan(
+            clientId: widget.loan.clientId,
+            loanId: widget.loan.id,
+            loanStatementId: widget.loanStatement!.id,
+            principalAmountPaid:
+                double.parse(_principalAmountPaidController.text),
+            interestAmountPaid:
+                double.parse(_interestAmountPaidController.text),
+            date: DateTime.now(),
+            receiptImagePath: urlDownload);
+      } else if (widget.loan.type == LoanTypes.zeroInterestLoan) {
+        response = await paymentService.createPaymentForZeroInterestLoan(
+            clientId: widget.loan.clientId,
+            loanId: widget.loan.id,
+            principalAmountPaid:
+                double.parse(_principalAmountPaidController.text),
+            date: DateTime.now(),
+            receiptImagePath: urlDownload);
+      }
+
+      setOnProcessing(false);
+
+      if (response!.succeeded) {
+        Navigator.pop(context);
+      } else {
+        _logger.e(response.body.toString());
+        setOnProcessing(false);
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Please validate your input!"),
+          ),
         );
       }
     }

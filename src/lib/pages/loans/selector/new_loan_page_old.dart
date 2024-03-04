@@ -6,7 +6,7 @@ import 'package:pokinia_lending_manager/components/input/my_text_form_field.dart
 import 'package:pokinia_lending_manager/components/overlays.dart';
 import 'package:pokinia_lending_manager/components/texts/headers/header_four_text.dart';
 import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_one_text.dart';
-import 'package:pokinia_lending_manager/models/client.dart';
+import 'package:pokinia_lending_manager/models/data/client.dart';
 import 'package:pokinia_lending_manager/services/loan_service.dart';
 import 'package:pokinia_lending_manager/services/logger.dart';
 import 'package:pokinia_lending_manager/util/date_extensions.dart';

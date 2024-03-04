@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pokinia_lending_manager/components/avatars/my_avatar_component.dart';
 import 'package:pokinia_lending_manager/components/status_boxes/payment_status/compact_payment_status_box_component.dart';
 import 'package:pokinia_lending_manager/components/texts/headers/header_four_text.dart';
-import 'package:pokinia_lending_manager/models/client.dart';
+import 'package:pokinia_lending_manager/models/data/client.dart';
 import 'package:pokinia_lending_manager/pages/clients/client_page.dart';
 
 class ClientList extends StatelessWidget {

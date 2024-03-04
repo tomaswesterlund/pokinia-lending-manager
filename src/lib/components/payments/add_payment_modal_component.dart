@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:pokinia_lending_manager/components/buttons/my_cta_button.dart';
-import 'package:pokinia_lending_manager/models/loan_statement.dart';
+import 'package:pokinia_lending_manager/models/data/loan_statement.dart';
 
 class AddPaymentModal extends StatefulWidget {
   final LoanStatement loanStatement;

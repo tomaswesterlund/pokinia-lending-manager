@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pokinia_lending_manager/models/customer.dart';
+import 'package:pokinia_lending_manager/models/data/customer.dart';
 import 'package:pokinia_lending_manager/services/logger.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 

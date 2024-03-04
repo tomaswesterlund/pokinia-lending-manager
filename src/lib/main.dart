@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pokinia_lending_manager/pages/auth/auth_page.dart';
+import 'package:pokinia_lending_manager/pages/loans/loans_page.dart';
 import 'package:pokinia_lending_manager/services/client_service.dart';
 import 'package:pokinia_lending_manager/services/customer_service.dart';
 import 'package:pokinia_lending_manager/services/loan_service.dart';
@@ -19,13 +20,13 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   // SUPABASE
   await Supabase.initialize(
-      url: 'https://gjgdunpydpudivcfohxv.supabase.co',
-      anonKey:
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdqZ2R1bnB5ZHB1ZGl2Y2ZvaHh2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDg2ODk0MDAsImV4cCI6MjAyNDI2NTQwMH0.E92dy2RI0h4kgJxTZOTuAIICPKhXGKy2Fk2QZgGDjNM',
-    );
+    url: 'https://gjgdunpydpudivcfohxv.supabase.co',
+    anonKey:
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdqZ2R1bnB5ZHB1ZGl2Y2ZvaHh2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDg2ODk0MDAsImV4cCI6MjAyNDI2NTQwMH0.E92dy2RI0h4kgJxTZOTuAIICPKhXGKy2Fk2QZgGDjNM',
+  );
 
   // if (kDebugMode) {
   //   await Supabase.initialize(
@@ -40,8 +41,6 @@ void main() async {
   //         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdqZ2R1bnB5ZHB1ZGl2Y2ZvaHh2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDg2ODk0MDAsImV4cCI6MjAyNDI2NTQwMH0.E92dy2RI0h4kgJxTZOTuAIICPKhXGKy2Fk2QZgGDjNM',
   //   );
   // }
-
-
 
   runApp(MultiProvider(
     providers: [
@@ -64,11 +63,17 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Pokinia Lending Manager',
+      initialRoute: '/auth',
+      routes: {
+        '/auth': (context) => const AuthPage(),
+        '/loans':(context) => const LoansPage(),
+      },
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const AuthPage(),
+
+      //home: const AuthPage(),
     );
   }
 }

@@ -4,7 +4,7 @@ import 'package:pokinia_lending_manager/components/client/client_list_dropdown_m
 import 'package:pokinia_lending_manager/components/input/interest_rate_form_field.dart';
 import 'package:pokinia_lending_manager/components/input/principal_amount_form_field.dart';
 import 'package:pokinia_lending_manager/components/input/select_date_input.dart';
-import 'package:pokinia_lending_manager/models/loans/new_open_ended_loan_parameters.dart';
+import 'package:pokinia_lending_manager/models/data/loans/new_open_ended_loan_parameters.dart';
 import 'package:pokinia_lending_manager/services/loan_service.dart';
 import 'package:provider/provider.dart';
 
@@ -22,9 +22,13 @@ class _NewOpenEndedLoanPageState extends State<NewOpenEndedLoanPage> {
   final TextEditingController _principalAmountController =
       TextEditingController();
   final TextEditingController _interestRateController = TextEditingController();
-  // final TextEditingController _generateLoanStatementsIntoTheFutureController =
-  //     TextEditingController();
   final bool _isProcessing = false;
+
+  @override
+  void initState() {
+    widget.params.startDate = DateTime.now();
+    super.initState();
+  }
 
   void _onClientSelected(client) {
     widget.params.client = client;
@@ -43,7 +47,18 @@ class _NewOpenEndedLoanPageState extends State<NewOpenEndedLoanPage> {
       widget.params.interestRate = double.parse(_interestRateController.text);
       widget.params.generateLoanStatementsIntoTheFuture = 6;
 
-      await loanService.createOpenEndedLoan(widget.params);
+      var response = await loanService.createOpenEndedLoan(widget.params);
+
+      if (response.succeeded) {
+        // RE-DO - Implement routes!
+        Navigator.pop(context);
+        Navigator.pop(context);
+        Navigator.pop(context);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(response.body!)),
+        );
+      }
     }
   }
 
@@ -93,7 +108,8 @@ class _NewOpenEndedLoanPageState extends State<NewOpenEndedLoanPage> {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20, 20, 20, 40),
                     child: MyCtaButton(
-                        text: "Create loan", onPressed: () => _createLoan(loanService)),
+                        text: "Create loan",
+                        onPressed: () => _createLoan(loanService)),
                   ),
 
                   // Payment table preview

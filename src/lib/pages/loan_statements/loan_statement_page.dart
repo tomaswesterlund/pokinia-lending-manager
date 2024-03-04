@@ -11,7 +11,7 @@ import 'package:pokinia_lending_manager/components/texts/headers/header_five_tex
 import 'package:pokinia_lending_manager/components/texts/headers/header_four_text.dart';
 import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_two_text.dart';
 import 'package:pokinia_lending_manager/enums/payment_status_enum.dart';
-import 'package:pokinia_lending_manager/models/loan_statement.dart';
+import 'package:pokinia_lending_manager/models/data/loan_statement.dart';
 import 'package:pokinia_lending_manager/pages/payments/new_payment_page.dart';
 import 'package:pokinia_lending_manager/services/loan_service.dart';
 import 'package:pokinia_lending_manager/services/loan_statement_service.dart';

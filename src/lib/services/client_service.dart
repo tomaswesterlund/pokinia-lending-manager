@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
-import 'package:pokinia_lending_manager/models/client.dart';
-import 'package:pokinia_lending_manager/models/repsonse.dart';
+import 'package:pokinia_lending_manager/models/data/client.dart';
+import 'package:pokinia_lending_manager/models/data/repsonse.dart';
 import 'package:pokinia_lending_manager/services/logger.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 

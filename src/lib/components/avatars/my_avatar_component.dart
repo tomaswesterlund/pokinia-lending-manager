@@ -1,6 +1,6 @@
 import 'package:circular_profile_avatar/circular_profile_avatar.dart';
 import 'package:flutter/material.dart';
-import 'package:pokinia_lending_manager/models/client.dart';
+import 'package:pokinia_lending_manager/models/data/client.dart';
 import 'package:pokinia_lending_manager/services/avatar_service.dart';
 import 'package:pokinia_lending_manager/util/string_extensions.dart';
 

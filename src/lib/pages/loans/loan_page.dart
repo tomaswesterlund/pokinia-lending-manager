@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pokinia_lending_manager/enums/loan_types.dart';
-import 'package:pokinia_lending_manager/models/loan.dart';
+import 'package:pokinia_lending_manager/models/data/loan.dart';
 import 'package:pokinia_lending_manager/pages/loans/open_ended/open_ended_loan_page.dart';
 import 'package:pokinia_lending_manager/pages/loans/zero_interest/zero_interest_loan_page.dart';
 
@@ -11,7 +11,7 @@ class LoanPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (loan.type == LoanTypes.zeroInterestLoan) {
-      return ZeroInterestLoanPage(loan: loan);
+      return ZeroInterestLoanPage(loanId: loan.id);
     } else if (loan.type == LoanTypes.openEndedLoan) {
       return OpenEndedLoanPage(loan: loan);
     } 
