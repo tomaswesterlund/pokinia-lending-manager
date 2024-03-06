@@ -27,12 +27,11 @@ class OpenEndedLoanPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-    
       body: Consumer4<ClientService, LoanService, LoanStatementService,
           PaymentService>(
         builder: (context, clientService, loanService, loanStatementService,
             paymentService, _) {
-              var loan = loanService.getLoanById(loanId);
+          var loan = loanService.getLoanById(loanId);
           var openEndedLoan = loanService.getOpenEndedLoanByLoanId(loan.id);
           var loanStatements =
               loanStatementService.getLoanStatementsByLoanId(loan.id);
@@ -138,81 +137,161 @@ class OpenEndedLoanPage extends StatelessWidget {
                 itemBuilder: (context, index) {
                   var loanStatement = loanStatements[index];
 
-                  return GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => LoanStatementPage(
-                              loanStatementId: loanStatement.id),
-                        ),
-                      );
-                    },
-                    child: Container(
-                      margin: const EdgeInsets.all(10),
-                      padding: const EdgeInsets.all(10),
-                      // height: 50,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: const Color(0xFFF8F8F8),
-                        border: Border(
-                          bottom: BorderSide(
-                            color: Colors.grey[300]!,
+                  if (loanStatement.paymentStatus == PaymentStatus.prompt) {
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => LoanStatementPage(
+                                loanStatementId: loanStatement.id),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(10),
+                        // height: 50,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: const Color(0xFFF8F8F8),
+                          border: Border(
+                            bottom: BorderSide(
+                              color: Colors.grey[300]!,
+                            ),
                           ),
                         ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            const SizedBox(width: 15),
+                            CompactPaymentStatusBox(
+                                paymentStatus: loanStatement.paymentStatus),
+                            const SizedBox(width: 12),
+                            Column(
+                              //crossAxisAlignment: CrossAxisAlignment.baseline,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    const ParagraphTwoText(
+                                        text: 'Expected pay date',
+                                        fontWeight: FontWeight.normal),
+                                    SmallAmountText.withText(
+                                        text: loanStatement.expectedPayDate
+                                            .toFormattedDate()),
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const ParagraphTwoText(
+                                        text: 'Principal paid'),
+                                    SmallAmountText.withText(
+                                        text: loanStatement.principalAmountPaid
+                                            .toFormattedCurrency()),
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const ParagraphTwoText(
+                                        text: 'Paid interests'),
+                                    SmallAmountText.withText(
+                                        text: loanStatement.interestAmountPaid
+                                            .toFormattedCurrency()),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            const Spacer(),
+                            const Icon(Icons.arrow_forward_ios)
+                          ],
+                        ),
                       ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          const SizedBox(width: 15),
-                          CompactPaymentStatusBox(
-                              paymentStatus: loanStatement.paymentStatus),
-                          const SizedBox(width: 12),
-                          Column(
-                            //crossAxisAlignment: CrossAxisAlignment.baseline,
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  const ParagraphTwoText(
-                                      text: 'Expected pay date',
-                                      fontWeight: FontWeight.bold),
-                                  SmallAmountText.withText(
-                                      text: loanStatement.expectedPayDate
-                                          .toFormattedDate()),
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  const ParagraphTwoText(
-                                      text: 'Principal (paid/expected)'),
-                                  SmallAmountText.withText(
-                                      text:
-                                          '${loanStatement.principalAmountPaid.toFormattedCurrency()} / ${loanStatement.expectedPrincipalAmount.toFormattedCurrency()}'),
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  const ParagraphTwoText(
-                                      text: 'Interests (paid/expected)'),
-                                  SmallAmountText.withText(
-                                      text:
-                                          '${loanStatement.interestAmountPaid.toFormattedCurrency()} / ${loanStatement.expectedInterestAmount.toFormattedCurrency()}'),
-                                ],
-                              ),
-                            ],
+                    );
+                  } else {
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => LoanStatementPage(
+                                loanStatementId: loanStatement.id),
                           ),
-                          const Spacer(),
-                          const Icon(Icons.arrow_forward_ios)
-                        ],
+                        );
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(10),
+                        // height: 50,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: const Color(0xFFF8F8F8),
+                          border: Border(
+                            bottom: BorderSide(
+                              color: Colors.grey[300]!,
+                            ),
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            const SizedBox(width: 15),
+                            CompactPaymentStatusBox(
+                                paymentStatus: loanStatement.paymentStatus),
+                            const SizedBox(width: 12),
+                            Column(
+                              //crossAxisAlignment: CrossAxisAlignment.baseline,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    const ParagraphTwoText(
+                                        text: 'Expected pay date',
+                                        fontWeight: FontWeight.bold),
+                                    SmallAmountText.withText(
+                                        text: loanStatement.expectedPayDate
+                                            .toFormattedDate()),
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const ParagraphTwoText(
+                                        text: 'Expected principal'),
+                                    SmallAmountText.withText(
+                                        text: loanStatement
+                                            .expectedPrincipalAmount
+                                            .toFormattedCurrency()),
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const ParagraphTwoText(
+                                        text: 'Expetec interests'),
+                                    SmallAmountText.withText(
+                                        text: loanStatement
+                                            .expectedInterestAmount
+                                            .toFormattedCurrency()),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            const Spacer(),
+                            const Icon(Icons.arrow_forward_ios)
+                          ],
+                        ),
                       ),
-                    ),
-                  );
+                    );
+                  }
                 },
               ),
               const SliverToBoxAdapter(child: SizedBox(height: 50)),
@@ -241,8 +320,7 @@ class OpenEndedLoanPage extends StatelessWidget {
                     text: "Delete date: ",
                     fontWeight: FontWeight.bold,
                   ),
-                  ParagraphTwoText(
-                      text: loan.deleteDate!.toFormattedDate()),
+                  ParagraphTwoText(text: loan.deleteDate!.toFormattedDate()),
                 ],
               ),
               const ParagraphTwoText(
@@ -258,5 +336,4 @@ class OpenEndedLoanPage extends StatelessWidget {
       return const SizedBox.shrink();
     }
   }
-
 }

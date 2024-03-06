@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:pokinia_lending_manager/components/buttons/fabs.dart';
 import 'package:pokinia_lending_manager/components/loan_statements/loan_statement_app_bar.dart';
 import 'package:pokinia_lending_manager/components/payments/small_payment_list_card.dart';
@@ -77,22 +76,15 @@ class _LoanStatementPageState extends State<LoanStatementPage> {
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerFloat,
           floatingActionButton: getDefaultFab(
-            onPressed: () => showMaterialModalBottomSheet(
-              enableDrag: true,
-              isDismissible: true,
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(15.0),
-                  topRight: Radius.circular(15.0),
-                ),
-              ),
-              context: context,
-              builder: (context) => Padding(
-                  padding: EdgeInsets.only(
-                      bottom: MediaQuery.of(context).viewInsets.bottom),
-                  child:
-                      NewPaymentPage(loan: loan, loanStatement: loanStatement)),
-            ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) {
+                  return NewPaymentPage(
+                      loan: loan, loanStatement: loanStatement);
+                }),
+              );
+            },
           ),
         );
       },
@@ -159,6 +151,20 @@ class _LoanStatementPageState extends State<LoanStatementPage> {
       padding: const EdgeInsets.only(left: 24.0, right: 24.0),
       child: Column(
         children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const HeaderFiveText(
+                  text: "Expected pay date", fontWeight: FontWeight.normal),
+              Row(
+                children: [
+                  const SizedBox(width: 5),
+                  ParagraphTwoText(
+                      text: loanStatement.expectedPayDate.toFormattedDate()),
+                ],
+              )
+            ],
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

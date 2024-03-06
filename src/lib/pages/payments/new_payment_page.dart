@@ -4,6 +4,7 @@ import 'package:circular_image/circular_image.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
+import 'package:pokinia_lending_manager/components/app_bars/my_app_bar.dart';
 import 'package:pokinia_lending_manager/components/buttons/my_cta_button.dart';
 import 'package:pokinia_lending_manager/components/input/my_text_form_field.dart';
 import 'package:pokinia_lending_manager/components/overlays.dart';
@@ -92,11 +93,11 @@ class _NewPaymentPageState extends State<NewPaymentPage> {
         Navigator.pop(context);
       } else {
         _logger.e(response.message);
-        setOnProcessing(false);
 
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text("Please validate your input!"),
+          SnackBar(
+            content: Text(response.message),
+            backgroundColor: Colors.red,
           ),
         );
       }
@@ -129,9 +130,7 @@ class _NewPaymentPageState extends State<NewPaymentPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Add payment'),
-      ),
+      appBar: MyAppBar(title: 'Add payment', isProcessing: _isProcessing),
       body: Form(
         key: _formKey,
         child: Column(
@@ -141,7 +140,7 @@ class _NewPaymentPageState extends State<NewPaymentPage> {
             if (showInterests) _getInterestAmountWidget(),
             _getPrincipalAmountWidget(),
             const Spacer(),
-            _getAddPaymentButtonWidget()
+            _getAddPaymentButtonWidget(),
           ],
         ),
       ),

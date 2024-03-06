@@ -17,30 +17,46 @@ class MyCtaButton extends StatelessWidget {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
-          onPressed: isProcessing ? null : onPressed,
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all<Color>(
-              const Color(0xFF008080),
-            ),
-            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-              RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-              ),
+        onPressed: isProcessing ? null : onPressed,
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all<Color>(
+            const Color(0xFF008080),
+          ),
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
             ),
           ),
-          child: isProcessing
-              ? const SizedBox(
-                  height: 16.0,
-                  width: 16.0,
-                  child: Center(
-                    child: CircularProgressIndicator(
-                      color: Colors.white,
-                      strokeWidth: 2,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Visibility(
+                  visible: isProcessing,
+                  maintainSize: true,
+                  maintainAnimation: true,
+                  maintainState: true,
+                  child: const SizedBox(
+                    height: 16.0,
+                    width: 16.0,
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
+                        strokeWidth: 2,
+                      ),
                     ),
                   ),
-                )
-              :  MySubHeadingText(text: text.toUpperCase())
-          ),
+                ),
+                const SizedBox(width: 12.0),
+              ],
+            ),
+            MySubHeadingText(text: text.toUpperCase()),
+          ],
+        ),
+      ),
     );
   }
 }
