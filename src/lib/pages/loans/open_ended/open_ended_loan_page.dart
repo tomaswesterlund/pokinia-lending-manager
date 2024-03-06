@@ -9,6 +9,8 @@ import 'package:pokinia_lending_manager/components/texts/amounts/small_amount_te
 import 'package:pokinia_lending_manager/components/texts/headers/header_four_text.dart';
 import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_one_text.dart';
 import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_two_text.dart';
+import 'package:pokinia_lending_manager/enums/payment_status_enum.dart';
+import 'package:pokinia_lending_manager/models/data/loan.dart';
 import 'package:pokinia_lending_manager/pages/loan_statements/loan_statement_page.dart';
 import 'package:pokinia_lending_manager/services/client_service.dart';
 import 'package:pokinia_lending_manager/services/loan_service.dart';
@@ -25,9 +27,7 @@ class OpenEndedLoanPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: const Text('Open ended loan'),
-      // ),
+    
       body: Consumer4<ClientService, LoanService, LoanStatementService,
           PaymentService>(
         builder: (context, clientService, loanService, loanStatementService,
@@ -40,7 +40,8 @@ class OpenEndedLoanPage extends StatelessWidget {
 
           return CustomScrollView(
             slivers: [
-              LoanAppBar(loanId: loanId),
+              LoanAppBar(loanId: loanId, title: 'Open ended loan'),
+              SliverToBoxAdapter(child: _getDeletedWidget(loan)),
               SliverToBoxAdapter(
                   child: LoanUserStatus(client: client, loan: loan)),
               const SliverToBoxAdapter(child: SizedBox(height: 24)),
@@ -221,4 +222,41 @@ class OpenEndedLoanPage extends StatelessWidget {
       ),
     );
   }
+
+  Widget _getDeletedWidget(Loan loan) {
+    if (loan.paymentStatus == PaymentStatus.deleted) {
+      return Padding(
+        padding: const EdgeInsets.fromLTRB(32.0, 16.0, 32.0, 32.0),
+        child: Center(
+          child: Column(
+            children: [
+              const HeaderFourText(
+                text: "This loan has been deleted",
+                color: Colors.red,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  const ParagraphTwoText(
+                    text: "Delete date: ",
+                    fontWeight: FontWeight.bold,
+                  ),
+                  ParagraphTwoText(
+                      text: loan.deleteDate!.toFormattedDate()),
+                ],
+              ),
+              const ParagraphTwoText(
+                text: "Delete reason: ",
+                fontWeight: FontWeight.bold,
+              ),
+              ParagraphTwoText(text: loan.deleteReason ?? ''),
+            ],
+          ),
+        ),
+      );
+    } else {
+      return const SizedBox.shrink();
+    }
+  }
+
 }

@@ -93,7 +93,7 @@ class ZeroInterestLoanListCard extends StatelessWidget {
                     children: [
                       const ParagraphTwoText(text: "Remaining"),
                       BigAmountText(
-                          text: zeroInterestLoan.principalAmountPaid
+                          text: zeroInterestLoan.principalAmountRemaining
                               .toFormattedCurrency())
                     ],
                   ),

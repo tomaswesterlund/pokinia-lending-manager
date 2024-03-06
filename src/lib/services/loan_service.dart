@@ -10,7 +10,6 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 class LoanService extends ChangeNotifier {
   final _logger = getLogger('LoanService');
   final supabase = Supabase.instance.client;
-  
 
   final List<Loan> _loans = [];
   List<Loan> get loans => _loans;
@@ -34,10 +33,8 @@ class LoanService extends ChangeNotifier {
       notifyListeners();
     });
 
-    supabase
-        .from('open_ended_loans')
-        .stream(primaryKey: ['id']).listen((data) {
-      var openEndedLoans=
+    supabase.from('open_ended_loans').stream(primaryKey: ['id']).listen((data) {
+      var openEndedLoans =
           data.map((map) => OpenEndedLoan.fromMap(map)).toList();
       _openEndedLoans
         ..clear()
@@ -114,7 +111,7 @@ class LoanService extends ChangeNotifier {
       _logger.e(e.toString());
       return Response.error(e.toString());
     }
-  } 
+  }
 
   Future<Response> createZeroInterestLoan(
       {required String clientId,
@@ -136,9 +133,9 @@ class LoanService extends ChangeNotifier {
 
   Future<Response> calculateLoanValues(String id) async {
     try {
-      await supabase.rpc('calculate_loan_values', params: {'v_loan_id': id});
+      _logger.i('calculateLoanValues - id: $id');
 
-      notifyListeners();
+      await supabase.rpc('calculate_loan_values', params: {'v_loan_id': id});
 
       return Response.success();
     } catch (e) {
@@ -147,19 +144,56 @@ class LoanService extends ChangeNotifier {
     }
   }
 
-  // double getRemainingAmount(String loanId) {
-  //   var loan = getLoanById(loanId);
+  Future<Response> editLoan(String id, double interestRate, List<String> paymentStatuses) async {
+    try {
+      _logger.i('editLoan - id: $id');
 
-  //   if (loan.type == LoanTypes.openEndedLoan) {
-  //     var openEndedLoan = getOpenEndedLoanByLoanId(loan.id);
+      var params = {
+        'v_loan_id': id,
+        'v_interest_rate': interestRate.toString(),
+        'v_payment_statuses': paymentStatuses,
+      };
 
-  //     // We need to get Loan Statements and loop over them as well
-  //     return -1;
-  //   } else if (loan.type == LoanTypes.zeroInterestLoan) {
-  //     var zeroInterestLoan = getZeroInterestLoanByLoanId(loan.id);
-  //     return zeroInterestLoan.principalAmountRemaining;
-  //   } else {
-  //     throw Exception('Loan type not supported');
-  //   }
-  // }
+      await supabase.rpc('edit_loan', params: params);
+
+      return Response.success();
+    } catch (e) {
+      _logger.e(e.toString());
+      return Response.error(e.toString());
+    }
+  }
+
+  Future<Response> deleteLoan(String id, String deleteReason) async {
+    try {
+      _logger.i('deleteLoan - id: $id');
+
+      var params = {
+        'v_loan_id': id,
+        'v_delete_date': DateTime.now().toIso8601String(),
+        'v_delete_reason': deleteReason,
+      };
+
+      await supabase.rpc('delete_loan', params: params);
+
+      return Response.success();
+    } catch (e) {
+      _logger.e(e.toString());
+      return Response.error(e.toString());
+    }
+  }
+
+  Future<Response> undeleteLoan(String id) async {
+    try {
+      _logger.i('undeleteLoan - id: $id');
+
+      var params = {'v_loan_id': id};
+
+      await supabase.rpc('undelete_loan', params: params);
+
+      return Response.success();
+    } catch (e) {
+      _logger.e(e.toString());
+      return Response.error(e.toString());
+    }
+  }
 }
