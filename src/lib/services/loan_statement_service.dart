@@ -51,14 +51,12 @@ class LoanStatementService extends ChangeNotifier {
   Future<Response> deleteLoanStatement(String id, String deleteReason) async {
     try {
       var values = {
-        'delete_date': DateTime.now().toIso8601String(),
-        'delete_reason': deleteReason,
-        'payment_status': PaymentStatus.deleted.name.toString()
+        'v_loan_statement_id': id,
+        'v_delete_date': DateTime.now().toIso8601String(),
+        'v_delete_reason': deleteReason,
       };
 
-      await supabase.from('loan_statements').update(values).match({'id': id});
-
-      notifyListeners();
+      await supabase.rpc('delete_loan_statement', params: values);
 
       return Response.success();
     } catch (e) {
@@ -67,9 +65,26 @@ class LoanStatementService extends ChangeNotifier {
     }
   }
 
+  Future<Response> undeleteLoanStatement(String id) async {
+    try {
+      var values = {
+        'v_loan_statement_id': id
+      };
+
+      await supabase.rpc('undelete_loan_statement', params: values);
+
+      return Response.success();
+    } catch (e) {
+      _logger.e('Error deleting loan statement: $e');
+      return Response.error(e.toString());
+    }
+  }
+
+
   Future<Response> calculateLoanStatementValues(String id) async {
     try {
-      await supabase.rpc('calculate_loan_statement_values', params: {'v_loan_statement_id': id});
+      await supabase.rpc('calculate_loan_statement_values',
+          params: {'v_loan_statement_id': id});
 
       notifyListeners();
 

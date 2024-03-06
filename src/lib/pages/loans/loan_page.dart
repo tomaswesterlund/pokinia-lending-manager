@@ -13,7 +13,7 @@ class LoanPage extends StatelessWidget {
     if (loan.type == LoanTypes.zeroInterestLoan) {
       return ZeroInterestLoanPage(loanId: loan.id);
     } else if (loan.type == LoanTypes.openEndedLoan) {
-      return OpenEndedLoanPage(loan: loan);
+      return OpenEndedLoanPage(loanId: loan.id);
     } 
     else {
       return  Scaffold(

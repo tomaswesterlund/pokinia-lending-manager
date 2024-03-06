@@ -53,8 +53,6 @@ class LoanStatement {
     required this.paymentStatus,
   });
 
-  bool get deleted => deleteDate != null;
-
   LoanStatement.fromMap(Map<String, dynamic> map)
       : id = map['id'],
         loanId = map['loan_id'],

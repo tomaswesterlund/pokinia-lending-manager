@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pokinia_lending_manager/components/loans/loan_app_bar.dart';
 import 'package:pokinia_lending_manager/components/loans/loan_user_status_component.dart';
 import 'package:pokinia_lending_manager/components/status_boxes/payment_status/compact_payment_status_box_component.dart';
 import 'package:pokinia_lending_manager/components/status_boxes/payment_status/dot_payment_status_component.dart';
@@ -8,7 +9,6 @@ import 'package:pokinia_lending_manager/components/texts/amounts/small_amount_te
 import 'package:pokinia_lending_manager/components/texts/headers/header_four_text.dart';
 import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_one_text.dart';
 import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_two_text.dart';
-import 'package:pokinia_lending_manager/models/data/loan.dart';
 import 'package:pokinia_lending_manager/pages/loan_statements/loan_statement_page.dart';
 import 'package:pokinia_lending_manager/services/client_service.dart';
 import 'package:pokinia_lending_manager/services/loan_service.dart';
@@ -19,8 +19,8 @@ import 'package:pokinia_lending_manager/util/double_extensions.dart';
 import 'package:provider/provider.dart';
 
 class OpenEndedLoanPage extends StatelessWidget {
-  final Loan loan;
-  const OpenEndedLoanPage({super.key, required this.loan});
+  final String loanId;
+  const OpenEndedLoanPage({super.key, required this.loanId});
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +32,7 @@ class OpenEndedLoanPage extends StatelessWidget {
           PaymentService>(
         builder: (context, clientService, loanService, loanStatementService,
             paymentService, _) {
+              var loan = loanService.getLoanById(loanId);
           var openEndedLoan = loanService.getOpenEndedLoanByLoanId(loan.id);
           var loanStatements =
               loanStatementService.getLoanStatementsByLoanId(loan.id);
@@ -39,17 +40,7 @@ class OpenEndedLoanPage extends StatelessWidget {
 
           return CustomScrollView(
             slivers: [
-              SliverAppBar(
-                expandedHeight: 50.0,
-                title: const Text("Open ended loan"),
-                actions: <Widget>[
-                  IconButton(
-                    icon: const Icon(Icons.add_circle),
-                    tooltip: 'Add new entry',
-                    onPressed: () {/* ... */},
-                  ),
-                ],
-              ),
+              LoanAppBar(loanId: loanId),
               SliverToBoxAdapter(
                   child: LoanUserStatus(client: client, loan: loan)),
               const SliverToBoxAdapter(child: SizedBox(height: 24)),
@@ -138,7 +129,9 @@ class OpenEndedLoanPage extends StatelessWidget {
                 ),
               ),
               const SliverToBoxAdapter(child: SizedBox(height: 50)),
-              const SliverToBoxAdapter(child: Center(child: HeaderFourText(text: 'Loan Statements'))),
+              const SliverToBoxAdapter(
+                  child:
+                      Center(child: HeaderFourText(text: 'Loan Statements'))),
               SliverList.builder(
                 itemCount: loanStatements.length,
                 itemBuilder: (context, index) {
@@ -171,49 +164,46 @@ class OpenEndedLoanPage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           const SizedBox(width: 15),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
+                          CompactPaymentStatusBox(
+                              paymentStatus: loanStatement.paymentStatus),
+                          const SizedBox(width: 12),
+                          Column(
+                            //crossAxisAlignment: CrossAxisAlignment.baseline,
                             children: [
-                              CompactPaymentStatusBox(
-                                  paymentStatus: loanStatement.paymentStatus),
-                              const SizedBox(width: 12),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
                                 children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      const ParagraphTwoText(text: 'Pay date'),
-                                      SmallAmountText.withText(
-                                          text: loanStatement.expectedPayDate
-                                              .toFormattedDate()),
-                                    ],
-                                  ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      const ParagraphTwoText(
-                                          text: 'Principal (paid/expected)'),
-                                      SmallAmountText.withText(
-                                          text:
-                                              '${loanStatement.principalAmountPaid.toFormattedCurrency()} / ${loanStatement.expectedPrincipalAmount.toFormattedCurrency()}'),
-                                    ],
-                                  ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      const ParagraphTwoText(
-                                          text: 'Interests (paid/expected)'),
-                                      SmallAmountText.withText(
-                                          text:
-                                              '${loanStatement.interestAmountPaid.toFormattedCurrency()} / ${loanStatement.expectedInterestAmount.toFormattedCurrency()}'),
-                                    ],
-                                  ),
+                                  const ParagraphTwoText(
+                                      text: 'Expected pay date',
+                                      fontWeight: FontWeight.bold),
+                                  SmallAmountText.withText(
+                                      text: loanStatement.expectedPayDate
+                                          .toFormattedDate()),
                                 ],
-                              )
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  const ParagraphTwoText(
+                                      text: 'Principal (paid/expected)'),
+                                  SmallAmountText.withText(
+                                      text:
+                                          '${loanStatement.principalAmountPaid.toFormattedCurrency()} / ${loanStatement.expectedPrincipalAmount.toFormattedCurrency()}'),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  const ParagraphTwoText(
+                                      text: 'Interests (paid/expected)'),
+                                  SmallAmountText.withText(
+                                      text:
+                                          '${loanStatement.interestAmountPaid.toFormattedCurrency()} / ${loanStatement.expectedInterestAmount.toFormattedCurrency()}'),
+                                ],
+                              ),
                             ],
                           ),
                           const Spacer(),
