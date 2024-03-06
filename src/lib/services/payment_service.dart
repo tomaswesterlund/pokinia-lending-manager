@@ -132,8 +132,6 @@ class PaymentService extends ChangeNotifier {
 
       await supabase.rpc('create_payment_for_open_ended_loan', params: values);
 
-      notifyListeners();
-
       return Response.success();
     } catch (e) {
       _logger.e('Error adding payment: $e');
@@ -161,8 +159,6 @@ class PaymentService extends ChangeNotifier {
 
       await supabase.rpc('create_payment_for_zero_interest_loan',
           params: values);
-
-      notifyListeners();
 
       return Response.success();
     } catch (e) {
@@ -204,14 +200,13 @@ class PaymentService extends ChangeNotifier {
 
   Future<Response> deletePayment(String id, String deleteReason) async {
     try {
-      var values = {
-        'delete_date': DateTime.now().toIso8601String(),
-        'delete_reason': deleteReason
+      var params = {
+        'v_payment_id': id,
+        'v_delete_date': DateTime.now().toIso8601String(),
+        'v_delete_reason': deleteReason
       };
 
-      await supabase.from('payments').update(values).match({'id': id});
-
-      notifyListeners();
+      await supabase.rpc('delete_payment', params: params);
 
       return Response.success();
     } catch (e) {
@@ -222,11 +217,9 @@ class PaymentService extends ChangeNotifier {
 
   Future<Response> undeletePayment(String id) async {
     try {
-      var values = {'delete_date': null, 'delete_reason': null};
+      var params = {'v_payment_id': id};
 
-      await supabase.from('payments').update(values).match({'id': id});
-
-      notifyListeners();
+      await supabase.rpc('undelete_payment', params: params);
 
       return Response.success();
     } catch (e) {

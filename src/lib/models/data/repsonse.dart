@@ -1,14 +1,14 @@
 class Response {
   final int statusCode;
-  final String? body;
+  final String message;
 
   bool get succeeded => statusCode == 200;
 
-  Response({required this.statusCode, this.body});
+  Response({required this.statusCode, this.message = ''});
 
   Response.success()
       : statusCode = 200,
-        body = null;
+        message = '';
 
-  Response.error(this.body) : statusCode = 500;
+  Response.error(this.message) : statusCode = 500;
 }

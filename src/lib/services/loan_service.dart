@@ -144,7 +144,7 @@ class LoanService extends ChangeNotifier {
     }
   }
 
-  Future<Response> editLoan(String id, double interestRate, List<String> paymentStatuses) async {
+  Future<Response> editOpenEndedLoan(String id, double interestRate, List<String> paymentStatuses) async {
     try {
       _logger.i('editLoan - id: $id');
 
@@ -154,7 +154,7 @@ class LoanService extends ChangeNotifier {
         'v_payment_statuses': paymentStatuses,
       };
 
-      await supabase.rpc('edit_loan', params: params);
+      await supabase.rpc('edit_open_ended_loan', params: params);
 
       return Response.success();
     } catch (e) {

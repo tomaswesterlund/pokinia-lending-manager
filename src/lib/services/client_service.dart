@@ -54,10 +54,10 @@ class ClientService extends ChangeNotifier {
         },
       );
 
-      return Response(statusCode: 200);
+      return Response.success();
     } catch (e) {
       _logger.e('Error adding client: $e');
-      return Response(statusCode: 500, body: e.toString());
+      return Response.error(e.toString());
     }
   }
 }

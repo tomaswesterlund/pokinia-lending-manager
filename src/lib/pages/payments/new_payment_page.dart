@@ -91,7 +91,7 @@ class _NewPaymentPageState extends State<NewPaymentPage> {
       if (response!.succeeded) {
         Navigator.pop(context);
       } else {
-        _logger.e(response.body.toString());
+        _logger.e(response.message);
         setOnProcessing(false);
 
         ScaffoldMessenger.of(context).showSnackBar(

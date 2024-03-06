@@ -60,7 +60,7 @@ class _NewClientPageState extends State<NewClientPage> {
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error adding client: ${response.body}'),
+            content: Text('Error adding client: ${response.message}'),
             backgroundColor: Colors.red,
           ),
         );

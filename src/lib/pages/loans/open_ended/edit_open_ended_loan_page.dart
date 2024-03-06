@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:pokinia_lending_manager/components/buttons/my_cta_button.dart';
 import 'package:pokinia_lending_manager/components/input/interest_rate_form_field.dart';
 import 'package:pokinia_lending_manager/enums/payment_status_enum.dart';
+import 'package:pokinia_lending_manager/services/loan_service.dart';
+import 'package:provider/provider.dart';
 
 class EditOpenEndedLoanPage extends StatefulWidget {
   final String loanId;
@@ -24,12 +26,20 @@ class _EditOpenEndedLoanPageState extends State<EditOpenEndedLoanPage> {
     PaymentStatus.deleted: false,
   };
 
-  void _editLoan() {
+  void _editLoan() async {
     var loanService = Provider.of<LoanService>(context, listen: false);
 
     if(_formKey.currentState!.validate()) {
       var interestRate = double.parse(_interestRateController.text);
       var statuses = _values.entries.where((e) => e.value).map((e) => e.key.name).toList();
+
+      var repsonse = await loanService.editOpenEndedLoan(widget.loanId, interestRate, statuses);
+
+      if(repsonse.succeeded) {
+        Navigator.pop(context);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(repsonse.message)));
+      }
 
     }
   }

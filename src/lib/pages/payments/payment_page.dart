@@ -25,9 +25,10 @@ class PaymentPage extends StatefulWidget {
 class _PaymentPageState extends State<PaymentPage> {
   final Logger _logger = getLogger('PaymentPage');
 
-  void _deletePayment(PaymentService paymentService) {
+  void _deletePayment() {
     _logger.i('_deletePayment - id: ${widget.paymentId}');
-    // Are you sure you want to delete?
+
+    var paymentService = Provider.of<PaymentService>(context, listen: false);
 
     showDialog(
       context: context,
@@ -50,7 +51,50 @@ class _PaymentPageState extends State<PaymentPage> {
                   Navigator.of(context).pop();
                 } else {
                   Fluttertoast.showToast(
-                      msg: response.body!,
+                      msg: response.message,
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.CENTER,
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: Colors.red,
+                      textColor: Colors.white,
+                      fontSize: 16.0);
+                }
+              },
+              child: const Text('Yes'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _undeletePayment() {
+    _logger.i('_undeletePayment - id: ${widget.paymentId}');
+
+    var paymentService = Provider.of<PaymentService>(context, listen: false);
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Un-delete payment'),
+          content:
+              const Text('Are you sure you want to un-delete this payment?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(), // Close the dialog
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () async {
+                // Add your deletion logic here
+                var response = await paymentService.undeletePayment(widget.paymentId);
+
+                if (response.succeeded) {
+                  Navigator.of(context).pop();
+                } else {
+                  Fluttertoast.showToast(
+                      msg: response.message,
                       toastLength: Toast.LENGTH_SHORT,
                       gravity: ToastGravity.CENTER,
                       timeInSecForIosWeb: 1,
@@ -228,10 +272,10 @@ class _PaymentPageState extends State<PaymentPage> {
         PopupMenuButton<int>(
           onSelected: (value) async {
             if (value == 1) {
-              _deletePayment(paymentService);
+              _deletePayment();
             }
             if (value == 2) {
-              await paymentService.undeletePayment(widget.paymentId);
+              _undeletePayment();
             }
           },
           itemBuilder: (context) => [

@@ -56,7 +56,7 @@ class _NewOpenEndedLoanPageState extends State<NewOpenEndedLoanPage> {
         Navigator.pop(context);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(response.body!)),
+          SnackBar(content: Text(response.message)),
         );
       }
     }

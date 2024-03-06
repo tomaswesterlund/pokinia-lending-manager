@@ -23,8 +23,8 @@ class LoanAppBar extends StatelessWidget {
       var response = await loanService.calculateLoanValues(loanId);
 
       if (!response.succeeded) {
-        _logger.e('Error calculating loan: ${response.body}');
-        _showErrorMessage(response.body!);
+        _logger.e('Error calculating loan: ${response.message}');
+        _showErrorMessage(response.message);
       }
     }
 
@@ -69,7 +69,7 @@ class LoanAppBar extends StatelessWidget {
                 if (response.succeeded) {
                   Navigator.of(context).pop();
                 } else {
-                  _showErrorMessage(response.body!);
+                  _showErrorMessage(response.message);
                 }
               },
               child: const Text('Yes'),
@@ -104,7 +104,7 @@ class LoanAppBar extends StatelessWidget {
                 if (response.succeeded) {
                   Navigator.pop(context);
                 } else {
-                  _showErrorMessage(response.body!);
+                  _showErrorMessage(response.message);
                 }
               },
               child: const Text('Yes'),

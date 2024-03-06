@@ -20,8 +20,8 @@ class LoanStatementAppBar extends StatelessWidget {
           .calculateLoanStatementValues(loanStatementId);
 
       if (!response.succeeded) {
-        _logger.e('Error calculating loan statement: ${response.body}');
-        _showErrorMessage(response.body!);
+        _logger.e('Error calculating loan statement: ${response.message}');
+        _showErrorMessage(response.message);
       }
     }
 
@@ -62,7 +62,7 @@ class LoanStatementAppBar extends StatelessWidget {
                 if (response.succeeded) {
                   Navigator.of(context).pop();
                 } else {
-                  _showErrorMessage(response.body!);
+                  _showErrorMessage(response.message);
                 }
               },
               child: const Text('Yes'),
@@ -100,7 +100,7 @@ class LoanStatementAppBar extends StatelessWidget {
                 if (response.succeeded) {
                   Navigator.pop(context);
                 } else {
-                  _showErrorMessage(response.body!);
+                  _showErrorMessage(response.message);
                 }
               },
               child: const Text('Yes'),

@@ -54,7 +54,7 @@ class _NewZerointerestLoanPageState extends State<NewZerointerestLoanPage> {
         Navigator.pop(context);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(response.body!),
+          content: Text(response.message),
           backgroundColor: Colors.red,
         ));
       }
