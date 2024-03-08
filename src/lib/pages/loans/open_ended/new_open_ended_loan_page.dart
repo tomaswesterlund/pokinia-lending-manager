@@ -5,7 +5,8 @@ import 'package:pokinia_lending_manager/components/input/interest_rate_form_fiel
 import 'package:pokinia_lending_manager/components/input/principal_amount_form_field.dart';
 import 'package:pokinia_lending_manager/components/input/select_date_input.dart';
 import 'package:pokinia_lending_manager/models/data/loans/new_open_ended_loan_parameters.dart';
-import 'package:pokinia_lending_manager/services/loan_service.dart';
+import 'package:pokinia_lending_manager/services/loans/loan_service.dart';
+import 'package:pokinia_lending_manager/services/loans/open_ended_loan_service.dart';
 import 'package:provider/provider.dart';
 
 class NewOpenEndedLoanPage extends StatefulWidget {
@@ -40,14 +41,16 @@ class _NewOpenEndedLoanPageState extends State<NewOpenEndedLoanPage> {
     });
   }
 
-  void _createLoan(LoanService loanService) async {
+  void _createLoan() async {
     if (_formKey.currentState!.validate()) {
+      var openEndedLoanService = Provider.of<OpenEndedLoanService>(context, listen: false);
+
       widget.params.principalAmount =
           double.parse(_principalAmountController.text);
       widget.params.interestRate = double.parse(_interestRateController.text);
       widget.params.generateLoanStatementsIntoTheFuture = 6;
 
-      var response = await loanService.createOpenEndedLoan(widget.params);
+      var response = await openEndedLoanService.createLoan(widget.params);
 
       if (response.succeeded) {
         // RE-DO - Implement routes!
@@ -109,7 +112,7 @@ class _NewOpenEndedLoanPageState extends State<NewOpenEndedLoanPage> {
                     padding: const EdgeInsets.fromLTRB(20, 20, 20, 40),
                     child: MyCtaButton(
                         text: "Create loan",
-                        onPressed: () => _createLoan(loanService)),
+                        onPressed: () => _createLoan()),
                   ),
 
                   // Payment table preview

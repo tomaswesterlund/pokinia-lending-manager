@@ -5,7 +5,8 @@ import 'package:pokinia_lending_manager/components/client/client_list_dropdown_m
 import 'package:pokinia_lending_manager/components/input/my_text_form_field.dart';
 import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_one_text.dart';
 import 'package:pokinia_lending_manager/models/data/client.dart';
-import 'package:pokinia_lending_manager/services/loan_service.dart';
+import 'package:pokinia_lending_manager/services/loans/loan_service.dart';
+import 'package:pokinia_lending_manager/services/loans/zero_interest_loan_service.dart';
 import 'package:pokinia_lending_manager/util/date_extensions.dart';
 import 'package:pokinia_lending_manager/util/string_extensions.dart';
 import 'package:provider/provider.dart';
@@ -42,7 +43,9 @@ class _NewZerointerestLoanPageState extends State<NewZerointerestLoanPage> {
     if (_formKey.currentState!.validate()) {
       setIsProcessing(true);
 
-      var response = await loanService.createZeroInterestLoan(
+      var zeroInterestLoanService = Provider.of<ZeroInterestLoanService>(context, listen: false);
+
+      var response = await zeroInterestLoanService.createLoan(
           clientId: _selectedClient!.id,
           principalAmount: double.parse(_principalAmountController.text),
           expectedPayDate: _isIndefinitely ? null : _expectedPayDate);

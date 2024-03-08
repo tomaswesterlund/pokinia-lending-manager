@@ -52,9 +52,8 @@ class _AuthPageState extends State<AuthPage> {
 
   Widget _signedInWidget() {
     return Consumer<UserSettingsService>(
-      builder: (context, userSettingsService, child) {
+      builder: (context, userSettingsService, _) {
         var user = supabase.auth.currentUser!;
-
         userSettingsService.setUserId(user.id);
 
         if (userSettingsService.userSettings != null &&

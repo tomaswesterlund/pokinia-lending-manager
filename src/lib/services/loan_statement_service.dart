@@ -9,6 +9,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 class LoanStatementService extends ChangeNotifier {
   final _logger = getLogger('LoanStatementService');
   final supabase = Supabase.instance.client;
+  bool loaded = false;
 
   final List<LoanStatement> _loanStatements = [];
   List<LoanStatement> get loanStatements => _loanStatements;
@@ -23,6 +24,8 @@ class LoanStatementService extends ChangeNotifier {
       _loanStatements
         ..clear()
         ..addAll(loans);
+
+      loaded = true;
       notifyListeners();
     });
   }
@@ -67,9 +70,7 @@ class LoanStatementService extends ChangeNotifier {
 
   Future<Response> undeleteLoanStatement(String id) async {
     try {
-      var values = {
-        'v_loan_statement_id': id
-      };
+      var values = {'v_loan_statement_id': id};
 
       await supabase.rpc('undelete_loan_statement', params: values);
 
@@ -79,7 +80,6 @@ class LoanStatementService extends ChangeNotifier {
       return Response.error(e.toString());
     }
   }
-
 
   Future<Response> calculateLoanStatementValues(String id) async {
     try {

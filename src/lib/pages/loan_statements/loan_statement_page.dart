@@ -12,8 +12,8 @@ import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_tw
 import 'package:pokinia_lending_manager/enums/payment_status_enum.dart';
 import 'package:pokinia_lending_manager/models/data/loan_statement.dart';
 import 'package:pokinia_lending_manager/pages/payments/new_payment_page.dart';
-import 'package:pokinia_lending_manager/services/loan_service.dart';
 import 'package:pokinia_lending_manager/services/loan_statement_service.dart';
+import 'package:pokinia_lending_manager/services/loans/loan_service.dart';
 import 'package:pokinia_lending_manager/services/logger.dart';
 import 'package:pokinia_lending_manager/services/payment_service.dart';
 import 'package:pokinia_lending_manager/util/date_extensions.dart';

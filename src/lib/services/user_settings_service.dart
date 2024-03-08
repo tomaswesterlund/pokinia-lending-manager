@@ -7,6 +7,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 class UserSettingsService extends ChangeNotifier {
   final Logger _logger = getLogger('UserSettingsService');
   final supabase = Supabase.instance.client;
+  bool loaded = false;
 
   String? userId;
 
@@ -26,6 +27,8 @@ class UserSettingsService extends ChangeNotifier {
             list.firstWhere((element) => element.userId == userId);
         _userSettings = userSettings;
       }
+
+      loaded = true;
 
       notifyListeners();
     });

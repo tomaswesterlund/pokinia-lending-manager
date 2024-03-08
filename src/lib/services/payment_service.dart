@@ -8,6 +8,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 class PaymentService extends ChangeNotifier {
   final Logger _logger = getLogger('PaymentService');
   final supabase = Supabase.instance.client;
+  bool loaded = false;
 
   final List<Payment> _payments = [];
   List<Payment> get payments => _payments;
@@ -22,6 +23,8 @@ class PaymentService extends ChangeNotifier {
       _payments
         ..clear()
         ..addAll(loans);
+
+      loaded = true;
 
       notifyListeners();
     });

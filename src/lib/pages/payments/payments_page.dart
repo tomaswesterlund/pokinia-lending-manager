@@ -4,8 +4,8 @@ import 'package:pokinia_lending_manager/components/payments/payment_list_card_co
 import 'package:pokinia_lending_manager/components/texts/headers/header_four_text.dart';
 import 'package:pokinia_lending_manager/components/texts/headers/header_two_text.dart';
 import 'package:pokinia_lending_manager/services/client_service.dart';
-import 'package:pokinia_lending_manager/services/loan_service.dart';
 import 'package:pokinia_lending_manager/services/loan_statement_service.dart';
+import 'package:pokinia_lending_manager/services/loans/loan_service.dart';
 import 'package:pokinia_lending_manager/services/payment_service.dart';
 import 'package:provider/provider.dart';
 import 'package:sliver_tools/sliver_tools.dart';

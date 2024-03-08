@@ -7,14 +7,15 @@ class Client {
   final String? address;
   final String? avatarImagePath;
   final PaymentStatus paymentStatus;
+  final DateTime? deleteDate;
+  final String? deleteReason;
 
+  bool get deleted => deleteDate != null;
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is Client &&
-          runtimeType == other.runtimeType &&
-          id == other.id;
+      other is Client && runtimeType == other.runtimeType && id == other.id;
 
   Client(
       {required this.id,
@@ -22,7 +23,9 @@ class Client {
       required this.phoneNumber,
       this.address,
       this.avatarImagePath,
-      this.paymentStatus = PaymentStatus.empty});
+      this.paymentStatus = PaymentStatus.empty,
+      this.deleteDate,
+      this.deleteReason});
 
   factory Client.fromMap(Map<String, dynamic> json) {
     return Client(
@@ -30,7 +33,11 @@ class Client {
         name: json['name'],
         phoneNumber: json['phone_number'],
         address: json['address'],
-        avatarImagePath: json['avatar_image_path'], 
-        paymentStatus: PaymentStatus.fromName(json['payment_status']));
+        avatarImagePath: json['avatar_image_path'],
+        paymentStatus: PaymentStatus.fromName(json['payment_status']),
+        deleteDate: json['delete_date'] != null
+            ? DateTime.parse(json['delete_date'])
+            : null,
+        deleteReason: json['delete_reason']);
   }
 }

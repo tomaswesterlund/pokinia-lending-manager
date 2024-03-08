@@ -166,6 +166,8 @@ class BasePaymentStatusBox extends StatelessWidget {
         return const Color(0xFFF3FBFC);
       case PaymentStatus.overdue:
         return const Color(0xFFFFF0F0);
+        case PaymentStatus.deleted:
+        return const Color(0xFFFFF0F0);
       case PaymentStatus.unknown:
         return const Color(0xFFF3FBFC);
       default:

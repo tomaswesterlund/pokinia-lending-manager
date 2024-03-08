@@ -13,8 +13,9 @@ import 'package:pokinia_lending_manager/enums/payment_status_enum.dart';
 import 'package:pokinia_lending_manager/models/data/loan.dart';
 import 'package:pokinia_lending_manager/pages/loan_statements/loan_statement_page.dart';
 import 'package:pokinia_lending_manager/services/client_service.dart';
-import 'package:pokinia_lending_manager/services/loan_service.dart';
 import 'package:pokinia_lending_manager/services/loan_statement_service.dart';
+import 'package:pokinia_lending_manager/services/loans/loan_service.dart';
+import 'package:pokinia_lending_manager/services/loans/open_ended_loan_service.dart';
 import 'package:pokinia_lending_manager/services/payment_service.dart';
 import 'package:pokinia_lending_manager/util/date_extensions.dart';
 import 'package:pokinia_lending_manager/util/double_extensions.dart';
@@ -27,12 +28,12 @@ class OpenEndedLoanPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Consumer4<ClientService, LoanService, LoanStatementService,
+      body: Consumer5<ClientService, LoanService, OpenEndedLoanService, LoanStatementService,
           PaymentService>(
-        builder: (context, clientService, loanService, loanStatementService,
+        builder: (context, clientService, loanService, openEndedLoanService, loanStatementService,
             paymentService, _) {
           var loan = loanService.getLoanById(loanId);
-          var openEndedLoan = loanService.getOpenEndedLoanByLoanId(loan.id);
+          var openEndedLoan = openEndedLoanService.getLoanByLoanId(loan.id);
           var loanStatements =
               loanStatementService.getLoanStatementsByLoanId(loan.id);
           var client = clientService.getClientById(loan.clientId);

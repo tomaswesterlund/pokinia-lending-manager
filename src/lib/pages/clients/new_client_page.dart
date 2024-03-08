@@ -46,7 +46,7 @@ class _NewClientPageState extends State<NewClientPage> {
       var phoneNumber = _phoneNumberController.text;
       var address = _addressController.text;
 
-      var response = await clientService.addClient(
+      var response = await clientService.createClient(
           customerId: _selectedCustomerId!,
           name: name,
           phoneNumber: phoneNumber,

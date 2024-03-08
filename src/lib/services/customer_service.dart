@@ -6,6 +6,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 class CustomerService extends ChangeNotifier {
   final _logger = getLogger('CustomerService');
   final supabase = Supabase.instance.client;
+  bool loaded = false;
 
   final List<Customer> _customers = [];
   List<Customer> get customers => _customers;
@@ -20,6 +21,9 @@ class CustomerService extends ChangeNotifier {
       _customers
         ..clear()
         ..addAll(customers);
+
+      loaded = true;
+
       notifyListeners();
     });
   }

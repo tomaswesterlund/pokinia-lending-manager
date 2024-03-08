@@ -8,7 +8,8 @@ import 'package:pokinia_lending_manager/components/texts/headers/header_four_tex
 import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_one_text.dart';
 import 'package:pokinia_lending_manager/pages/payments/new_payment_page.dart';
 import 'package:pokinia_lending_manager/services/client_service.dart';
-import 'package:pokinia_lending_manager/services/loan_service.dart';
+import 'package:pokinia_lending_manager/services/loans/loan_service.dart';
+import 'package:pokinia_lending_manager/services/loans/zero_interest_loan_service.dart';
 import 'package:pokinia_lending_manager/services/payment_service.dart';
 import 'package:pokinia_lending_manager/util/date_extensions.dart';
 import 'package:pokinia_lending_manager/util/double_extensions.dart';
@@ -20,10 +21,10 @@ class ZeroInterestLoanPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer3<ClientService, LoanService, PaymentService>(
-        builder: (context, clientService, loanService, paymentService, _) {
+    return Consumer4<ClientService, LoanService, ZeroInterestLoanService, PaymentService>(
+        builder: (context, clientService, loanService, zeroInterestLoanService, paymentService, _) {
       var loan = loanService.getLoanById(loanId);
-      var zeroInterestLoan = loanService.getZeroInterestLoanByLoanId(loan.id);
+      var zeroInterestLoan = zeroInterestLoanService.getLoanByLoanId(loanId);
       var client = clientService.getClientById(loan.clientId);
       var payments =
           paymentService.getPaymentsByLoanId(zeroInterestLoan.loanId);

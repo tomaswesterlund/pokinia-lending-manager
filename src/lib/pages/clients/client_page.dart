@@ -3,20 +3,23 @@ import 'package:logger/logger.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:pokinia_lending_manager/components/avatars/my_avatar_component.dart';
 import 'package:pokinia_lending_manager/components/buttons/fabs.dart';
+import 'package:pokinia_lending_manager/components/client/client_app_bar.dart';
+import 'package:pokinia_lending_manager/components/client/list_cards/client_open_ended_loan_list_card.dart';
+import 'package:pokinia_lending_manager/components/client/list_cards/client_zero_interest_loan_list_card.dart';
 import 'package:pokinia_lending_manager/components/status_boxes/payment_status/squared_payment_status_box_component.dart';
 import 'package:pokinia_lending_manager/components/status_boxes/payment_status/wide_payment_status_box_component.dart';
 import 'package:pokinia_lending_manager/components/texts/amounts/big_amount_text.dart';
 import 'package:pokinia_lending_manager/components/texts/headers/header_five_text.dart';
 import 'package:pokinia_lending_manager/components/texts/headers/header_three_text.dart';
-import 'package:pokinia_lending_manager/components/texts/headers/header_two_text.dart';
 import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_one_text.dart';
 import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_two_text.dart';
+import 'package:pokinia_lending_manager/enums/loan_types.dart';
 import 'package:pokinia_lending_manager/models/data/client.dart';
 import 'package:pokinia_lending_manager/models/data/loan.dart';
 import 'package:pokinia_lending_manager/pages/loans/loan_page.dart';
 import 'package:pokinia_lending_manager/pages/loans/selector/new_loan_page_old.dart';
 import 'package:pokinia_lending_manager/services/client_service.dart';
-import 'package:pokinia_lending_manager/services/loan_service.dart';
+import 'package:pokinia_lending_manager/services/loans/loan_service.dart';
 import 'package:pokinia_lending_manager/services/logger.dart';
 import 'package:provider/provider.dart';
 import 'package:sliver_tools/sliver_tools.dart';
@@ -35,16 +38,9 @@ class ClientPage extends StatelessWidget {
         var loans = loanService.getLoansByClientId(clientId);
 
         return Scaffold(
-          // appBar: AppBar(
-          //   title: Text(client.name),
-          // ),
           body: CustomScrollView(
             slivers: [
-              const SliverAppBar(
-                title: HeaderTwoText(text: "Client"),
-                scrolledUnderElevation: 0,
-                floating: true,
-              ),
+              ClientAppBar(clientId: clientId, title: 'Client'),
               MultiSliver(
                 children: [
                   Column(
@@ -212,39 +208,45 @@ class ClientPage extends StatelessWidget {
 }
 
 Widget _getLoanListCard(BuildContext context, Client client, Loan loan) {
-  return GestureDetector(
-    onTap: () => Navigator.push(
-        context, MaterialPageRoute(builder: (context) => LoanPage(loan: loan))),
-    child: Padding(
-      padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: const Color(0xFFF8F8F8),
-          border: const Border(
-            bottom: BorderSide(
-              color: Color(0xFFD2DEE0),
+  if (loan.type == LoanTypes.openEndedLoan) {
+    return ClientOpenEndedLoanListCard(loan: loan);
+  } else if (loan.type == LoanTypes.zeroInterestLoan) {
+    return ClientZeroInterestLoanListCard(loan: loan);
+  } else {
+    return GestureDetector(
+      onTap: () => Navigator.push(context,
+          MaterialPageRoute(builder: (context) => LoanPage(loan: loan))),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: const Color(0xFFF8F8F8),
+            border: const Border(
+              bottom: BorderSide(
+                color: Color(0xFFD2DEE0),
+              ),
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    SquaredPaymentStatusBoxComponent(
+                        paymentStatus: loan.paymentStatus),
+                    const SizedBox(width: 20),
+                    const BigAmountText(text: "-1"),
+                  ],
+                ),
+                const Icon(Icons.arrow_forward_ios),
+              ],
             ),
           ),
         ),
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  SquaredPaymentStatusBoxComponent(
-                      paymentStatus: loan.paymentStatus),
-                  const SizedBox(width: 20),
-                  const BigAmountText(text: "-1"),
-                ],
-              ),
-              const Icon(Icons.arrow_forward_ios),
-            ],
-          ),
-        ),
       ),
-    ),
-  );
+    );
+  }
 }
