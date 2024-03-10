@@ -1,10 +1,7 @@
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:logger/logger.dart';
-import 'package:pokinia_lending_manager/services/logger.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthService {
-  final Logger _logger = getLogger('AuthService');
   final supabase = Supabase.instance.client;
 
   Future<AuthResponse> signInWithGoogle() async {

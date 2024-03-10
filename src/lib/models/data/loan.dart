@@ -17,6 +17,7 @@ class Loan {
   double get remainingPrincipalAmount => -1;
   double get interestAmountPaid => -1;
   double get principalAmountPaid => -1;
+  bool get deleted => paymentStatus == PaymentStatus.deleted;
   
   Loan({
     required this.id,

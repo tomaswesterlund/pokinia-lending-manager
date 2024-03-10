@@ -1,13 +1,9 @@
 import 'dart:math';
 
-import 'package:logger/logger.dart';
 import 'package:pokinia_lending_manager/enums/payment_status_enum.dart';
-import 'package:pokinia_lending_manager/services/logger.dart';
 import 'package:pokinia_lending_manager/util/string_extensions.dart';
 
 class LoanStatement {
-  final Logger _logger = getLogger('LoanStatementModel');
-
   final String id;
   final String loanId;
   final String clientId;
@@ -36,6 +32,8 @@ class LoanStatement {
 
     return (i + p).toDouble();
   }
+
+  bool get deleted => paymentStatus == PaymentStatus.deleted;
 
   LoanStatement({
     required this.id,

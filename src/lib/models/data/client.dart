@@ -3,7 +3,7 @@ import 'package:pokinia_lending_manager/enums/payment_status_enum.dart';
 class Client {
   final String id;
   final String name;
-  final String phoneNumber;
+  final String? phoneNumber;
   final String? address;
   final String? avatarImagePath;
   final PaymentStatus paymentStatus;

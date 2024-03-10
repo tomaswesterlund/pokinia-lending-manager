@@ -272,14 +272,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.0"
-  get_it:
-    dependency: "direct main"
-    description:
-      name: get_it
-      sha256: e6017ce7fdeaf218dc51a100344d8cb70134b80e28b760f8bb23c242437bafd7
-      url: "https://pub.dev"
-    source: hosted
-    version: "7.6.7"
   google_fonts:
     dependency: "direct main"
     description:
@@ -789,6 +781,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.2"
+  string_capitalize:
+    dependency: "direct main"
+    description:
+      name: string_capitalize
+      sha256: f98952f8bebd5ef15ef414d29ddd30d9157ad318b54ce9695248a52b0926a64b
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.10"
   string_scanner:
     dependency: transitive
     description:
