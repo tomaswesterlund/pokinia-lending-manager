@@ -3,13 +3,17 @@ import 'package:pokinia_lending_manager/providers/client_provider.dart';
 import 'package:pokinia_lending_manager/providers/loans/loan_provider.dart';
 import 'package:pokinia_lending_manager/providers/loans/zero_interest_loan_provider.dart';
 import 'package:pokinia_lending_manager/providers/payment_provider.dart';
+import 'package:pokinia_lending_manager/ui/components/avatars/my_avatar_component.dart';
 import 'package:pokinia_lending_manager/ui/components/buttons/fabs.dart';
-import 'package:pokinia_lending_manager/ui/components/loans/loan_user_status_component.dart';
+import 'package:pokinia_lending_manager/ui/components/payments/empty_payment_list_component.dart';
 import 'package:pokinia_lending_manager/ui/components/payments/small_payment_list_card.dart';
-import 'package:pokinia_lending_manager/ui/components/status_boxes/payment_status/dot_payment_status_component.dart';
+import 'package:pokinia_lending_manager/ui/components/status_boxes/payment_status/wide_payment_status_box_component.dart';
+import 'package:pokinia_lending_manager/ui/components/texts/amounts/big_amount_text_with_title_text.dart';
 import 'package:pokinia_lending_manager/ui/components/texts/amounts/primary_amount_text.dart';
 import 'package:pokinia_lending_manager/ui/components/texts/headers/header_four_text.dart';
+import 'package:pokinia_lending_manager/ui/components/texts/headers/header_three_text.dart';
 import 'package:pokinia_lending_manager/ui/components/texts/paragraphs/paragraph_one_text.dart';
+import 'package:pokinia_lending_manager/ui/components/texts/paragraphs/paragraph_two_text.dart';
 import 'package:pokinia_lending_manager/ui/pages/payments/new_payment_page.dart';
 import 'package:pokinia_lending_manager/util/date_extensions.dart';
 import 'package:pokinia_lending_manager/util/double_extensions.dart';
@@ -30,17 +34,55 @@ class ZeroInterestLoanPage extends StatelessWidget {
       var loan = loanProvider.getById(loanId);
       var client = clientProvider.getById(loan.clientId);
       var payments = paymentProvider.getByLoanId(loanId);
-      
 
       return Scaffold(
         appBar: AppBar(
-          title: const Text('Zero Interest Loan'),
+          title: const Text('Zero interest loan'),
         ),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              LoanUserStatus(client: client, loan: loan),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  MyAvatarComponent(
+                      name: client.name,
+                      avatarImagePath: client.avatarImagePath),
+                  const SizedBox(width: 16.0),
+
+                  // Name
+                  HeaderFourText(text: client.name),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(24.0, 24.0, 24.0, 12.0),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        const ParagraphTwoText(text: "Status"),
+                        const Spacer(),
+                        WidePaymentStatusBoxComponent(
+                            paymentStatus: loan.paymentStatus)
+                      ],
+                      
+                    ),
+                    const SizedBox(height: 12),
+                    Row(
+                      children: [
+                        const ParagraphTwoText(text: "Expected pay date"),
+                        const Spacer(),
+                        ParagraphTwoText(
+                            text: zeroInterestLoan.expectedPayDate != null
+                                ? zeroInterestLoan.expectedPayDate!
+                                    .toFormattedDate()
+                                : "None"),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
               const SizedBox(height: 24),
               Column(
                 children: [
@@ -53,69 +95,29 @@ class ZeroInterestLoanPage extends StatelessWidget {
                           .toFormattedCurrency())
                 ],
               ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(24.0, 24.0, 24.0, 0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const ParagraphOneText(
-                      text: 'Initial principal amount:',
-                      fontWeight: FontWeight.bold,
-                    ),
-                    ParagraphOneText(
-                        text: zeroInterestLoan.initialPrincipalAmount
-                            .toFormattedCurrency())
-                  ],
-                ),
+              const SizedBox(height: 16),
+              Row(
+                //mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  BigAmountTextWithTitleText.withAmount(
+                      title: 'Initial principal amount',
+                      amount: zeroInterestLoan.initialPrincipalAmount),
+                ],
               ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(24.0, 12.0, 24.0, 0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const ParagraphOneText(
-                      text: 'Expected pay date',
-                      fontWeight: FontWeight.bold,
-                    ),
-                    zeroInterestLoan.expectedPayDate != null
-                        ? ParagraphOneText(
-                            text: zeroInterestLoan.expectedPayDate!
-                                .toFormattedDate())
-                        : const ParagraphOneText(text: "None")
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(24.0, 12.0, 24.0, 0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const ParagraphOneText(
-                      text: 'Status',
-                      fontWeight: FontWeight.bold,
-                    ),
-                    Row(
-                      children: [
-                        DotPaymentStatus(paymentStatus: loan.paymentStatus),
-                        const SizedBox(width: 8),
-                        ParagraphOneText(text: loan.paymentStatus.name)
-                      ],
-                    )
-                  ],
-                ),
-              ),
-              const SizedBox(height: 50),
-              const HeaderFourText(text: "Payments"),
+              const SizedBox(height: 32),
+              const HeaderThreeText(text: "Payments"),
               const SizedBox(height: 8),
-              Flexible(
-                child: ListView.builder(
-                    itemCount: payments.length,
-                    itemBuilder: (context, index) {
-                      var payment = payments[index];
-                      return SmallPaymentListCard(
-                          payment: payment, showInterests: false);
-                    }),
-              ),
+              payments.isEmpty
+                  ? const EmptyPaymentList()
+                  : Flexible(
+                      child: ListView.builder(
+                          itemCount: payments.length,
+                          itemBuilder: (context, index) {
+                            var payment = payments[index];
+                            return SmallPaymentListCard(
+                                payment: payment, showInterests: false);
+                          }),
+                    ),
             ],
           ),
         ),

@@ -28,16 +28,35 @@ class UserSettingsProvider extends ChangeNotifier {
     });
   }
 
+  void initializeUserSettings(String userId) {
+    if (!hasUserSettingsForUser(userId)) {
+      createUserSettings(userId, '');
+    }
+  }
+
   bool hasUserSettingsForUser(String userId) {
     return _userSettingsList
         .where((element) => element.userId == userId)
         .isNotEmpty;
   }
 
-  UserSettings getUserSettingsForUser(String userId) {
+  UserSettings getByUserId(String userId) {
     try {
       return _userSettingsList
           .firstWhere((element) => element.userId == userId);
+    } catch (e) {
+      _logger.e(e);
+      rethrow;
+    }
+  }
+
+  void setSelectedOrganizationId(String userId, String organizationId) async {
+    try {
+      var response = await supabase.from('user_settings').update({
+        'selected_organization_id': organizationId,
+      }).eq('user_id', userId);
+
+      notifyListeners();
     } catch (e) {
       _logger.e(e);
       rethrow;

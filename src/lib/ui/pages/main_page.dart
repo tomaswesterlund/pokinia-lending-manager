@@ -38,10 +38,10 @@ class _MainPageState extends State<MainPage> {
             NavigationDestination(icon: Icon(Icons.group), label: "Clients"),
             NavigationDestination(
                 icon: Icon(Icons.monetization_on), label: "Loans"),
-            NavigationDestination(
-                icon: Icon(Icons.payments), label: "Payments"),
-            NavigationDestination(
-                icon: Icon(Icons.bar_chart), label: "Reports"),
+            // NavigationDestination(
+            //     icon: Icon(Icons.payments), label: "Payments"),
+            // NavigationDestination(
+            //     icon: Icon(Icons.bar_chart), label: "Reports"),
           ],
           onDestinationSelected: (value) {
             setState(() {

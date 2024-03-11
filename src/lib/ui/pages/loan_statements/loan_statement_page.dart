@@ -4,15 +4,18 @@ import 'package:pokinia_lending_manager/models/data/loan_statement.dart';
 import 'package:pokinia_lending_manager/providers/loan_statement_provider.dart';
 import 'package:pokinia_lending_manager/providers/loans/loan_provider.dart';
 import 'package:pokinia_lending_manager/providers/payment_provider.dart';
-import 'package:pokinia_lending_manager/ui/components/alerts/deleted_alert.dart';
+import 'package:pokinia_lending_manager/ui/components/boxes/deleted_alert_box.dart';
 import 'package:pokinia_lending_manager/ui/components/buttons/fabs.dart';
 import 'package:pokinia_lending_manager/ui/components/loan_statements/loan_statement_app_bar.dart';
+import 'package:pokinia_lending_manager/ui/components/payments/empty_payment_list_component.dart';
 import 'package:pokinia_lending_manager/ui/components/payments/small_payment_list_card.dart';
-import 'package:pokinia_lending_manager/ui/components/status_boxes/payment_status/dot_payment_status_component.dart';
+import 'package:pokinia_lending_manager/ui/components/status_boxes/payment_status/wide_payment_status_box_component.dart';
+import 'package:pokinia_lending_manager/ui/components/texts/amounts/big_amount_text_with_title_text.dart';
 import 'package:pokinia_lending_manager/ui/components/texts/amounts/primary_amount_text.dart';
 import 'package:pokinia_lending_manager/ui/components/texts/amounts/small_amount_text.dart';
 import 'package:pokinia_lending_manager/ui/components/texts/headers/header_five_text.dart';
 import 'package:pokinia_lending_manager/ui/components/texts/headers/header_four_text.dart';
+import 'package:pokinia_lending_manager/ui/components/texts/headers/header_three_text.dart';
 import 'package:pokinia_lending_manager/ui/components/texts/paragraphs/paragraph_two_text.dart';
 import 'package:pokinia_lending_manager/ui/pages/payments/new_payment_page.dart';
 import 'package:pokinia_lending_manager/util/date_extensions.dart';
@@ -32,37 +35,104 @@ class _LoanStatementPageState extends State<LoanStatementPage> {
   @override
   Widget build(BuildContext context) {
     return Consumer3<LoanProvider, LoanStatementProvider, PaymentProvider>(
-      builder: (context, loanProvider, loanStatementProvider, paymentProvider, _) {
-        var loanStatement = loanStatementProvider.getById(widget.loanStatementId);
+      builder:
+          (context, loanProvider, loanStatementProvider, paymentProvider, _) {
+        var loanStatement =
+            loanStatementProvider.getById(widget.loanStatementId);
         var loan = loanProvider.getById(loanStatement.loanId);
-        var payments = paymentProvider.getByLoanStatementId(widget.loanStatementId); 
+        var payments =
+            paymentProvider.getByLoanStatementId(widget.loanStatementId);
 
         return Scaffold(
           body: CustomScrollView(
             slivers: [
               LoanStatementAppBar(loanStatementId: widget.loanStatementId),
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(24.0, 24.0, 24.0, 12.0),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          const ParagraphTwoText(text: "Status"),
+                          const Spacer(),
+                          WidePaymentStatusBoxComponent(
+                              paymentStatus: loanStatement.paymentStatus)
+                        ],
+                      ),
+                      const SizedBox(height: 12),
+                      Row(
+                        children: [
+                          const ParagraphTwoText(text: "Expected pay date"),
+                          const Spacer(),
+                          ParagraphTwoText(
+                              text: loanStatement.expectedPayDate
+                                  .toFormattedDate()),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
               MultiSliver(
                 children: [
                   Column(
                     children: [
                       _getDeletedWidget(loanStatement),
                       _getRemainingAmountWidget(loanStatement),
-                      _getInfoRowsWidget(loanStatement),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 24.0),
+                        child: Row(
+                          //mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            BigAmountTextWithTitleText.withAmount(
+                                title: 'Principal paid',
+                                amount: loanStatement.principalAmountPaid),
+                            BigAmountTextWithTitleText.withAmount(
+                                title: 'Principal expected',
+                                amount: loanStatement.expectedPrincipalAmount),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 24.0),
+                        child: Row(
+                          //mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            BigAmountTextWithTitleText.withAmount(
+                                title: 'Interest paid',
+                                amount: loanStatement.interestAmountPaid),
+                            BigAmountTextWithTitleText.withAmount(
+                                title: 'Interest expected',
+                                amount: loanStatement.expectedInterestAmount),
+                          ],
+                        ),
+                      ),
+                      Row(
+                        //mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          BigAmountTextWithTitleText.withPercentage(
+                              title: 'Interest rate',
+                              percentage: loanStatement.interestRate),
+                        ],
+                      ),
                     ],
                   ),
                   const SizedBox(height: 32),
                   const Center(
-                    child: HeaderFourText(text: "Payments"),
+                    child: HeaderThreeText(text: "Payments"),
                   ),
-                  SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                      (context, index) {
-                        final payment = payments[index];
-                        return SmallPaymentListCard(payment: payment);
-                      },
-                      childCount: payments.length,
-                    ),
-                  ),
+                  payments.isEmpty
+                      ? const EmptyPaymentList()
+                      : SliverList(
+                          delegate: SliverChildBuilderDelegate(
+                            (context, index) {
+                              final payment = payments[index];
+                              return SmallPaymentListCard(payment: payment);
+                            },
+                            childCount: payments.length,
+                          ),
+                        ),
                   const SizedBox(height: 128),
                 ],
               )
@@ -88,7 +158,7 @@ class _LoanStatementPageState extends State<LoanStatementPage> {
 
   Widget _getDeletedWidget(LoanStatement loanStatement) {
     if (loanStatement.paymentStatus == PaymentStatus.deleted) {
-      return DeletedAlert(
+      return DeletedAlertBox(
           title: 'This loan statement has been deleted!',
           deleteDate: loanStatement.deleteDate,
           deleteReason: loanStatement.deleteReason);
@@ -125,41 +195,6 @@ class _LoanStatementPageState extends State<LoanStatementPage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const HeaderFiveText(
-                  text: "Expected pay date", fontWeight: FontWeight.normal),
-              Row(
-                children: [
-                  const SizedBox(width: 5),
-                  ParagraphTwoText(
-                      text: loanStatement.expectedPayDate.toFormattedDate()),
-                ],
-              )
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const HeaderFiveText(
-                  text: "Payment status", fontWeight: FontWeight.normal),
-              Row(
-                children: [
-                  DotPaymentStatus(paymentStatus: loanStatement.paymentStatus),
-                  const SizedBox(width: 5),
-                  loanStatement.paymentStatus == PaymentStatus.deleted
-                      ? ParagraphTwoText(
-                          text: loanStatement.paymentStatus.name,
-                          fillColor: Colors.red,
-                        )
-                      : ParagraphTwoText(
-                          text: loanStatement.paymentStatus.name,
-                        ),
-                ],
-              )
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const HeaderFiveText(
                   text: "Interest paid / expected",
                   fontWeight: FontWeight.normal),
               SmallAmountText(
@@ -191,3 +226,4 @@ class _LoanStatementPageState extends State<LoanStatementPage> {
     );
   }
 }
+

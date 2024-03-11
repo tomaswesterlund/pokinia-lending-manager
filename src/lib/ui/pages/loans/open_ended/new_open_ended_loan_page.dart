@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pokinia_lending_manager/models/data/loans/new_open_ended_loan_parameters.dart';
+import 'package:pokinia_lending_manager/models/loans/new_open_ended_loan_parameters.dart';
 import 'package:pokinia_lending_manager/providers/loans/loan_provider.dart';
 import 'package:pokinia_lending_manager/providers/loans/open_ended_loan_provider.dart';
 import 'package:pokinia_lending_manager/ui/components/buttons/my_cta_button.dart';

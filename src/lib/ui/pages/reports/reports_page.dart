@@ -8,16 +8,15 @@ class ReportsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const HeaderTwoText(text: "Reports"),
-        automaticallyImplyLeading: false,
-      ),
-      body: const Center(
-        child: Text("Report page"),
-      ),
-      endDrawer:  const Drawer(
-        child: MyDrawer(),
-      )
-    );
+        appBar: AppBar(
+          title: const HeaderTwoText(text: "Reports"),
+          automaticallyImplyLeading: false,
+        ),
+        body: const Center(
+          child: Text("Report page"),
+        ),
+        endDrawer: Drawer(
+          child: MyDrawer(),
+        ));
   }
 }

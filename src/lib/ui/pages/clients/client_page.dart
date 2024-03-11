@@ -6,7 +6,8 @@ import 'package:pokinia_lending_manager/models/data/loan.dart';
 import 'package:pokinia_lending_manager/providers/client_provider.dart';
 import 'package:pokinia_lending_manager/providers/loans/loan_provider.dart';
 import 'package:pokinia_lending_manager/services/logger.dart';
-import 'package:pokinia_lending_manager/ui/components/alerts/deleted_alert.dart';
+import 'package:pokinia_lending_manager/ui/components/avatars/my_avatar_component.dart';
+import 'package:pokinia_lending_manager/ui/components/boxes/deleted_alert_box.dart';
 import 'package:pokinia_lending_manager/ui/components/buttons/fabs.dart';
 import 'package:pokinia_lending_manager/ui/components/clients/client_app_bar.dart';
 import 'package:pokinia_lending_manager/ui/components/clients/client_contact.dart';
@@ -17,30 +18,36 @@ import 'package:pokinia_lending_manager/ui/components/status_boxes/payment_statu
 import 'package:pokinia_lending_manager/ui/components/texts/amounts/big_amount_text.dart';
 import 'package:pokinia_lending_manager/ui/components/texts/headers/header_five_text.dart';
 import 'package:pokinia_lending_manager/ui/components/texts/headers/header_three_text.dart';
-import 'package:pokinia_lending_manager/ui/components/texts/headers/header_two_text.dart';
 import 'package:pokinia_lending_manager/ui/components/texts/paragraphs/paragraph_two_text.dart';
 import 'package:pokinia_lending_manager/ui/pages/loans/loan_page.dart';
+import 'package:pokinia_lending_manager/ui/pages/loans/selector/select_loan_type_page.dart';
 import 'package:provider/provider.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
-class ClientPage extends StatelessWidget {
+class ClientPage extends StatefulWidget {
   final String clientId;
-  final Logger _logger = getLogger('ClientPage');
 
-  ClientPage({super.key, required this.clientId});
+  const ClientPage({super.key, required this.clientId});
+
+  @override
+  State<ClientPage> createState() => _ClientPageState();
+}
+
+class _ClientPageState extends State<ClientPage> {
+  final Logger _logger = getLogger('ClientPage');
 
   @override
   Widget build(BuildContext context) {
     return Consumer2<ClientProvider, LoanProvider>(
       builder: (context, clientProvider, loanProvider, child) {
-        var client = clientProvider.getById(clientId);
-        var loans = loanProvider.getByClientId(clientId);
+        var client = clientProvider.getById(widget.clientId);
+        var loans = loanProvider.getByClientId(widget.clientId);
 
         return Scaffold(
           body: CustomScrollView(
             slivers: [
               ClientAppBar(
-                  clientId: clientId,
+                  clientId: widget.clientId,
                   title: 'Client',
                   isDeleted: client.deleted),
               MultiSliver(
@@ -53,26 +60,42 @@ class ClientPage extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             client.deleted
-                                ? DeletedAlert(
+                                ? DeletedAlertBox(
                                     title: 'This client has been deleted!',
                                     deleteDate: client.deleteDate,
                                     deleteReason: client.deleteReason)
                                 : const SizedBox.shrink(),
-                            HeaderTwoText(text: client.name),
-                            //const SizedBox(height: 16.0),
-                            const Spacer(),
-                        
-                            // Status
-                            WidePaymentStatusBoxComponent(
-                                paymentStatus: client.paymentStatus),
                           ],
                         ),
                       ),
-                      const SizedBox(height: 16.0),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          MyAvatarComponent(
+                              name: client.name,
+                              avatarImagePath: client.avatarImagePath),
+                          const SizedBox(width: 16.0),
+                          HeaderThreeText(text: client.name),
+                        ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(24.0),
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                const ParagraphTwoText(text: "Status"),
+                                const Spacer(),
+                                WidePaymentStatusBoxComponent(
+                                    paymentStatus: client.paymentStatus)
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
                       ClientContact(client: client)
                     ],
                   ),
-                  const SizedBox(height: 16.0),
                   const Center(child: HeaderThreeText(text: "Loans")),
                   _getLoansWidget(context, loans),
                   const SizedBox(height: 128.0)
@@ -83,23 +106,22 @@ class ClientPage extends StatelessWidget {
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerFloat,
           floatingActionButton: getDefaultFab(
-              onPressed: () => showMaterialModalBottomSheet(
-                    enableDrag: true,
-                    isDismissible: true,
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(15.0),
-                        topRight: Radius.circular(15.0),
-                      ),
-                    ),
-                    context: context,
-                    builder: (context) => Padding(
-                      padding: EdgeInsets.only(
-                          bottom: MediaQuery.of(context).viewInsets.bottom),
-                      child:
-                          const Placeholder(), //NewLoanPageOld(selectedClient: client.id),
-                    ),
-                  )),
+            onPressed: () => showMaterialModalBottomSheet(
+              enableDrag: true,
+              isDismissible: true,
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(15.0),
+                  topRight: Radius.circular(15.0),
+                ),
+              ),
+              context: context,
+              builder: (context) => Padding(
+                  padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).viewInsets.bottom),
+                  child: SelectLoanTypePage()),
+            ),
+          ),
         );
       },
     );

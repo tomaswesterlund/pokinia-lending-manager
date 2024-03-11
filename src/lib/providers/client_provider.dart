@@ -19,12 +19,11 @@ class ClientProvider extends ChangeNotifier {
     supabase
         .from('clients')
         .stream(primaryKey: ['id']).listen(((List<Map<String, dynamic>> data) {
-      
       var clients = data.map((map) => Client.fromMap(map)).toList();
       _clients.clear();
       _clients.addAll(clients);
 
-      if(!loaded) {
+      if (!loaded) {
         loaded = true;
         onLoaded('clientService');
       }
@@ -40,17 +39,17 @@ class ClientProvider extends ChangeNotifier {
   }
 
   Future<Response> createClient(
-      {required String customerId,
+      {required String organizationId,
       required String name,
-      required phoneNumber,
+      String? phoneNumber,
       String? address,
       String? avatarImagePath}) async {
     try {
       _logger.i(
-          'Adding client with customerId: $customerId, name: $name, phoneNumber: $phoneNumber, address: $address, avatarImagePath: $avatarImagePath');
+          'Adding client with organizationId: $organizationId, name: $name, phoneNumber: $phoneNumber, address: $address, avatarImagePath: $avatarImagePath');
 
       var params = {
-        'v_customer_id': customerId,
+        'v_organization_id': organizationId,
         'v_name': name,
         'v_phone_number': phoneNumber,
         'v_address': address,

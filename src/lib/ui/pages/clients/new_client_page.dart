@@ -28,7 +28,6 @@ class _NewClientPageState extends State<NewClientPage> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
-  String? _selectedCustomerId;
   File? _selectedAvatar;
   OverlayEntry? _loadingOverlay;
   bool _isProcessing = false;
@@ -37,7 +36,11 @@ class _NewClientPageState extends State<NewClientPage> {
     if (_formKey.currentState!.validate()) {
       setOnProcessing(true);
 
-      var clientService = Provider.of<ClientProvider>(context, listen: false);
+      var clientProvider = Provider.of<ClientProvider>(context, listen: false);
+      var userSettingsProvider =
+          Provider.of<UserSettingsProvider>(context, listen: false);
+      var user = supabase.auth.currentUser!;
+      var userSettings = userSettingsProvider.getByUserId(user.id);
 
       var avatarImagePath = "";
       if (_selectedAvatar != null) {
@@ -48,8 +51,8 @@ class _NewClientPageState extends State<NewClientPage> {
       var phoneNumber = _phoneNumberController.text;
       var address = _addressController.text;
 
-      var response = await clientService.createClient(
-          customerId: _selectedCustomerId!,
+      var response = await clientProvider.createClient(
+          organizationId: userSettings.selectedOrganzationId,
           name: name,
           phoneNumber: phoneNumber,
           address: address,
@@ -102,9 +105,7 @@ class _NewClientPageState extends State<NewClientPage> {
     return Consumer<UserSettingsProvider>(
         builder: (context, userSettingsService, _) {
       var user = supabase.auth.currentUser!;
-      var userSettings = userSettingsService.getUserSettingsForUser(user.id);
-
-      _selectedCustomerId = userSettings.selectedCustomerId;
+      var userSettings = userSettingsService.getByUserId(user.id);
 
       return Form(
         key: _formKey,
@@ -226,9 +227,9 @@ class _NewClientPageState extends State<NewClientPage> {
         labelText: 'Phone number',
         enabled: !_isProcessing,
         validator: (value) {
-          if (value.isNullOrEmpty()) {
-            return "Phone number can't be empty";
-          }
+          // if (value.isNullOrEmpty()) {
+          //   return "Phone number can't be empty";
+          // }
 
           return null;
         },

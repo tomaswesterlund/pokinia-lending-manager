@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:pokinia_lending_manager/models/data/loans/new_open_ended_loan_parameters.dart';
 import 'package:pokinia_lending_manager/models/data/loans/open_ended_loan.dart';
 import 'package:pokinia_lending_manager/models/data/repsonse.dart';
+import 'package:pokinia_lending_manager/models/loans/new_open_ended_loan_parameters.dart';
 import 'package:pokinia_lending_manager/services/logger.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 

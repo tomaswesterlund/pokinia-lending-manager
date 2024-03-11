@@ -3,12 +3,12 @@ import 'package:pokinia_lending_manager/ui/components/texts/paragraphs/paragraph
 import 'package:pokinia_lending_manager/ui/components/texts/paragraphs/paragraph_two_text.dart';
 import 'package:pokinia_lending_manager/util/date_extensions.dart';
 
-class DeletedAlert extends StatelessWidget {
+class DeletedAlertBox extends StatelessWidget {
   final String title;
   final DateTime? deleteDate;
   final String? deleteReason;
 
-  const DeletedAlert(
+  const DeletedAlertBox(
       {super.key, required this.title, this.deleteDate, this.deleteReason});
 
   @override
@@ -29,7 +29,7 @@ class DeletedAlert extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(  
+          Row(
             children: [
               const Icon(Icons.delete, color: Color(0xFFEB5857)),
               const SizedBox(width: 10),
@@ -53,10 +53,21 @@ class DeletedAlert extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 4),
-          Row(
+          Wrap(
             children: [
               const ParagraphTwoText(
                   text: 'Delete reason:',
+                  fillColor: Color(0xFFEB5857),
+                  fontWeight: FontWeight.bold),
+              const SizedBox(width: 10),
+              ParagraphTwoText(
+                  text: deleteReason ?? '', fillColor: const Color(0xFFEB5857)),
+            ],
+          ),
+          Row(
+            children: [
+              const ParagraphTwoText(
+                  text: 'Delete reason 2 asd asd :',
                   fillColor: Color(0xFFEB5857),
                   fontWeight: FontWeight.bold),
               const SizedBox(width: 10),

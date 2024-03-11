@@ -32,17 +32,6 @@ class _ClientsPageState extends State<ClientsPage> {
                 title: HeaderTwoText(text: "Clients"),
                 scrolledUnderElevation: 0,
               ),
-              // SliverToBoxAdapter(
-              //   child: Row(
-              //     mainAxisAlignment: MainAxisAlignment.end,
-              //     children: [
-              //       const Text("Show deleted"),
-              //       const SizedBox(width: 12),
-              //       CupertinoSwitch(
-              //           value: provider.showDeleted, onChanged: (value) => provider.toggleShowDeleted())
-              //     ],
-              //   ),
-              // ),
               clients.isEmpty
                   ? const SliverFillRemaining(
                       child: Center(child: EmptyClientList()),
@@ -71,7 +60,7 @@ class _ClientsPageState extends State<ClientsPage> {
           ),
         ),
       ),
-      endDrawer: const Drawer(
+      endDrawer:  Drawer(
         child: MyDrawer(),
       ),
     );

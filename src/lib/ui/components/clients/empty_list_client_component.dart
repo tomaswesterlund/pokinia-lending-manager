@@ -8,17 +8,17 @@ class EmptyClientList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-          child: Column(
-            children: [
-              const SizedBox(height: 100),
-              Image.asset('assets/images/empty_list_clients.png'),
-              const SizedBox(height: 25),
-              const HeaderFiveText(text: "No clients were found."),
-              const MySubHeadingText(
-                  text: "Would you like to create a new client?"),
-              const SizedBox(height: 100),
-            ],
-          ),
-        );
+      child: Column(
+        children: [
+          const SizedBox(height: 100),
+          Image.asset('assets/images/empty_list_clients.png'),
+          const SizedBox(height: 25),
+          const HeaderFiveText(text: "No clients were found."),
+          const MySubHeadingText(
+              text: "Would you like to create a new client?"),
+          const SizedBox(height: 100),
+        ],
+      ),
+    );
   }
 }

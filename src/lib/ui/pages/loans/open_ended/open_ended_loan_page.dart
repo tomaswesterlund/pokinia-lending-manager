@@ -5,15 +5,16 @@ import 'package:pokinia_lending_manager/providers/client_provider.dart';
 import 'package:pokinia_lending_manager/providers/loan_statement_provider.dart';
 import 'package:pokinia_lending_manager/providers/loans/loan_provider.dart';
 import 'package:pokinia_lending_manager/providers/loans/open_ended_loan_provider.dart';
-import 'package:pokinia_lending_manager/ui/components/alerts/deleted_alert.dart';
+import 'package:pokinia_lending_manager/ui/components/avatars/my_avatar_component.dart';
+import 'package:pokinia_lending_manager/ui/components/boxes/deleted_alert_box.dart';
 import 'package:pokinia_lending_manager/ui/components/loan_statements/open_ended/open_ended_loan_statement_list.dart';
 import 'package:pokinia_lending_manager/ui/components/loans/loan_app_bar.dart';
-import 'package:pokinia_lending_manager/ui/components/loans/loan_user_status_component.dart';
-import 'package:pokinia_lending_manager/ui/components/status_boxes/payment_status/dot_payment_status_component.dart';
+import 'package:pokinia_lending_manager/ui/components/status_boxes/payment_status/wide_payment_status_box_component.dart';
 import 'package:pokinia_lending_manager/ui/components/texts/amounts/big_amount_text_with_title_text.dart';
 import 'package:pokinia_lending_manager/ui/components/texts/amounts/primary_amount_text.dart';
 import 'package:pokinia_lending_manager/ui/components/texts/headers/header_four_text.dart';
 import 'package:pokinia_lending_manager/ui/components/texts/paragraphs/paragraph_one_text.dart';
+import 'package:pokinia_lending_manager/ui/components/texts/paragraphs/paragraph_two_text.dart';
 import 'package:pokinia_lending_manager/util/date_extensions.dart';
 import 'package:pokinia_lending_manager/util/double_extensions.dart';
 import 'package:provider/provider.dart';
@@ -44,7 +45,45 @@ class OpenEndedLoanPage extends StatelessWidget {
                   isDeleted: loan.paymentStatus == PaymentStatus.deleted),
               SliverToBoxAdapter(child: _getDeletedWidget(loan)),
               SliverToBoxAdapter(
-                  child: LoanUserStatus(client: client, loan: loan)),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    MyAvatarComponent(
+                        name: client.name,
+                        avatarImagePath: client.avatarImagePath),
+                    const SizedBox(width: 16.0),
+
+                    // Name
+                    HeaderFourText(text: client.name),
+                  ],
+                ),
+              ),
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(24.0, 24.0, 24.0, 12.0),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          const ParagraphTwoText(text: "Status"),
+                          const Spacer(),
+                          WidePaymentStatusBoxComponent(
+                              paymentStatus: loan.paymentStatus)
+                        ],
+                      ),
+                      const SizedBox(height: 12),
+                      Row(
+                        children: [
+                          const ParagraphTwoText(text: "Start date"),
+                          const Spacer(),
+                          ParagraphTwoText(
+                              text: openEndedLoan.startDate.toFormattedDate()),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
               const SliverToBoxAdapter(child: SizedBox(height: 24)),
               SliverToBoxAdapter(
                 child: Column(
@@ -86,53 +125,7 @@ class OpenEndedLoanPage extends StatelessWidget {
                   ],
                 ),
               ),
-              const SliverToBoxAdapter(child: SizedBox(height: 24)),
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(24.0, 12.0, 24.0, 0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        children: [
-                          const ParagraphOneText(
-                            text: 'Start date',
-                            fontWeight: FontWeight.bold,
-                          ),
-                          ParagraphOneText(
-                              text: openEndedLoan.startDate.toFormattedDate()),
-                        ],
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(24.0, 12.0, 24.0, 0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              children: [
-                                const ParagraphOneText(
-                                  text: 'Status',
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                Row(
-                                  children: [
-                                    DotPaymentStatus(
-                                        paymentStatus: loan.paymentStatus),
-                                    const SizedBox(width: 8),
-                                    ParagraphOneText(
-                                        text: loan.paymentStatus.name)
-                                  ],
-                                ),
-                              ],
-                            )
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              const SliverToBoxAdapter(child: SizedBox(height: 50)),
+              const SliverToBoxAdapter(child: SizedBox(height: 32)),
               const SliverToBoxAdapter(
                   child:
                       Center(child: HeaderFourText(text: 'Loan Statements'))),
@@ -147,7 +140,7 @@ class OpenEndedLoanPage extends StatelessWidget {
 
   Widget _getDeletedWidget(Loan loan) {
     if (loan.paymentStatus == PaymentStatus.deleted) {
-      return DeletedAlert(
+      return DeletedAlertBox(
           title: 'This loan has been deleted!',
           deleteDate: loan.deleteDate,
           deleteReason: loan.deleteReason);

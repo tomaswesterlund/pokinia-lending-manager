@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:pokinia_lending_manager/providers/client_provider.dart';
 import 'package:pokinia_lending_manager/providers/loans/loan_provider.dart';
 import 'package:pokinia_lending_manager/providers/loans/open_ended_loan_provider.dart';
-import 'package:pokinia_lending_manager/ui/components/avatars/my_avatar_component.dart';
 import 'package:pokinia_lending_manager/ui/components/boxes/base_box.dart';
 import 'package:pokinia_lending_manager/ui/components/status_boxes/payment_status/dot_payment_status_component.dart';
+import 'package:pokinia_lending_manager/ui/components/status_boxes/payment_status/squared_payment_status_box_component.dart';
 import 'package:pokinia_lending_manager/ui/components/texts/amounts/big_amount_text.dart';
 import 'package:pokinia_lending_manager/ui/components/texts/paragraphs/paragraph_one_text.dart';
 import 'package:pokinia_lending_manager/ui/components/texts/paragraphs/paragraph_two_text.dart';
@@ -41,15 +41,15 @@ class OpenEndedLoanListCard extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                MyAvatarComponent(
-                    name: client.name, avatarImagePath: client.avatarImagePath),
+                SquaredPaymentStatusBoxComponent(paymentStatus: loan.paymentStatus),
+                
                 const SizedBox(width: 15),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
                       children: [
-                        DotPaymentStatus(paymentStatus: loan.paymentStatus),
+                        DotPaymentStatus(paymentStatus: client.paymentStatus),
                         const SizedBox(width: 5),
                         ParagraphOneText(
                             text: client.name, fontWeight: FontWeight.bold),
@@ -82,7 +82,7 @@ class OpenEndedLoanListCard extends StatelessWidget {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const ParagraphTwoText(text: "Remaining"),
+                          const ParagraphTwoText(text: "Remaining principal"),
                           BigAmountText(
                               text: openEndedLoan.remainingPrincipalAmount
                                   .toFormattedCurrency())

@@ -152,7 +152,7 @@ class BasePaymentStatusBox extends StatelessWidget {
       case PaymentStatus.unknown:
         return const Color(0xFF57878B);
       case PaymentStatus.empty:
-        return const Color.fromARGB(202, 238, 238, 238);
+        return const Color(0xFF57878B);
       default:
         return Colors.black;
     }
@@ -166,9 +166,11 @@ class BasePaymentStatusBox extends StatelessWidget {
         return const Color(0xFFF3FBFC);
       case PaymentStatus.overdue:
         return const Color(0xFFFFF4E5);
-        case PaymentStatus.deleted:
+      case PaymentStatus.deleted:
         return const Color(0xFFFFF0F0);
       case PaymentStatus.unknown:
+        return const Color(0xFFF3FBFC);
+      case PaymentStatus.empty:
         return const Color(0xFFF3FBFC);
       default:
         return const Color.fromARGB(255, 116, 115, 115);
@@ -186,7 +188,7 @@ class BasePaymentStatusBox extends StatelessWidget {
       case PaymentStatus.deleted:
         return Icons.delete;
       case PaymentStatus.empty:
-        return Icons.email;
+        return Icons.exposure_zero;
       default:
         return Icons.question_mark;
     }
