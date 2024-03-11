@@ -72,7 +72,7 @@ class _NewOpenEndedLoanPageState extends State<NewOpenEndedLoanPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('New Open Ended Loan'),
+        title: const Text('Create open-ended loan'),
       ),
       body: Center(
         child: Consumer<LoanProvider>(
@@ -105,11 +105,11 @@ class _NewOpenEndedLoanPageState extends State<NewOpenEndedLoanPage> {
                       isProcessing: _isProcessing),
 
                   const Spacer(),
-                  const Padding(
-                    padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
-                    child: MyCtaButton(
-                        text: "Review payment table", onPressed: null),
-                  ),
+                  // const Padding(
+                  //   padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
+                  //   child: MyCtaButton(
+                  //       text: "Review payment table", onPressed: null),
+                  // ),
 
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20, 20, 20, 40),

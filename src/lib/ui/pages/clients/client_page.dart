@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:pokinia_lending_manager/enums/loan_types.dart';
 import 'package:pokinia_lending_manager/models/data/loan.dart';
 import 'package:pokinia_lending_manager/providers/client_provider.dart';
@@ -105,23 +104,10 @@ class _ClientPageState extends State<ClientPage> {
           ),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerFloat,
-          floatingActionButton: getDefaultFab(
-            onPressed: () => showMaterialModalBottomSheet(
-              enableDrag: true,
-              isDismissible: true,
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(15.0),
-                  topRight: Radius.circular(15.0),
-                ),
-              ),
-              context: context,
-              builder: (context) => Padding(
-                  padding: EdgeInsets.only(
-                      bottom: MediaQuery.of(context).viewInsets.bottom),
-                  child: SelectLoanTypePage()),
-            ),
-          ),
+          floatingActionButton: getDefaultFab(onPressed: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => SelectLoanTypePage()));
+          }),
         );
       },
     );

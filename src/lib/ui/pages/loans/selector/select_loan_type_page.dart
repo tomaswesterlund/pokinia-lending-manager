@@ -9,7 +9,7 @@ import 'package:pokinia_lending_manager/ui/pages/loans/zero_interest_loans/new_z
 
 class SelectLoanTypePage extends StatelessWidget {
   final Logger _logger = getLogger('NewLoanPage');
-  
+
   SelectLoanTypePage({super.key});
 
   void _onLoanSelected(BuildContext context, LoanTypes loanType) {
@@ -32,37 +32,31 @@ class SelectLoanTypePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+
+    return  Scaffold(
       appBar: AppBar(
-        title: const Text('Choose loan type'),
+        title: const HeaderThreeText(text: 'Select loan type'),
       ),
-      body: Center(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          _getLoanTypeWidget(
-              context,
-              'Open-ended loan',
-              'A loan with a principal amount and on-going (automatically generated) loan statements with an expected interest amount to be paid on the expected pay dates. This loan does not require an end-date.',
-              LoanTypes.openEndedLoan),
-          // _getLoanTypeWidget(
-          //     context,
-          //     'Term loan',
-          //     'A loan with a principal amount and several loan statements with an expected principal and interest amount to be paid on the expected pay dates. This loan requires an end-date.',
-          //     LoanTypes.termLoan),
-          // _getLoanTypeWidget(
-          //     context,
-          //     'Ballon loan',
-          //     'Generates a loan with a principal amount with a fixed interest amount that should be paid no later then the expected end pay date.',
-          //     LoanTypes.ballonLoan),
-          _getLoanTypeWidget(
-              context,
-              'Zero-interest loan',
-              'Generates a loan with a principal amount but no interest amount with an optional expected end pay date.',
-              LoanTypes.zeroInterestLoan),
-        ],
-      )),
+      body: Padding(
+        padding: const EdgeInsets.fromLTRB(12, 12, 12, 0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _getLoanTypeWidget(
+                context,
+                'Open-ended loan',
+                'A loan with a principal amount and on-going (automatically generated) loan statements with an expected interest amount to be paid on the expected pay dates. This loan does not require an end-date.',
+                LoanTypes.openEndedLoan),
+            _getLoanTypeWidget(
+                context,
+                'Zero-interest loan',
+                'Generates a loan with a principal amount but no interest amount with an optional expected end pay date.',
+                LoanTypes.zeroInterestLoan),
+          ],
+        ),
+      ),
     );
+
   }
 
   Widget _getLoanTypeWidget(BuildContext context, String title,

@@ -30,8 +30,7 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
+    return Scaffold(
         bottomNavigationBar: NavigationBar(
           selectedIndex: currentPageIndex,
           destinations: const [
@@ -50,7 +49,7 @@ class _MainPageState extends State<MainPage> {
           },
         ),
         body: _getPage(),
-      ),
+      
     );
   }
 }

@@ -37,7 +37,7 @@ class ZeroInterestLoanPage extends StatelessWidget {
 
       return Scaffold(
         appBar: AppBar(
-          title: const Text('Zero interest loan'),
+          title: const Text('Zero-interest loan'),
         ),
         body: Center(
           child: Column(

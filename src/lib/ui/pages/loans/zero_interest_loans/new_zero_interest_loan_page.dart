@@ -83,7 +83,7 @@ class _NewZerointerestLoanPageState extends State<NewZerointerestLoanPage> {
       builder: (context, loanService, child) {
         return Scaffold(
           appBar: AppBar(
-            title: const Text('New Zero-interest Loan'),
+            title: const Text('Create zero-interest loan'),
           ),
           body: Center(
             child: Form(

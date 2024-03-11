@@ -32,9 +32,9 @@ class SelectPaymentPeriodPage extends StatelessWidget {
           child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          _getPaymentPeriodWidget(context, 'Monthly', '-', 'monthly'),
-          _getPaymentPeriodWidget(context, 'Weekly', '-', 'weekly'),
-          _getPaymentPeriodWidget(context, 'Custom', '-', 'custom'),
+          _getPaymentPeriodWidget(context, 'Monthly', 'Create loan statements on a monthly basis', 'monthly'),
+          _getPaymentPeriodWidget(context, 'Weekly', 'Create loan statements on a weekly basis', 'weekly'),
+          // _getPaymentPeriodWidget(context, 'Custom', '-', 'custom'),
         ],
       )),
     );
