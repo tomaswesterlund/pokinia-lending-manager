@@ -45,7 +45,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:457013140749:android:912023ea6e794adb1ee444",
         "android_client_info": {
-          "package_name": "com.pokinia.lendingmanager"
+          "package_name": "com.pokinia.lending_manager"
         }
       },
       "oauth_client": [
