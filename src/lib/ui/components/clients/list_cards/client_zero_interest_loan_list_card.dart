@@ -58,7 +58,7 @@ class ClientZeroInterestLoanListCard extends StatelessWidget {
                     ParagraphTwoText(
                         text: "Type: ", fillColor: Color(0xFF9EA6A7)),
                     ParagraphTwoText(
-                        text: "Zero interest loan",
+                        text: "Zero-interest loan",
                         fillColor: Color(0xFF1C2829)),
                   ],
                 ),

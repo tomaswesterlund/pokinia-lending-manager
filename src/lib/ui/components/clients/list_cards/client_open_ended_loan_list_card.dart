@@ -46,7 +46,7 @@ class ClientOpenEndedLoanListCard extends StatelessWidget {
                     ParagraphTwoText(
                         text: "Type: ", fillColor: Color(0xFF9EA6A7)),
                     ParagraphTwoText(
-                        text: "Open-ended", fillColor: Color(0xFF1C2829)),
+                        text: "Open-ended loan", fillColor: Color(0xFF1C2829)),
                   ],
                 ),
                 Row(
