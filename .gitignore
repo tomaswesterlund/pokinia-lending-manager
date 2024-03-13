@@ -19,3 +19,4 @@ src/.dart_tool
 src/.dart_tool/**/*
 src/build/ios/pod_inputs.fingerprint
 src/.flutter-plugins-dependencies
+src/.DS_Store
