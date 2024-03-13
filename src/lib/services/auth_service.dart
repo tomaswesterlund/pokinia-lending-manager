@@ -8,13 +8,13 @@ class AuthService {
     const webClientId =
         '678985858364-ebhohvh1e6cntrnl2og305109f6r0j8b.apps.googleusercontent.com';
     const iosClientId =
-        '457013140749-iohkfcca3rdp5p818meervts0qmguent.apps.googleusercontent.com';
+        '678985858364-uug7ndhbgq44blcbumj285hqu549385j.apps.googleusercontent.com';
 
     // Google sign in on Android will work without providing the Android
     // Client ID registered on Google Cloud.
 
     final GoogleSignIn googleSignIn = GoogleSignIn(
-      //clientId: iosClientId,
+      clientId: iosClientId,
       serverClientId: webClientId,
     );
     final googleUser = await googleSignIn.signIn();
