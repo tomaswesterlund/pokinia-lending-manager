@@ -7,7 +7,10 @@ class ParagraphTwoText extends StatelessWidget {
   final FontWeight fontWeight;
 
   const ParagraphTwoText(
-      {super.key, required this.text, this.fillColor = const Color(0xFF1D2424), this.fontWeight = FontWeight.normal});
+      {super.key,
+      required this.text,
+      this.fillColor = const Color(0xFF1D2424),
+      this.fontWeight = FontWeight.normal});
 
   @override
   Widget build(BuildContext context) {

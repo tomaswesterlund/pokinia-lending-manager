@@ -6,7 +6,7 @@ import 'package:pokinia_lending_manager/ui/components/status_boxes/payment_statu
 import 'package:pokinia_lending_manager/ui/components/texts/headers/header_four_text.dart';
 import 'package:pokinia_lending_manager/ui/components/texts/paragraphs/paragraph_two_text.dart';
 import 'package:pokinia_lending_manager/ui/pages/clients/client_page.dart';
-import 'package:string_capitalize/string_capitalize.dart';
+import 'package:pokinia_lending_manager/util/payment_status_extensions.dart';
 
 class ClientListCard extends StatelessWidget {
   final Client client;
@@ -19,30 +19,29 @@ class ClientListCard extends StatelessWidget {
           MaterialPageRoute(builder: (ctx) => ClientPage(clientId: client.id))),
       child: BaseBox(
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
             children: [
-              Row(
-                children: [
-                  MyAvatarComponent(
-                      name: client.name,
-                      avatarImagePath: client.avatarImagePath),
-                  const SizedBox(width: 10),
-                  HeaderFourText(text: client.name),
-                ],
-              ),
-              Column(
-                children: [
-                  SquaredPaymentStatusBoxComponent(
-                      paymentStatus: client.paymentStatus),
-                      const SizedBox(height: 4),
-                      ParagraphTwoText(
-                        text: client.paymentStatus.name.toString().capitalize(),
-                        fillColor: const Color(0xFF9EA6A7),
-                      ),
-                ],
-              )
+              MyAvatarComponent(
+                  name: client.name, avatarImagePath: client.avatarImagePath),
+              const SizedBox(width: 10),
+              HeaderFourText(text: client.name),
             ],
-          )),
+          ),
+          Column(
+            children: [
+              SquaredPaymentStatusBoxComponent(
+                  paymentStatus: client.paymentStatus),
+              const SizedBox(height: 4),
+              ParagraphTwoText(
+                text: client.paymentStatus.toFormatted(),
+                fillColor: const Color(0xFF9EA6A7),
+              ),
+            ],
+          )
+        ],
+      )),
     );
   }
 }
