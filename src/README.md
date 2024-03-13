@@ -1,4 +1,4 @@
-# pokinia_lending_manager
+# lending_manager
 
 A new Flutter project.
 

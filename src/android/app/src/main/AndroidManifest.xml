@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="pokinia_lending_manager"
+        android:label="lending_manager"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
