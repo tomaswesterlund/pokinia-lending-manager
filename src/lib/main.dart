@@ -11,7 +11,7 @@ import 'package:pokinia_lending_manager/providers/user_settings_provider.dart';
 import 'package:pokinia_lending_manager/ui/pages/splash_page.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-
+  
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 

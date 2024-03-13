@@ -6,7 +6,7 @@ class AuthService {
 
   Future<AuthResponse> signInWithGoogle() async {
     const webClientId =
-        '457013140749-c7lbu0b9n6c99n10a9raslgl8vf2ilj6.apps.googleusercontent.com';
+        '678985858364-ebhohvh1e6cntrnl2og305109f6r0j8b.apps.googleusercontent.com';
     const iosClientId =
         '457013140749-iohkfcca3rdp5p818meervts0qmguent.apps.googleusercontent.com';
 
@@ -14,7 +14,7 @@ class AuthService {
     // Client ID registered on Google Cloud.
 
     final GoogleSignIn googleSignIn = GoogleSignIn(
-      clientId: iosClientId,
+      //clientId: iosClientId,
       serverClientId: webClientId,
     );
     final googleUser = await googleSignIn.signIn();
