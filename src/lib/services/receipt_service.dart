@@ -18,7 +18,9 @@ class ReceiptService {
           .from('receipts') // Replace with your storage bucket name
           .upload(fileName, file);
 
-      return response;
+      var url = supabase.storage.from('receipts').getPublicUrl(fileName);
+
+      return url;
     } catch (error) {
       _logger.e('Error uploading receipt: $error');
       rethrow;
@@ -26,7 +28,7 @@ class ReceiptService {
   }
 
   String getReceiptUrl(Payment payment) {
-    var fileName = payment.receiptImagePath.replaceAll('receipts/', '');
+    var fileName = payment.receiptImageUrl.replaceAll('receipts/', '');
     var url = supabase.storage.from('receipts').getPublicUrl(fileName);
     return url;
   }

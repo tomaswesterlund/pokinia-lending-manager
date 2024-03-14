@@ -56,10 +56,10 @@ class PaymentProvider extends ChangeNotifier {
       required double interestAmountPaid,
       required double principalAmountPaid,
       required DateTime date,
-      required String receiptImagePath}) async {
+      required String receiptImageUrl}) async {
     try {
       _logger.i(
-          'Adding payment with clientId: $clientId, loanId: $loanId, interestAmountPaid: $interestAmountPaid, principalAmountPaid: $principalAmountPaid, date: $date, receiptImagePath: $receiptImagePath');
+          'Adding payment with clientId: $clientId, loanId: $loanId, interestAmountPaid: $interestAmountPaid, principalAmountPaid: $principalAmountPaid, date: $date, receiptImageUrl: $receiptImageUrl');
 
       var values = {
         'client_id': clientId,
@@ -67,7 +67,7 @@ class PaymentProvider extends ChangeNotifier {
         'interest_amount_paid': interestAmountPaid.toString(),
         'principal_amount_paid': principalAmountPaid.toString(),
         'pay_date': date.toIso8601String(),
-        'receipt_image_path': receiptImagePath,
+        'receipt_image_url': receiptImageUrl,
       };
 
       await supabase.from('payments').insert(values);
@@ -86,10 +86,10 @@ class PaymentProvider extends ChangeNotifier {
       required double interestAmountPaid,
       required double principalAmountPaid,
       required DateTime date,
-      required String receiptImagePath}) async {
+      required String receiptImageUrl}) async {
     try {
       _logger.i(
-          'Adding payment with clientId: $clientId, loanId: $loanId, loanStatementId: $loanStatementId, interestAmountPaid: $interestAmountPaid, principalAmountPaid: $principalAmountPaid, date: $date, receiptImagePath: $receiptImagePath');
+          'Adding payment with clientId: $clientId, loanId: $loanId, loanStatementId: $loanStatementId, interestAmountPaid: $interestAmountPaid, principalAmountPaid: $principalAmountPaid, date: $date, receiptImageUrl: $receiptImageUrl');
 
       var values = {
         'client_id': clientId,
@@ -98,7 +98,7 @@ class PaymentProvider extends ChangeNotifier {
         'interest_amount_paid': interestAmountPaid.toString(),
         'principal_amount_paid': principalAmountPaid.toString(),
         'pay_date': date.toIso8601String(),
-        'receipt_image_path': receiptImagePath,
+        'receipt_image_url': receiptImageUrl,
       };
 
       await supabase.from('payments').insert(values);
@@ -117,10 +117,10 @@ class PaymentProvider extends ChangeNotifier {
       required double interestAmountPaid,
       required double principalAmountPaid,
       required DateTime date,
-      required String receiptImagePath}) async {
+      required String receiptImageUrl}) async {
     try {
       _logger.i(
-          'createPaymentForOpenEndedLoan: Adding payment with clientId: $clientId, loanId: $loanId, principalAmountPaid: $principalAmountPaid, date: $date, receiptImagePath: $receiptImagePath');
+          'createPaymentForOpenEndedLoan: Adding payment with clientId: $clientId, loanId: $loanId, principalAmountPaid: $principalAmountPaid, date: $date, receiptImageUrl: $receiptImageUrl');
 
       var values = {
         'v_client_id': clientId,
@@ -129,7 +129,7 @@ class PaymentProvider extends ChangeNotifier {
         'v_interest_amount_paid': interestAmountPaid.toString(),
         'v_principal_amount_paid': principalAmountPaid.toString(),
         'v_pay_date': date.toIso8601String(),
-        'v_receipt_image_path': receiptImagePath,
+        'v_receipt_image_url': receiptImageUrl,
       };
 
       await supabase.rpc('create_payment_for_open_ended_loan', params: values);
@@ -146,17 +146,17 @@ class PaymentProvider extends ChangeNotifier {
       required String loanId,
       required double principalAmountPaid,
       required DateTime date,
-      required String receiptImagePath}) async {
+      required String receiptImageUrl}) async {
     try {
       _logger.i(
-          'createPaymentForZeroInterestLoan: Adding payment with clientId: $clientId, loanId: $loanId, principalAmountPaid: $principalAmountPaid, date: $date, receiptImagePath: $receiptImagePath');
+          'createPaymentForZeroInterestLoan: Adding payment with clientId: $clientId, loanId: $loanId, principalAmountPaid: $principalAmountPaid, date: $date, receiptImageUrl: $receiptImageUrl');
 
       var values = {
         'v_client_id': clientId,
         'v_loan_id': loanId,
         'v_principal_amount_paid': principalAmountPaid.toString(),
         'v_pay_date': date.toIso8601String(),
-        'v_receipt_image_path': receiptImagePath,
+        'v_receipt_image_url': receiptImageUrl,
       };
 
       await supabase.rpc('create_payment_for_zero_interest_loan',
@@ -176,10 +176,10 @@ class PaymentProvider extends ChangeNotifier {
       required double interestAmountPaid,
       required double principalAmountPaid,
       required DateTime date,
-      required String receiptImagePath}) async {
+      required String receiptImageUrl}) async {
     try {
       _logger.i(
-          'Adding payment with clientId: $clientId, loanId: $loanId, loanStatementId: $loanStatementId, interestAmountPaid: $interestAmountPaid, principalAmountPaid: $principalAmountPaid, date: $date, receiptImagePath: $receiptImagePath');
+          'Adding payment with clientId: $clientId, loanId: $loanId, loanStatementId: $loanStatementId, interestAmountPaid: $interestAmountPaid, principalAmountPaid: $principalAmountPaid, date: $date, receiptImageUrl: $receiptImageUrl');
 
       var values = {
         'client_id': clientId,
@@ -188,7 +188,7 @@ class PaymentProvider extends ChangeNotifier {
         'interest_amount_paid': interestAmountPaid.toString(),
         'principal_amount_paid': principalAmountPaid.toString(),
         'pay_date': date.toIso8601String(),
-        'receipt_image_path': receiptImagePath,
+        'receipt_image_url': receiptImageUrl,
       };
 
       await supabase.from('payments').insert(values);
@@ -226,6 +226,19 @@ class PaymentProvider extends ChangeNotifier {
       return Response.success();
     } catch (e) {
       _logger.e('Error deleting payment: $e');
+      return Response.error(e.toString());
+    }
+  }
+
+  Future<Response> updateReceiptImageUrl(String id, String receiptImageUrl) async {
+    try {
+      var response = await supabase.from('payments').update({
+        'receipt_image_url': receiptImageUrl,
+      }).eq('id', id);
+
+      return Response.success();
+    } catch (e) {
+      _logger.e('Error uploading receipt: $e');
       return Response.error(e.toString());
     }
   }

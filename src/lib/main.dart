@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:pokinia_lending_manager/pages/auth/auth_page.dart';
+import 'package:pokinia_lending_manager/pages/auth/sign_in_page.dart';
+import 'package:pokinia_lending_manager/pages/main_page.dart';
+import 'package:pokinia_lending_manager/pages/splash_page.dart';
 import 'package:pokinia_lending_manager/providers/client_provider.dart';
 import 'package:pokinia_lending_manager/providers/customer_provider.dart';
 import 'package:pokinia_lending_manager/providers/loan_statement_provider.dart';
@@ -8,10 +12,9 @@ import 'package:pokinia_lending_manager/providers/loans/zero_interest_loan_provi
 import 'package:pokinia_lending_manager/providers/organization_provider.dart';
 import 'package:pokinia_lending_manager/providers/payment_provider.dart';
 import 'package:pokinia_lending_manager/providers/user_settings_provider.dart';
-import 'package:pokinia_lending_manager/ui/pages/splash_page.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-  
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -45,8 +48,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Pokinia Lending Manager',
-      home: const SplashPage(),
+      initialRoute: SplashPage.routeName,
+      routes: {
+        SplashPage.routeName: (context) => const SplashPage(),
+        AuthPage.routeName: (context) => const AuthPage(),
+        SignInPage.routeName: (context) => SignInPage(),
+        MainPage.routeName: (context) => const MainPage(),
+      },
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,

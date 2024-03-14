@@ -8,7 +8,9 @@ class Payment {
   final double interestAmountPaid;
   final double principalAmountPaid;
   final DateTime payDate;
-  final String receiptImagePath;
+  final String receiptImageUrl;
+
+  
 
   // Deleted
   final DateTime? deleteDate;
@@ -24,7 +26,7 @@ class Payment {
     required this.interestAmountPaid,
     required this.principalAmountPaid,
     required this.payDate,
-    required this.receiptImagePath,
+    required this.receiptImageUrl,
     required this.deleteDate,
     required this.deleteReason,
   });
@@ -37,7 +39,7 @@ class Payment {
         interestAmountPaid = map['interest_amount_paid'].toDouble(),
         principalAmountPaid = map['principal_amount_paid'].toDouble(),
         payDate = map['pay_date'].toString().toDate(),
-        receiptImagePath = map['receipt_image_path'] ?? '',
+        receiptImageUrl = map['receipt_image_url'] ?? '',
         deleteDate = map['delete_date']?.toString().toDate(),
         deleteReason = map['delete_reason'];
 }
