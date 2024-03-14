@@ -6,6 +6,7 @@ import 'package:pokinia_lending_manager/components/clients/lists/client_list/cli
 import 'package:pokinia_lending_manager/components/texts/headers/header_two_text.dart';
 import 'package:pokinia_lending_manager/pages/clients/new_client_page.dart';
 import 'package:pokinia_lending_manager/providers/client_provider.dart';
+import 'package:pokinia_lending_manager/providers/user_settings_provider.dart';
 import 'package:provider/provider.dart';
 
 class ClientsPage extends StatefulWidget {
@@ -18,10 +19,13 @@ class ClientsPage extends StatefulWidget {
 class _ClientsPageState extends State<ClientsPage> {
   @override
   Widget build(BuildContext context) {
+    var userSettingsProvider = Provider.of<UserSettingsProvider>(context);
+    var userSettings = userSettingsProvider.getByLoggedInUser();
+
     return Scaffold(
       body: Consumer<ClientProvider>(
         builder: (context, provider, _) {
-          var clients = provider.clients;
+          var clients = provider.getClients(showDeleted: userSettings.showDeletedClients);
           clients.sort((a, b) => a.name.compareTo(b.name));
 
           return CustomScrollView(

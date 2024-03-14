@@ -15,6 +15,7 @@ import 'package:pokinia_lending_manager/providers/client_provider.dart';
 import 'package:pokinia_lending_manager/providers/loan_statement_provider.dart';
 import 'package:pokinia_lending_manager/providers/loans/loan_provider.dart';
 import 'package:pokinia_lending_manager/providers/loans/open_ended_loan_provider.dart';
+import 'package:pokinia_lending_manager/providers/user_settings_provider.dart';
 import 'package:pokinia_lending_manager/util/date_extensions.dart';
 import 'package:pokinia_lending_manager/util/double_extensions.dart';
 import 'package:provider/provider.dart';
@@ -28,12 +29,14 @@ class OpenEndedLoanPage extends StatelessWidget {
     var clientProvider = Provider.of<ClientProvider>(context);
     var loanStatementProvider = Provider.of<LoanStatementProvider>(context);
     var loanProvider = Provider.of<LoanProvider>(context);
+    var userSettingsProvider = Provider.of<UserSettingsProvider>(context);
+    var userSettings = userSettingsProvider.getByLoggedInUser();
 
     return Scaffold(
       body: Consumer<OpenEndedLoanProvider>(
         builder: (context, provider, _) {
           var openEndedLoan = provider.getByLoanId(loanId);
-          var loanStatements = loanStatementProvider.getByLoanId(loanId);
+          var loanStatements = loanStatementProvider.getByLoanId(loanId, userSettings.showDeletedLoanStatements);
           var loan = loanProvider.getById(loanId);
           var client = clientProvider.getById(loan.clientId);
 

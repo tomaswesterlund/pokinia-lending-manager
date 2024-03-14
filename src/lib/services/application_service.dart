@@ -21,7 +21,6 @@ class ApplicationService {
 
   ApplicationService({required this.onAllListenersLoaded});
 
-
   final Map<String, bool> _listenersLoaded = {
     'clientService': false,
     'customerService': false,
@@ -74,10 +73,8 @@ class ApplicationService {
   void onListenerLoaded(String source) {
     _listenersLoaded[source] = true;
 
-    if(_listenersLoaded.values.every((loaded) => loaded)) {
+    if (_listenersLoaded.values.every((loaded) => loaded)) {
       onAllListenersLoaded();
     }
-
   }
-
 }

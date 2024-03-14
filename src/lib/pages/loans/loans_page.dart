@@ -7,6 +7,7 @@ import 'package:pokinia_lending_manager/components/texts/headers/header_two_text
 import 'package:pokinia_lending_manager/enums/loan_types.dart';
 import 'package:pokinia_lending_manager/pages/loans/selector/select_loan_type_page.dart';
 import 'package:pokinia_lending_manager/providers/loans/loan_provider.dart';
+import 'package:pokinia_lending_manager/providers/user_settings_provider.dart';
 import 'package:pokinia_lending_manager/services/logger.dart';
 import 'package:provider/provider.dart';
 
@@ -18,9 +19,13 @@ class LoansPage extends StatelessWidget {
     var logger = getLogger('LoansPage');
     logger.i('Building LoansPage');
 
+    var userSettingsProvider = Provider.of<UserSettingsProvider>(context);
+    var userSettings = userSettingsProvider.getByLoggedInUser();
+
     return Consumer<LoanProvider>(
       builder: (context, provider, _) {
-        var loans = provider.loans;
+        var loans =
+            provider.getLoans(showDeleted: userSettings.showDeletedLoans);
 
         return Scaffold(
           body: CustomScrollView(
@@ -64,7 +69,6 @@ class LoansPage extends StatelessWidget {
                       builder: (context) => SelectLoanTypePage()));
             },
           ),
-          
         );
       },
     );

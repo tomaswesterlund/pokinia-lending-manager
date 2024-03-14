@@ -11,9 +11,6 @@ class ClientProvider extends ChangeNotifier {
   bool loaded = false;
 
   final List<Client> _clients = [];
-  List<Client> get clients => _clients;
-  List<Client> get activeClients =>
-      _clients.where((client) => !client.deleted).toList();
 
   void startListener(Function(String source) onLoaded) {
     supabase
@@ -35,7 +32,15 @@ class ClientProvider extends ChangeNotifier {
   }
 
   Client getById(String id) {
-    return clients.firstWhere((client) => client.id == id);
+    return _clients.firstWhere((client) => client.id == id);
+  }
+
+  List<Client> getClients({bool showDeleted = false}) {
+    if (showDeleted) {
+      return _clients;
+    } else {
+      return _clients.where((client) => !client.deleted).toList();
+    }
   }
 
   Future<Response> createClient(

@@ -11,7 +11,6 @@ class PaymentProvider extends ChangeNotifier {
   bool loaded = false;
 
   final List<Payment> _payments = [];
-  List<Payment> get payments => _payments;
 
   startListener(Function(String source) onLoaded) {
     supabase.from('payments').stream(primaryKey: ['id']).listen((data) {
@@ -30,22 +29,24 @@ class PaymentProvider extends ChangeNotifier {
   }
 
   Payment getById(String id) {
-    return payments.firstWhere((payment) => payment.id == id);
+    return _payments.firstWhere((payment) => payment.id == id);
   }
 
   List<Payment> getByLoanId(String loanId) {
-    return payments.where((payment) => payment.loanId == loanId).toList();
+    return _payments.where((payment) => payment.loanId == loanId).toList();
   }
 
-  List<Payment> getByLoanStatementId(String loanStatementId) {
-    return payments
-        .where((payment) => payment.loanStatementId == loanStatementId)
-        .toList();
+  List<Payment> getByLoanStatementId(String loanStatementId, bool showDeleted) {
+    if(showDeleted) {
+      return _payments.where((payment) => payment.loanStatementId == loanStatementId).toList();
+    } else {
+      return _payments.where((payment) => payment.loanStatementId == loanStatementId && !payment.deleted).toList();
+    }
   }
 
   List<Payment> getRecentlyPaidPayments({int days = 14}) {
     var pastDate = DateTime.now().add(Duration(days: (days * -1)));
-    return payments
+    return _payments
         .where((payment) => payment.payDate.isAfter(pastDate))
         .toList();
   }

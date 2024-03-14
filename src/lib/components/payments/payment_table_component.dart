@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:pokinia_lending_manager/models/data/payment.dart';
-import 'package:pokinia_lending_manager/providers/payment_provider.dart';
 import 'package:pokinia_lending_manager/components/payments/empty_payment_list_component.dart';
 import 'package:pokinia_lending_manager/components/texts/amounts/small_amount_text.dart';
 import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_two_text.dart';
+import 'package:pokinia_lending_manager/models/data/payment.dart';
 import 'package:pokinia_lending_manager/pages/payments/payment_page.dart';
+import 'package:pokinia_lending_manager/providers/payment_provider.dart';
+import 'package:pokinia_lending_manager/providers/user_settings_provider.dart';
 import 'package:pokinia_lending_manager/util/date_extensions.dart';
 import 'package:pokinia_lending_manager/util/double_extensions.dart';
 import 'package:provider/provider.dart';
@@ -15,10 +16,12 @@ class PaymentTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var userSettingsProvider = Provider.of<UserSettingsProvider>(context);
+    var userSettings = userSettingsProvider.getByLoggedInUser();
+
     return Consumer<PaymentProvider>(
       builder: (context, paymentService, _) {
-        var payments =
-            paymentService.getByLoanStatementId(loanStatementId);
+        var payments = paymentService.getByLoanStatementId(loanStatementId, userSettings.showDeletedPayments);
 
         return payments.isEmpty
             ? const EmptyPaymentList()
@@ -116,8 +119,7 @@ class PaymentTable extends StatelessWidget {
     );
   }
 
-  Widget _compactListCard(
-      BuildContext context, Payment payment, int index) {
+  Widget _compactListCard(BuildContext context, Payment payment, int index) {
     return GestureDetector(
       onTap: () => Navigator.push(
         context,
@@ -139,7 +141,8 @@ class PaymentTable extends StatelessWidget {
                 else
                   const Icon(Icons.money),
                 Expanded(
-                  child: ParagraphTwoText(text: payment.payDate.toFormattedDate()),
+                  child:
+                      ParagraphTwoText(text: payment.payDate.toFormattedDate()),
                 ),
                 Expanded(
                   child: SmallAmountText(

@@ -11,7 +11,6 @@ class LoanProvider extends ChangeNotifier {
   bool loaded = false;
 
   final List<Loan> _loans = [];
-  List<Loan> get loans => _loans;
 
   void startListener(Function(String source) onLoaded) {
     supabase.from('loans').stream(primaryKey: ['id']).listen((data) {
@@ -31,11 +30,19 @@ class LoanProvider extends ChangeNotifier {
   }
 
   Loan getById(String id) {
-    return loans.firstWhere((loan) => loan.id == id);
+    return _loans.firstWhere((loan) => loan.id == id);
+  }
+
+  List<Loan> getLoans({showDeleted = false}) {
+    if (showDeleted) {
+      return _loans;
+    } else {
+      return _loans.where((loan) => !loan.deleted).toList();
+    }
   }
 
   List<Loan> getByClientId(String clientId) {
-    return loans.where((loan) => loan.clientId == clientId).toList();
+    return _loans.where((loan) => loan.clientId == clientId).toList();
   }
 
   Future<Response> createLoan(

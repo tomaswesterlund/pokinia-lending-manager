@@ -18,6 +18,7 @@ import 'package:pokinia_lending_manager/pages/payments/new_payment_page.dart';
 import 'package:pokinia_lending_manager/providers/loan_statement_provider.dart';
 import 'package:pokinia_lending_manager/providers/loans/loan_provider.dart';
 import 'package:pokinia_lending_manager/providers/payment_provider.dart';
+import 'package:pokinia_lending_manager/providers/user_settings_provider.dart';
 import 'package:pokinia_lending_manager/util/date_extensions.dart';
 import 'package:pokinia_lending_manager/util/double_extensions.dart';
 import 'package:provider/provider.dart';
@@ -34,6 +35,9 @@ class LoanStatementPage extends StatefulWidget {
 class _LoanStatementPageState extends State<LoanStatementPage> {
   @override
   Widget build(BuildContext context) {
+    var userSettingsProvider = Provider.of<UserSettingsProvider>(context);
+    var userSettings = userSettingsProvider.getByLoggedInUser();
+    
     return Consumer3<LoanProvider, LoanStatementProvider, PaymentProvider>(
       builder:
           (context, loanProvider, loanStatementProvider, paymentProvider, _) {
@@ -41,7 +45,7 @@ class _LoanStatementPageState extends State<LoanStatementPage> {
             loanStatementProvider.getById(widget.loanStatementId);
         var loan = loanProvider.getById(loanStatement.loanId);
         var payments =
-            paymentProvider.getByLoanStatementId(widget.loanStatementId);
+            paymentProvider.getByLoanStatementId(widget.loanStatementId, userSettings.showDeletedPayments);
 
         return Scaffold(
           body: CustomScrollView(

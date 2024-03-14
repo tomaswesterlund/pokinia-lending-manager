@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:pokinia_lending_manager/providers/loan_statement_provider.dart';
 import 'package:pokinia_lending_manager/components/status_boxes/payment_status/compact_payment_status_box_component.dart';
 import 'package:pokinia_lending_manager/components/texts/amounts/small_amount_text.dart';
 import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_one_text.dart';
 import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_two_text.dart';
 import 'package:pokinia_lending_manager/components/texts/percentages/small_percentage_text.dart';
 import 'package:pokinia_lending_manager/pages/loan_statements/loan_statement_page.dart';
+import 'package:pokinia_lending_manager/providers/loan_statement_provider.dart';
+import 'package:pokinia_lending_manager/providers/user_settings_provider.dart';
 import 'package:pokinia_lending_manager/util/date_extensions.dart';
 import 'package:pokinia_lending_manager/util/double_extensions.dart';
 import 'package:provider/provider.dart';
@@ -17,8 +18,13 @@ class LoanStatementTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var userSettingsProvider = Provider.of<UserSettingsProvider>(context);
+    var userSettings = userSettingsProvider.getByLoggedInUser();
+
     return Consumer<LoanStatementProvider>(
-        builder: (context, loanStatementService, child) {
+        builder: (context, loanStatementProvider, _) {
+      var loanStatements = loanStatementProvider.getByLoanId(
+          loanId, userSettings.showDeletedLoanStatements);
       return Expanded(
         child: Column(
           children: [
@@ -42,12 +48,9 @@ class LoanStatementTable extends StatelessWidget {
             Expanded(
               child: ListView.builder(
                 shrinkWrap: true,
-                itemCount: loanStatementService
-                    .getByLoanId(loanId)
-                    .length,
+                itemCount: loanStatements.length,
                 itemBuilder: (context, index) {
-                  var loanStatement = loanStatementService
-                      .getByLoanId(loanId)[index];
+                  var loanStatement = loanStatements[index];
 
                   return GestureDetector(
                     onTap: () => Navigator.push(

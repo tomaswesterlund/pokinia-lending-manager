@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pokinia_lending_manager/models/data/client.dart';
 import 'package:pokinia_lending_manager/providers/client_provider.dart';
+import 'package:pokinia_lending_manager/providers/user_settings_provider.dart';
 import 'package:provider/provider.dart';
 
 class ClientListDropdownMenu extends StatelessWidget {
@@ -18,8 +19,13 @@ class ClientListDropdownMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ClientProvider>(
-      builder: (context, clientService, _) {
+    return Consumer2<ClientProvider, UserSettingsProvider>(
+      builder: (context, clientProvider, userSettingsProvider, _) {
+        var userId = userSettingsProvider.supabase.auth.currentUser!.id;
+          var userSettings = userSettingsProvider.getByUserId(userId);
+          var clients = clientProvider.getClients(showDeleted: userSettings.showDeletedClients);
+          clients.sort((a, b) => a.name.compareTo(b.name));
+
         return DropdownButtonFormField(
           isExpanded: true,
           onChanged: (client) {
@@ -32,7 +38,7 @@ class ClientListDropdownMenu extends StatelessWidget {
             return null;
           },
           items: [
-            for (var client in clientService.clients)
+            for (var client in clients)
               DropdownMenuItem(
                 value: client,
                 child: Text(client.name)

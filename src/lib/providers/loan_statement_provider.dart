@@ -34,12 +34,12 @@ class LoanStatementProvider extends ChangeNotifier {
     return loanStatements.firstWhere((loanStatement) => loanStatement.id == id);
   }
 
-  List<LoanStatement> getByLoanId(String loanId) {
-    return loanStatements
-        .where((loanStatement) => loanStatement.loanId == loanId)
-        .sorted(
-            (a, b) => a.expectedPayDate.isBefore(b.expectedPayDate) ? -1 : 1)
-        .toList();
+  List<LoanStatement> getByLoanId(String loanId, bool showDeleted) {
+    if (showDeleted) {
+      return loanStatements.where((loanStatement) => loanStatement.loanId == loanId).toList();
+    } else {
+      return loanStatements.where((loanStatement) => loanStatement.loanId == loanId && !loanStatement.deleted).toList();
+    }
   }
 
   List<LoanStatement> getOverdueLoanStatements() {

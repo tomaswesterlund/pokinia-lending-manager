@@ -50,6 +50,16 @@ class UserSettingsProvider extends ChangeNotifier {
     }
   }
 
+  UserSettings getByLoggedInUser() {
+    try {
+      var userId = supabase.auth.currentUser!.id;
+      return getByUserId(userId);
+    } catch (e) {
+      _logger.e(e);
+      rethrow;
+    }
+  } 
+
   void setSelectedOrganizationId(String userId, String organizationId) async {
     try {
       var response = await supabase.from('user_settings').update({
@@ -77,6 +87,50 @@ class UserSettingsProvider extends ChangeNotifier {
     } catch (e) {
       _logger.e('Error creating user settings: $e');
       return Response.error(e.toString());
+    }
+  }
+
+  void updateShowDeletedClients(String userId, bool value) async {
+    try {
+      await supabase.from('user_settings').update({
+        'show_deleted_clients': value,
+      }).eq('user_id', userId);
+    } catch (e) {
+      _logger.e(e);
+      rethrow;
+    }
+  }
+
+  void updateShowDeletedLoans(String userId, bool value) async {
+    try {
+      await supabase.from('user_settings').update({
+        'show_deleted_loans': value,
+      }).eq('user_id', userId);
+    } catch (e) {
+      _logger.e(e);
+      rethrow;
+    }
+  }
+
+  void updateShowDeletedLoanStatements(String userId, bool value) async {
+    try {
+      await supabase.from('user_settings').update({
+        'show_deleted_loan_statements': value,
+      }).eq('user_id', userId);
+    } catch (e) {
+      _logger.e(e);
+      rethrow;
+    }
+  }
+
+  void updateShowDeletedPayments(String userId, bool value) async {
+    try {
+      await supabase.from('user_settings').update({
+        'show_deleted_payments': value,
+      }).eq('user_id', userId);
+    } catch (e) {
+      _logger.e(e);
+      rethrow;
     }
   }
 }
