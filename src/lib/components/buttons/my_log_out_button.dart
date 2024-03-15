@@ -24,35 +24,20 @@ class MyLogOutButton extends StatelessWidget {
             ),
           ),
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Visibility(
-                  visible: isProcessing,
-                  maintainSize: true,
-                  maintainAnimation: true,
-                  maintainState: true,
-                  child: const SizedBox(
-                    height: 16.0,
-                    width: 16.0,
-                    child: Center(
-                      child: CircularProgressIndicator(
-                        color: Colors.white,
-                        strokeWidth: 2,
-                      ),
-                    ),
-                  ),
+        child: Center(
+          child: Row(
+            children: <Widget>[
+              const Icon(Icons.logout, color: Colors.white),
+              Expanded(
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: <Widget>[
+                    MySubHeadingText(text: 'Log out'.toUpperCase()),
+                  ],
                 ),
-                const SizedBox(width: 12.0),
-              ],
-            ),
-            const Icon(Icons.logout, color: Colors.white),
-            const SizedBox(width: 12.0),
-            MySubHeadingText(text: 'Log out'.toUpperCase()),
-          ],
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -35,7 +35,7 @@ class DeletedAlertBox extends StatelessWidget {
               const SizedBox(width: 10),
               ParagraphOneText(
                   text: title,
-                  fillColor: const Color(0xFFEB5857),
+                  color: const Color(0xFFEB5857),
                   fontWeight: FontWeight.bold),
             ],
           ),
@@ -44,23 +44,23 @@ class DeletedAlertBox extends StatelessWidget {
             children: [
               const ParagraphTwoText(
                   text: 'Delete date',
-                  fillColor: Color(0xFFEB5857),
+                  color: Color(0xFFEB5857),
                   fontWeight: FontWeight.bold),
               const SizedBox(width: 10),
               ParagraphTwoText(
                   text: deleteDate != null ? deleteDate!.toFormattedDate() : '',
-                  fillColor: const Color(0xFFEB5857)),
+                  color: const Color(0xFFEB5857)),
             ],
           ),
           const SizedBox(height: 8),
           const ParagraphTwoText(
               text: 'Delete reason',
-              fillColor: Color(0xFFEB5857),
+              color: Color(0xFFEB5857),
               fontWeight: FontWeight.bold),
           const SizedBox(width: 10),
           ParagraphTwoText(
             text: deleteReason ?? '',
-            fillColor: const Color(0xFFEB5857),
+            color: const Color(0xFFEB5857),
           ),
         ],
       ),

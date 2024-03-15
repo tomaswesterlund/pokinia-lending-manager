@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:pokinia_lending_manager/pages/auth/sign_in_page.dart';
 import 'package:pokinia_lending_manager/pages/main_page.dart';
 import 'package:pokinia_lending_manager/providers/organization_provider.dart';
@@ -24,6 +25,8 @@ class _AuthPageState extends State<AuthPage> {
   void initState() {
     setupOnAuthStateChange();
     super.initState();
+
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
   }
 
   void setupOnAuthStateChange() {
@@ -69,9 +72,7 @@ class _AuthPageState extends State<AuthPage> {
         }
 
         if (event == AuthChangeEvent.signedOut) {
-         
-         Navigator.pushNamed(context, SignInPage.routeName);
-
+          Navigator.pushNamed(context, SignInPage.routeName);
         }
 
         setState(() {
@@ -85,14 +86,8 @@ class _AuthPageState extends State<AuthPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SignInPage();
-  }
-
-  Widget _loadingScreen() {
-    return const Scaffold(
-      body: Center(
-        child: CircularProgressIndicator(),
-      ),
+    return const PopScope(
+      child: SignInPage(),
     );
   }
 }

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:pokinia_lending_manager/providers/client_provider.dart';
-import 'package:pokinia_lending_manager/providers/loans/loan_provider.dart';
-import 'package:pokinia_lending_manager/providers/loans/zero_interest_loan_provider.dart';
 import 'package:pokinia_lending_manager/components/status_boxes/payment_status/dot_payment_status_component.dart';
 import 'package:pokinia_lending_manager/components/status_boxes/payment_status/squared_payment_status_box_component.dart';
 import 'package:pokinia_lending_manager/components/texts/amounts/big_amount_text.dart';
 import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_one_text.dart';
 import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_two_text.dart';
 import 'package:pokinia_lending_manager/pages/loans/loan_page.dart';
+import 'package:pokinia_lending_manager/providers/client_provider.dart';
+import 'package:pokinia_lending_manager/providers/loans/loan_provider.dart';
+import 'package:pokinia_lending_manager/providers/loans/zero_interest_loan_provider.dart';
 import 'package:pokinia_lending_manager/util/date_extensions.dart';
 import 'package:pokinia_lending_manager/util/double_extensions.dart';
 import 'package:provider/provider.dart';
@@ -71,21 +71,21 @@ class ZeroInterestLoanListCard extends StatelessWidget {
                   children: [
                     ParagraphTwoText(
                         text: "Type: ",
-                        fillColor: Color(0xFF9EA6A7)),
-                    ParagraphTwoText(text: "Zero-interest loan", fillColor: Color(0xFF1C2829)),
+                        color: Color(0xFF9EA6A7)),
+                    ParagraphTwoText(text: "Zero-interest loan", color: Color(0xFF1C2829)),
                   ],
                 ),
                 Row(
                   children: [
                     const ParagraphTwoText(
                         text: "Expected pay date: ",
-                        fillColor: Color(0xFF9EA6A7)),
+                        color: Color(0xFF9EA6A7)),
                     ParagraphTwoText(
                         text: zeroInterestLoan.expectedPayDate != null
                             ? zeroInterestLoan.expectedPayDate!
                                 .toFormattedDate()
                             : "N/A",
-                        fillColor: const Color(0xFF1C2829)),
+                        color: const Color(0xFF1C2829)),
                   ],
                 ),
               ],

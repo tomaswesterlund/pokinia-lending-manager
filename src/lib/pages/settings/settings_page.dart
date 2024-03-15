@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pokinia_lending_manager/components/buttons/my_log_out_button.dart';
 import 'package:pokinia_lending_manager/components/texts/headers/header_five_text.dart';
+import 'package:pokinia_lending_manager/components/texts/headers/header_three_text.dart';
 import 'package:pokinia_lending_manager/components/texts/headers/header_two_text.dart';
 import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_two_text.dart';
 import 'package:pokinia_lending_manager/providers/user_settings_provider.dart';
@@ -33,7 +34,7 @@ class SettingsPage extends StatelessWidget {
               const Padding(
                 padding: EdgeInsets.fromLTRB(32.0, 12.0, 32.0, 0),
                 child: Center(
-                  child: HeaderFiveText(text: 'General'),
+                  child: HeaderThreeText(text: 'General'),
                 ),
               ),
               Padding(
@@ -107,21 +108,21 @@ class SettingsPage extends StatelessWidget {
                   children: [
                     const ParagraphTwoText(text: 'Show deleted payments'),
                     CupertinoSwitch(
-                        value: userSettings.showDeletedPayments,
-                        onChanged: (value) {
-                          try {
+                      value: userSettings.showDeletedPayments,
+                      onChanged: (value) {
+                        try {
                           userSettingsProvider.updateShowDeletedPayments(
                               userId, value);
                         } catch (error) {
                           ToastService()
                               .showErrorToast('Could not update settings');
                         }
-                        },),
+                      },
+                    ),
                   ],
                 ),
               ),
               const SizedBox(height: 32.0),
-
               const Padding(
                 padding: EdgeInsets.fromLTRB(32.0, 12.0, 32.0, 0),
                 child: Center(
@@ -142,22 +143,16 @@ class SettingsPage extends StatelessWidget {
                   ),
                 ],
               ),
-
               const Spacer(),
-
+              
               Padding(
                 padding: const EdgeInsets.fromLTRB(32.0, 12.0, 32.0, 32.0),
-                child: MyLogOutButton(onPressed: () {
-                  _authService.signOut();
-                }),
+                child: MyLogOutButton(
+                  onPressed: () {
+                    _authService.signOut();
+                  },
+                ),
               ),
-
-              // const Padding(
-              //   padding: EdgeInsets.fromLTRB(32.0, 12.0, 32.0, 0),
-              //   child: Center(
-              //     child: ParagraphOneText(text: 'F E E D B A C K'),
-              //   ),
-              // ),
             ],
           );
         },

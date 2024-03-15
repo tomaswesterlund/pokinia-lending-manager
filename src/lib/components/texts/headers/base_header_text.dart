@@ -5,6 +5,7 @@ class BaseHeaderText extends StatelessWidget {
   final double fontSize;
   final FontWeight fontWeight;
   final Color color;
+  
   const BaseHeaderText({super.key, required this.text, required this.fontSize, this.fontWeight = FontWeight.bold, this.color = const Color(0xFF1D2424)});
 
   @override

@@ -54,14 +54,14 @@ class RecentPaymentListCard extends StatelessWidget {
                   const SizedBox(width: 10),
                   ParagraphOneText(
                       text: client.name,
-                      fillColor: const Color(0xFF1D2424),
+                      color: const Color(0xFF1D2424),
                       fontWeight: FontWeight.bold)
                 ],
               ),
               Row(
                 children: [
                   const ParagraphTwoText(
-                      text: "Fecha", fillColor: Color(0xff9EA6A7)),
+                      text: "Fecha", color: Color(0xff9EA6A7)),
                   const SizedBox(width: 10),
                   ParagraphTwoText(
                       text: payment.payDate.toFormattedDate()),
@@ -77,7 +77,7 @@ class RecentPaymentListCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     const ParagraphTwoText(
-                        text: "Amount", fillColor: Color(0xff9EA6A7)),
+                        text: "Amount", color: Color(0xff9EA6A7)),
                     BigAmountText(
                         text: (payment.interestAmountPaid + payment.principalAmountPaid)
                             .toFormattedCurrency()),

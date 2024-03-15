@@ -17,7 +17,7 @@ class EmptyLoanList extends StatelessWidget {
               Image.asset('assets/images/empty_list_loans.png'),
               const SizedBox(height: 25),
               const HeaderFiveText(text: "No active loans were found."),
-              const ParagraphTwoText(text: "Would you like to create a new loan?", fillColor: Color(0xFF1D2424)),
+              const ParagraphTwoText(text: "Would you like to create a new loan?", color: Color(0xFF1D2424)),
             ],
           ),
         ],

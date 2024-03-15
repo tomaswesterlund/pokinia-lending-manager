@@ -37,7 +37,7 @@ class ClientListCard extends StatelessWidget {
               const SizedBox(height: 4),
               ParagraphTwoText(
                 text: client.paymentStatus.toFormatted(),
-                fillColor: const Color(0xFF9EA6A7),
+                color: const Color(0xFF9EA6A7),
               ),
             ],
           )

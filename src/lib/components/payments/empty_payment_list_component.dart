@@ -15,7 +15,7 @@ class EmptyPaymentList extends StatelessWidget {
         // const HeaderFiveText(text: "No payments were found."),
         const ParagraphTwoText(
           text: "No payments were found.",
-          fillColor: Color(0xFF1D2424),
+          color: Color(0xFF1D2424),
           fontWeight: FontWeight.bold,
         ),
       ],

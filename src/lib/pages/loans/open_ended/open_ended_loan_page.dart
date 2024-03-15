@@ -36,105 +36,125 @@ class OpenEndedLoanPage extends StatelessWidget {
       body: Consumer<OpenEndedLoanProvider>(
         builder: (context, provider, _) {
           var openEndedLoan = provider.getByLoanId(loanId);
-          var loanStatements = loanStatementProvider.getByLoanId(loanId, userSettings.showDeletedLoanStatements);
+          var loanStatements = loanStatementProvider.getByLoanId(
+              loanId, userSettings.showDeletedLoanStatements);
+          loanStatements
+              .sort((b, a) => b.expectedPayDate.compareTo(a.expectedPayDate));
           var loan = loanProvider.getById(loanId);
           var client = clientProvider.getById(loan.clientId);
 
-          return CustomScrollView(
-            slivers: [
-              LoanAppBar(
-                  loanId: loanId,
-                  title: 'Open ended loan',
-                  isDeleted: loan.paymentStatus == PaymentStatus.deleted),
-              SliverToBoxAdapter(child: _getDeletedWidget(loan)),
-              SliverToBoxAdapter(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    MyAvatarComponent(
-                        name: client.name,
-                        avatarImagePath: client.avatarImagePath),
-                    const SizedBox(width: 16.0),
-
-                    // Name
-                    HeaderFourText(text: client.name),
-                  ],
+          return ShaderMask(
+            shaderCallback: (Rect bounds) {
+              return const LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [Colors.transparent, Colors.white],
+                stops: [
+                  0.0,
+                  0.1
+                ], // Adjust these stops to control the fade effect
+              ).createShader(bounds);
+            },
+            blendMode: BlendMode.dstIn, // U
+            child: CustomScrollView(
+              slivers: [
+                LoanAppBar(
+                    loanId: loanId,
+                    title: 'Open ended loan',
+                    isDeleted: loan.paymentStatus == PaymentStatus.deleted),
+                SliverToBoxAdapter(
+                  child: _getDeletedWidget(loan),
                 ),
-              ),
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(24.0, 24.0, 24.0, 12.0),
-                  child: Column(
+                SliverToBoxAdapter(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Row(
-                        children: [
-                          const ParagraphTwoText(text: "Status"),
-                          const Spacer(),
-                          WidePaymentStatusBoxComponent(
-                              paymentStatus: loan.paymentStatus)
-                        ],
-                      ),
-                      const SizedBox(height: 12),
-                      Row(
-                        children: [
-                          const ParagraphTwoText(text: "Start date"),
-                          const Spacer(),
-                          ParagraphTwoText(
-                              text: openEndedLoan.startDate.toFormattedDate()),
-                        ],
-                      ),
+                      MyAvatarComponent(
+                          name: client.name,
+                          avatarImagePath: client.avatarImagePath),
+                      const SizedBox(width: 16.0),
+
+                      // Name
+                      HeaderFourText(text: client.name),
                     ],
                   ),
                 ),
-              ),
-              const SliverToBoxAdapter(child: SizedBox(height: 24)),
-              SliverToBoxAdapter(
-                child: Column(
-                  children: [
-                    const ParagraphOneText(
-                      text: 'Remaining principal amount',
-                      fontWeight: FontWeight.bold,
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(24.0, 24.0, 24.0, 12.0),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            const ParagraphTwoText(text: "Status"),
+                            const Spacer(),
+                            WidePaymentStatusBoxComponent(
+                                paymentStatus: loan.paymentStatus)
+                          ],
+                        ),
+                        const SizedBox(height: 12),
+                        Row(
+                          children: [
+                            const ParagraphTwoText(text: "Start date"),
+                            const Spacer(),
+                            ParagraphTwoText(
+                                text:
+                                    openEndedLoan.startDate.toFormattedDate()),
+                          ],
+                        ),
+                      ],
                     ),
-                    PrimaryAmountText(
-                        text: openEndedLoan.remainingPrincipalAmount
-                            .toFormattedCurrency())
-                  ],
+                  ),
                 ),
-              ),
-              const SliverToBoxAdapter(child: SizedBox(height: 24)),
-              SliverToBoxAdapter(
-                child: Row(
-                  //mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    BigAmountTextWithTitleText.withAmount(
-                        title: 'Initial principal amount',
-                        amount: openEndedLoan.initialPrincipalAmount),
-                    BigAmountTextWithTitleText.withAmount(
-                        title: 'Principal amount paid',
-                        amount: openEndedLoan.principalAmountPaid),
-                  ],
+                const SliverToBoxAdapter(child: SizedBox(height: 24)),
+                SliverToBoxAdapter(
+                  child: Column(
+                    children: [
+                      const ParagraphOneText(
+                        text: 'Remaining principal amount',
+                        fontWeight: FontWeight.bold,
+                      ),
+                      PrimaryAmountText(
+                          text: openEndedLoan.remainingPrincipalAmount
+                              .toFormattedCurrency())
+                    ],
+                  ),
                 ),
-              ),
-              const SliverToBoxAdapter(child: SizedBox(height: 24)),
-              SliverToBoxAdapter(
-                child: Row(
-                  children: [
-                    BigAmountTextWithTitleText.withAmount(
-                        title: 'Interest amount paid',
-                        amount: openEndedLoan.interestAmountPaid),
-                    BigAmountTextWithTitleText.withPercentage(
-                        title: 'Interest rate',
-                        percentage: openEndedLoan.interestRate),
-                  ],
+                const SliverToBoxAdapter(child: SizedBox(height: 24)),
+                SliverToBoxAdapter(
+                  child: Row(
+                    //mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      BigAmountTextWithTitleText.withAmount(
+                          title: 'Initial principal amount',
+                          amount: openEndedLoan.initialPrincipalAmount),
+                      BigAmountTextWithTitleText.withAmount(
+                          title: 'Principal amount paid',
+                          amount: openEndedLoan.principalAmountPaid),
+                    ],
+                  ),
                 ),
-              ),
-              const SliverToBoxAdapter(child: SizedBox(height: 32)),
-              const SliverToBoxAdapter(
-                  child:
-                      Center(child: HeaderFourText(text: 'Loan Statements'))),
-              OpenEndedListStatmentList(loanStatements: loanStatements),
-              const SliverToBoxAdapter(child: SizedBox(height: 50)),
-            ],
+                const SliverToBoxAdapter(child: SizedBox(height: 24)),
+                SliverToBoxAdapter(
+                  child: Row(
+                    children: [
+                      BigAmountTextWithTitleText.withAmount(
+                          title: 'Interest amount paid',
+                          amount: openEndedLoan.interestAmountPaid),
+                      BigAmountTextWithTitleText.withPercentage(
+                          title: 'Interest rate',
+                          percentage: openEndedLoan.interestRate),
+                    ],
+                  ),
+                ),
+                const SliverToBoxAdapter(child: SizedBox(height: 32)),
+                const SliverToBoxAdapter(
+                    child:
+                        Center(child: HeaderFourText(text: 'Loan Statements'))),
+                OpenEndedListStatmentList(loanStatements: loanStatements),
+                const SliverToBoxAdapter(child: SizedBox(height: 50)),
+              ],
+            ),
           );
         },
       ),
