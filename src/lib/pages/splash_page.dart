@@ -32,6 +32,7 @@ class _SplashPageState extends State<SplashPage> {
       Navigator.pushNamed(context, AuthPage.routeName);
     });
   }
+  
 
   @override
   Widget build(BuildContext context) {
