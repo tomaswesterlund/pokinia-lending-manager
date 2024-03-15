@@ -54,7 +54,7 @@ class MyApp extends StatelessWidget {
       routes: {
         SplashPage.routeName: (context) => const SplashPage(),
         AuthPage.routeName: (context) => const AuthPage(),
-        SignInPage.routeName: (context) => SignInPage(),
+        SignInPage.routeName: (context) => const SignInPage(),
         MainPage.routeName: (context) => const MainPage(),
       },
       theme: ThemeData(
