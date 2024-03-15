@@ -3,6 +3,7 @@
 **/.DS_Store
 **/._.DS_Store
 .DS_Store
+
 src/build/b01ca64756e6102cf66a48c2b6c3089e.cache.dill.track.dill
 src/build/b01ca64756e6102cf66a48c2b6c3089e.cache.dill.track.dill
 .DS_Store
@@ -13,7 +14,6 @@ src/.dart_tool/flutter_build/8c725af9e5968fb12aafafa6c4046b41/kernel_snapshot.d
 src/.dart_tool/flutter_build/8c725af9e5968fb12aafafa6c4046b41/native_assets.d
 src/.dart_tool/flutter_build/8c725af9e5968fb12aafafa6c4046b41/native_assets.yaml
 src/.vscode
-src/android
 src/build
 src/.dart_tool
 src/.dart_tool/**/*
