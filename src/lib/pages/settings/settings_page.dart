@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pokinia_lending_manager/components/buttons/my_log_out_button.dart';
-import 'package:pokinia_lending_manager/components/texts/headers/header_five_text.dart';
 import 'package:pokinia_lending_manager/components/texts/headers/header_three_text.dart';
 import 'package:pokinia_lending_manager/components/texts/headers/header_two_text.dart';
 import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_two_text.dart';
@@ -126,7 +125,7 @@ class SettingsPage extends StatelessWidget {
               const Padding(
                 padding: EdgeInsets.fromLTRB(32.0, 12.0, 32.0, 0),
                 child: Center(
-                  child: HeaderFiveText(text: 'Account'),
+                  child: HeaderThreeText(text: 'Account'),
                 ),
               ),
               Row(
