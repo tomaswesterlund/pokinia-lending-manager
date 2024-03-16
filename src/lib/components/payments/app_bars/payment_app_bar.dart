@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:pokinia_lending_manager/components/payments/app_bars/menu_items/delete_payment_menu_item.dart';
+import 'package:pokinia_lending_manager/components/payments/app_bars/menu_items/undelete_payment_menu_item.dart';
 import 'package:pokinia_lending_manager/providers/payment_provider.dart';
-import 'package:pokinia_lending_manager/components/payments/menus/delete_payment_menu_item.dart';
-import 'package:pokinia_lending_manager/components/payments/menus/undelete_payment_menu_item.dart';
 import 'package:provider/provider.dart';
 
 class PaymentAppBar extends StatelessWidget implements PreferredSizeWidget {
