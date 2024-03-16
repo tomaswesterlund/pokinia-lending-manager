@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 import 'package:pokinia_lending_manager/models/data/repsonse.dart';
 import 'package:pokinia_lending_manager/models/data/user_settings.dart';
-import 'package:pokinia_lending_manager/services/logger.dart';
+import 'package:pokinia_lending_manager/services/log_service.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class UserSettingsProvider extends ChangeNotifier {
-  final Logger _logger = getLogger('UserSettingsService');
+  final LogService _logger = LogService('UserSettingsProvider');
   final supabase = Supabase.instance.client;
   bool loaded = false;
 
@@ -45,7 +44,7 @@ class UserSettingsProvider extends ChangeNotifier {
       return _userSettingsList
           .firstWhere((element) => element.userId == userId);
     } catch (e) {
-      _logger.e(e);
+      _logger.e('getByUserId', e.toString());
       rethrow;
     }
   }
@@ -55,7 +54,7 @@ class UserSettingsProvider extends ChangeNotifier {
       var userId = supabase.auth.currentUser!.id;
       return getByUserId(userId);
     } catch (e) {
-      _logger.e(e);
+      _logger.e('getByLoggedInUser', e.toString());
       rethrow;
     }
   } 
@@ -68,7 +67,7 @@ class UserSettingsProvider extends ChangeNotifier {
 
       notifyListeners();
     } catch (e) {
-      _logger.e(e);
+      _logger.e('setSelectedOrganizationId', e.toString());
       rethrow;
     }
   }
@@ -76,7 +75,7 @@ class UserSettingsProvider extends ChangeNotifier {
   Future<Response> createUserSettings(
       String userId, String organizationId) async {
     try {
-      _logger.i('Creating user settings for user: $userId');
+      _logger.i('createUserSettings', 'Creating user settings for user: $userId');
 
       await supabase.from('user_settings').insert({
         'user_id': userId,
@@ -85,7 +84,7 @@ class UserSettingsProvider extends ChangeNotifier {
 
       return Response.success();
     } catch (e) {
-      _logger.e('Error creating user settings: $e');
+      _logger.e('createUserSettings', 'Error creating user settings: $e');
       return Response.error(e.toString());
     }
   }
@@ -96,7 +95,7 @@ class UserSettingsProvider extends ChangeNotifier {
         'show_deleted_clients': value,
       }).eq('user_id', userId);
     } catch (e) {
-      _logger.e(e);
+      _logger.e('updateShowDeletedClients', e.toString());
       rethrow;
     }
   }
@@ -107,7 +106,7 @@ class UserSettingsProvider extends ChangeNotifier {
         'show_deleted_loans': value,
       }).eq('user_id', userId);
     } catch (e) {
-      _logger.e(e);
+      _logger.e('updateShowDeletedLoans', e.toString());
       rethrow;
     }
   }
@@ -118,7 +117,7 @@ class UserSettingsProvider extends ChangeNotifier {
         'show_deleted_loan_statements': value,
       }).eq('user_id', userId);
     } catch (e) {
-      _logger.e(e);
+      _logger.e('updateShowDeletedLoanStatements', e.toString());
       rethrow;
     }
   }
@@ -129,7 +128,7 @@ class UserSettingsProvider extends ChangeNotifier {
         'show_deleted_payments': value,
       }).eq('user_id', userId);
     } catch (e) {
-      _logger.e(e);
+      _logger.e('updateShowDeletedPayments', e.toString());
       rethrow;
     }
   }

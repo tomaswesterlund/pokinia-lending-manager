@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 import 'package:pokinia_lending_manager/components/app_bars/my_app_bar.dart';
 import 'package:pokinia_lending_manager/components/buttons/my_cta_button.dart';
 import 'package:pokinia_lending_manager/components/images/image_picker.dart';
@@ -11,7 +10,7 @@ import 'package:pokinia_lending_manager/models/data/loan.dart';
 import 'package:pokinia_lending_manager/models/data/loan_statement.dart';
 import 'package:pokinia_lending_manager/models/data/repsonse.dart';
 import 'package:pokinia_lending_manager/providers/payment_provider.dart';
-import 'package:pokinia_lending_manager/services/logger.dart';
+import 'package:pokinia_lending_manager/services/log_service.dart';
 import 'package:pokinia_lending_manager/services/receipt_service.dart';
 import 'package:pokinia_lending_manager/util/string_extensions.dart';
 import 'package:provider/provider.dart';
@@ -27,7 +26,7 @@ class NewPaymentPage extends StatefulWidget {
 }
 
 class _NewPaymentPageState extends State<NewPaymentPage> {
-  final Logger _logger = getLogger('NewPaymentPage');
+  final LogService _logger = LogService('NewPaymentPage');
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _interestAmountPaidController =
       TextEditingController();
@@ -86,7 +85,7 @@ class _NewPaymentPageState extends State<NewPaymentPage> {
       if (response!.succeeded) {
         Navigator.pop(context);
       } else {
-        _logger.e(response.message);
+        _logger.e('_addPayment', response.message);
 
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(

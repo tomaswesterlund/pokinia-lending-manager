@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:pokinia_lending_manager/enums/payment_status_enum.dart';
 import 'package:pokinia_lending_manager/models/data/loan_statement.dart';
 import 'package:pokinia_lending_manager/models/data/repsonse.dart';
-import 'package:pokinia_lending_manager/services/logger.dart';
+import 'package:pokinia_lending_manager/services/log_service.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class LoanStatementProvider extends ChangeNotifier {
-  final _logger = getLogger('LoanStatementService');
+  final LogService _logger = LogService('LoanStatementProvider');
   final supabase = Supabase.instance.client;
   bool loaded = false;
 
@@ -63,7 +63,7 @@ class LoanStatementProvider extends ChangeNotifier {
 
       return Response.success();
     } catch (e) {
-      _logger.e('Error deleting loan statement: $e');
+      _logger.e('deleteLoanStatement', 'Error deleting loan statement: $e');
       return Response.error(e.toString());
     }
   }
@@ -76,7 +76,7 @@ class LoanStatementProvider extends ChangeNotifier {
 
       return Response.success();
     } catch (e) {
-      _logger.e('Error deleting loan statement: $e');
+      _logger.e('undeleteLoanStatement', 'Error deleting loan statement: $e');
       return Response.error(e.toString());
     }
   }
@@ -90,7 +90,7 @@ class LoanStatementProvider extends ChangeNotifier {
 
       return Response.success();
     } catch (e) {
-      _logger.e(e.toString());
+      _logger.e('calculateLoanStatementValues', e.toString());
       return Response.error(e.toString());
     }
   }

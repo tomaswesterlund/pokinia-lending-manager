@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 import 'package:pokinia_lending_manager/models/data/organization.dart';
 import 'package:pokinia_lending_manager/models/data/repsonse.dart';
-import 'package:pokinia_lending_manager/services/logger.dart';
+import 'package:pokinia_lending_manager/services/log_service.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class OrganizationProvider extends ChangeNotifier {
-  final Logger _logger = getLogger('OrganizationService');
+  final LogService _logger = LogService('OrganizationProvider');
   final supabase = Supabase.instance.client;
   bool loaded = false;
 
@@ -28,7 +27,7 @@ class OrganizationProvider extends ChangeNotifier {
 
       notifyListeners();
     })).onError((error, stackTrace) {
-      _logger.e('Error listening to organizations: $error');
+      _logger.e('startListener', 'Error listening to organizations: $error');
     });
   }
 
@@ -38,7 +37,7 @@ class OrganizationProvider extends ChangeNotifier {
 
   Future<Response> createOrganization(String name) async {
     try {
-      _logger.i('Creating organization: $name');
+      _logger.i('createOrganization', 'Creating organization: $name');
 
       var data = await supabase.from('organizations').insert({
         'name': name,
@@ -46,7 +45,7 @@ class OrganizationProvider extends ChangeNotifier {
 
       return Response(statusCode: 200, message: 'data: $data', data: data);
     } catch (e) {
-      _logger.e('Error creating organization: $e');
+      _logger.e('createOrganization', 'Error creating organization: $e');
       return Response.error(e.toString());
     }
   }

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:pokinia_lending_manager/models/data/customer.dart';
-import 'package:pokinia_lending_manager/services/logger.dart';
+import 'package:pokinia_lending_manager/services/log_service.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class CustomerProvider extends ChangeNotifier {
-  final _logger = getLogger('CustomerService');
+  final LogService _logger = LogService('CustomerProvider');
   final supabase = Supabase.instance.client;
   bool loaded = false;
 
@@ -35,7 +35,7 @@ class CustomerProvider extends ChangeNotifier {
     try {
       await supabase.from('customers').insert({'name': name});
     } catch (e) {
-      _logger.e(e);
+      _logger.e('createCustomer', e.toString());
     }
   }
 }

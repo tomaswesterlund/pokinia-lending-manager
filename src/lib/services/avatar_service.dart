@@ -1,12 +1,11 @@
 import 'dart:io';
 
-import 'package:logger/logger.dart';
-import 'package:pokinia_lending_manager/services/logger.dart';
+import 'package:pokinia_lending_manager/services/log_service.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:uuid/uuid.dart';
 
 class AvatarService {
-  final Logger _logger = getLogger('AvatarService');
+  final LogService _logger = LogService('AvatarService');
   final supabase = Supabase.instance.client;
 
   Future<String> uploadAvatar(File file) async {
@@ -19,7 +18,7 @@ class AvatarService {
 
       return response;
     } catch (error) {
-      _logger.e('Error uploading avatar: $error');
+      _logger.e('uploadAvatar', 'Error uploading avatar: $error');
       rethrow;
     }
   }

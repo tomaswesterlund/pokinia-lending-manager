@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
-import 'package:pokinia_lending_manager/enums/loan_types.dart';
-import 'package:pokinia_lending_manager/services/logger.dart';
 import 'package:pokinia_lending_manager/components/texts/headers/header_three_text.dart';
 import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_two_text.dart';
+import 'package:pokinia_lending_manager/enums/loan_types.dart';
 import 'package:pokinia_lending_manager/pages/loans/selector/select_payment_period_page.dart';
 import 'package:pokinia_lending_manager/pages/loans/zero_interest_loans/new_zero_interest_loan_page.dart';
+import 'package:pokinia_lending_manager/services/log_service.dart';
 
 class SelectLoanTypePage extends StatelessWidget {
-  final Logger _logger = getLogger('NewLoanPage');
+  final LogService _logger = LogService('SelectLoanTypePage');
 
   SelectLoanTypePage({super.key});
 
   void _onLoanSelected(BuildContext context, LoanTypes loanType) {
-    _logger.i('Loan type selected: $loanType');
+    _logger.i('_onLoanSelected', 'Loan type selected: $loanType');
 
     if (loanType == LoanTypes.openEndedLoan) {
       Navigator.push(context,

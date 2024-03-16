@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 import 'package:pokinia_lending_manager/components/avatars/my_avatar_component.dart';
 import 'package:pokinia_lending_manager/components/boxes/deleted_alert_box.dart';
 import 'package:pokinia_lending_manager/components/buttons/fabs.dart';
@@ -21,7 +20,7 @@ import 'package:pokinia_lending_manager/pages/loans/loan_page.dart';
 import 'package:pokinia_lending_manager/pages/loans/selector/select_loan_type_page.dart';
 import 'package:pokinia_lending_manager/providers/client_provider.dart';
 import 'package:pokinia_lending_manager/providers/loans/loan_provider.dart';
-import 'package:pokinia_lending_manager/services/logger.dart';
+import 'package:pokinia_lending_manager/services/log_service.dart';
 import 'package:provider/provider.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
@@ -35,7 +34,7 @@ class ClientPage extends StatefulWidget {
 }
 
 class _ClientPageState extends State<ClientPage> {
-  final Logger _logger = getLogger('ClientPage');
+final LogService _logger = LogService('_ClientPageState');
 
   @override
   Widget build(BuildContext context) {
@@ -140,7 +139,7 @@ class _ClientPageState extends State<ClientPage> {
         );
       }
     } catch (e) {
-      _logger.e(e);
+      _logger.e('_getLoansWidget', e.toString());
       return const Center(
         child: ParagraphTwoText(
             text: "An error occurred while loading the loans."),

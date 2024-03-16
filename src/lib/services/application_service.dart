@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 import 'package:pokinia_lending_manager/providers/client_provider.dart';
 import 'package:pokinia_lending_manager/providers/customer_provider.dart';
 import 'package:pokinia_lending_manager/providers/loan_statement_provider.dart';
@@ -9,12 +8,12 @@ import 'package:pokinia_lending_manager/providers/loans/zero_interest_loan_provi
 import 'package:pokinia_lending_manager/providers/organization_provider.dart';
 import 'package:pokinia_lending_manager/providers/payment_provider.dart';
 import 'package:pokinia_lending_manager/providers/user_settings_provider.dart';
-import 'package:pokinia_lending_manager/services/logger.dart';
+import 'package:pokinia_lending_manager/services/log_service.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ApplicationService {
-  final Logger _logger = getLogger('ApplicationService');
+  final LogService _logger = LogService('ApplicationService');
   final supabase = Supabase.instance.client;
 
   final Function onAllListenersLoaded;
@@ -65,7 +64,7 @@ class ApplicationService {
       Provider.of<ZeroInterestLoanProvider>(context, listen: false)
           .startListener(onListenerLoaded);
     } catch (e) {
-      _logger.e(e);
+      _logger.e('initializeListeners', e.toString());
       rethrow;
     }
   }

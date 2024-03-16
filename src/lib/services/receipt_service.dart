@@ -1,13 +1,12 @@
 import 'dart:io';
 
-import 'package:logger/logger.dart';
 import 'package:pokinia_lending_manager/models/data/payment.dart';
-import 'package:pokinia_lending_manager/services/logger.dart';
+import 'package:pokinia_lending_manager/services/log_service.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:uuid/uuid.dart';
 
 class ReceiptService {
-  final Logger _logger = getLogger('ReceiptService');
+  final LogService _logger = LogService('ReceiptService');
   final supabase = Supabase.instance.client;
 
   Future<String> uploadReceipt(File file) async {
@@ -22,7 +21,7 @@ class ReceiptService {
 
       return url;
     } catch (error) {
-      _logger.e('Error uploading receipt: $error');
+      _logger.e('uploadReceipt', 'Error uploading receipt: $error');
       rethrow;
     }
   }

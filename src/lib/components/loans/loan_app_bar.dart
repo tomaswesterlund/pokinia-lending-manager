@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 import 'package:pokinia_lending_manager/enums/loan_types.dart';
 import 'package:pokinia_lending_manager/pages/loans/open_ended/edit_open_ended_loan_page.dart';
 import 'package:pokinia_lending_manager/providers/loans/loan_provider.dart';
-import 'package:pokinia_lending_manager/services/logger.dart';
+import 'package:pokinia_lending_manager/services/log_service.dart';
 import 'package:pokinia_lending_manager/services/toast_service.dart';
 import 'package:provider/provider.dart';
 
 class LoanAppBar extends StatelessWidget {
-  final Logger _logger = getLogger('LoanAppBar');
+  final LogService _logger = LogService('LoanAppBar');
   final String loanId;
   final String title;
   final bool isDeleted;
@@ -27,7 +26,7 @@ class LoanAppBar extends StatelessWidget {
       var response = await loanProvider.calculateLoanValues(loanId);
 
       if (!response.succeeded) {
-        _logger.e('Error calculating loan: ${response.message}');
+        _logger.e('_onMenuItemClicked', 'Error calculating loan: ${response.message}');
         ToastService().showErrorToast(response.message);
       }
     }
@@ -51,7 +50,7 @@ class LoanAppBar extends StatelessWidget {
   }
 
   void _deleteLoan(BuildContext context) {
-    _logger.i('_deleteLoan - id: $loanId');
+    _logger.i('_deleteLoan', 'id: $loanId');
 
     var loanProvider = Provider.of<LoanProvider>(context, listen: false);
 
@@ -87,7 +86,7 @@ class LoanAppBar extends StatelessWidget {
   }
 
   void _undeleteLoan(BuildContext context) {
-    _logger.i('_undeleteLoan - id: $loanId');
+    _logger.i('_undeleteLoan', 'id: $loanId');
 
     var loanProvider = Provider.of<LoanProvider>(context, listen: false);
 

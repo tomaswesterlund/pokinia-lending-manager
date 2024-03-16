@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:pokinia_lending_manager/models/data/loan.dart';
 import 'package:pokinia_lending_manager/models/data/repsonse.dart';
-import 'package:pokinia_lending_manager/services/logger.dart';
+import 'package:pokinia_lending_manager/services/log_service.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class LoanProvider extends ChangeNotifier {
-  final _logger = getLogger('LoanService');
+  final LogService _logger = LogService('LoanProvider');
   final supabase = Supabase.instance.client;
 
   bool loaded = false;
@@ -63,27 +63,27 @@ class LoanProvider extends ChangeNotifier {
 
       return Response.success();
     } catch (e) {
-      _logger.e(e.toString());
+      _logger.e('createLoan', e.toString());
       return Response.error(e.toString());
     }
   }
 
   Future<Response> calculateLoanValues(String id) async {
     try {
-      _logger.i('calculateLoanValues - id: $id');
+      _logger.i('calculateLoanValues', 'id: $id');
 
       await supabase.rpc('calculate_loan_values', params: {'v_loan_id': id});
 
       return Response.success();
     } catch (e) {
-      _logger.e(e.toString());
+      _logger.e('calculateLoanValues', e.toString());
       return Response.error(e.toString());
     }
   }
 
   Future<Response> deleteLoan(String id, String deleteReason) async {
     try {
-      _logger.i('deleteLoan - id: $id');
+      _logger.i('deleteLoan', 'id: $id');
 
       var params = {
         'v_loan_id': id,
@@ -95,14 +95,14 @@ class LoanProvider extends ChangeNotifier {
 
       return Response.success();
     } catch (e) {
-      _logger.e(e.toString());
+      _logger.e('deleteLoan', e.toString());
       return Response.error(e.toString());
     }
   }
 
   Future<Response> undeleteLoan(String id) async {
     try {
-      _logger.i('undeleteLoan - id: $id');
+      _logger.i('undeleteLoan', 'id: $id');
 
       var params = {'v_loan_id': id};
 
@@ -110,7 +110,7 @@ class LoanProvider extends ChangeNotifier {
 
       return Response.success();
     } catch (e) {
-      _logger.e(e.toString());
+      _logger.e('undeleteLoan', e.toString());
       return Response.error(e.toString());
     }
   }

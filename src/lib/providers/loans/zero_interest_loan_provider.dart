@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:pokinia_lending_manager/models/data/loans/zero_interest_loan.dart';
 import 'package:pokinia_lending_manager/models/data/repsonse.dart';
-import 'package:pokinia_lending_manager/services/logger.dart';
+import 'package:pokinia_lending_manager/services/log_service.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ZeroInterestLoanProvider extends ChangeNotifier {
-  final _logger = getLogger('ZeroInterestLoan');
+  final LogService _logger = LogService('ZeroInterestLoanProvider');
   final supabase = Supabase.instance.client;
   bool loaded = false;
 
@@ -53,7 +53,7 @@ class ZeroInterestLoanProvider extends ChangeNotifier {
 
       return Response.success();
     } catch (e) {
-      _logger.e(e.toString());
+      _logger.e('createLoan', e.toString());
       return Response.error(e.toString());
     }
   }

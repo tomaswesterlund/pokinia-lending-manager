@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 import 'package:pokinia_lending_manager/providers/client_provider.dart';
-import 'package:pokinia_lending_manager/services/logger.dart';
+import 'package:pokinia_lending_manager/services/log_service.dart';
 import 'package:pokinia_lending_manager/services/toast_service.dart';
 import 'package:provider/provider.dart';
 
 class ClientAppBar extends StatelessWidget {
-  final Logger _logger = getLogger('LoanAppBar');
+  final LogService _logger = LogService('ClientAppBar');
   final String clientId;
   final String title;
   final bool isDeleted;
@@ -28,7 +27,7 @@ class ClientAppBar extends StatelessWidget {
   }
 
   void _deleteClient(BuildContext context) {
-    _logger.i('_deleteClient - id: $clientId');
+    _logger.i('_deleteClient', 'id: $clientId');
 
     var clientService = Provider.of<ClientProvider>(context, listen: false);
 
@@ -64,7 +63,7 @@ class ClientAppBar extends StatelessWidget {
   }
 
   void _undeleteClient(BuildContext context) {
-    _logger.i('_undeleteClient - id: $clientId');
+    _logger.i('_undeleteClient', 'id: $clientId');
 
     var clientService = Provider.of<ClientProvider>(context, listen: false);
 

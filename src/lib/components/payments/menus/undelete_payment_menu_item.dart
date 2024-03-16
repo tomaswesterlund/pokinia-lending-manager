@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 import 'package:pokinia_lending_manager/providers/payment_provider.dart';
-import 'package:pokinia_lending_manager/services/logger.dart';
+import 'package:pokinia_lending_manager/services/log_service.dart';
 import 'package:pokinia_lending_manager/services/toast_service.dart';
 import 'package:provider/provider.dart';
 
 class UndeletePaymentMenuItem extends StatelessWidget {
-  final Logger _logger = getLogger('DeletePaymentPopupMenuButton');
+  final LogService _logger = LogService('UndeletePaymentMenuItem');
   final String paymentId;
 
    UndeletePaymentMenuItem({super.key, required this.paymentId});
 
 
 void _undeletePayment(BuildContext context, String paymentId) {
-    _logger.i('_undeletePayment - id: $paymentId');
+    _logger.i('_undeletePayment', 'id: $paymentId');
 
     var paymentProvider = Provider.of<PaymentProvider>(context, listen: false);
 

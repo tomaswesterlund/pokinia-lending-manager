@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 import 'package:pokinia_lending_manager/models/data/payment.dart';
 import 'package:pokinia_lending_manager/models/data/repsonse.dart';
-import 'package:pokinia_lending_manager/services/logger.dart';
+import 'package:pokinia_lending_manager/services/log_service.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class PaymentProvider extends ChangeNotifier {
-  final Logger _logger = getLogger('PaymentService');
+  final LogService _logger = LogService('PaymentProvider');
   final supabase = Supabase.instance.client;
   bool loaded = false;
 
@@ -37,10 +36,15 @@ class PaymentProvider extends ChangeNotifier {
   }
 
   List<Payment> getByLoanStatementId(String loanStatementId, bool showDeleted) {
-    if(showDeleted) {
-      return _payments.where((payment) => payment.loanStatementId == loanStatementId).toList();
+    if (showDeleted) {
+      return _payments
+          .where((payment) => payment.loanStatementId == loanStatementId)
+          .toList();
     } else {
-      return _payments.where((payment) => payment.loanStatementId == loanStatementId && !payment.deleted).toList();
+      return _payments
+          .where((payment) =>
+              payment.loanStatementId == loanStatementId && !payment.deleted)
+          .toList();
     }
   }
 
@@ -59,7 +63,7 @@ class PaymentProvider extends ChangeNotifier {
       required DateTime date,
       required String receiptImageUrl}) async {
     try {
-      _logger.i(
+      _logger.i('createPaymentWithoutLoanStatement',
           'Adding payment with clientId: $clientId, loanId: $loanId, interestAmountPaid: $interestAmountPaid, principalAmountPaid: $principalAmountPaid, date: $date, receiptImageUrl: $receiptImageUrl');
 
       var values = {
@@ -75,7 +79,8 @@ class PaymentProvider extends ChangeNotifier {
 
       return Response.success();
     } catch (e) {
-      _logger.e('Error adding payment: $e');
+      _logger.e(
+          'createPaymentWithoutLoanStatement', 'Error adding payment: $e');
       return Response.error(e.toString());
     }
   }
@@ -89,7 +94,7 @@ class PaymentProvider extends ChangeNotifier {
       required DateTime date,
       required String receiptImageUrl}) async {
     try {
-      _logger.i(
+      _logger.i('createPaymentWithLoanStatement',
           'Adding payment with clientId: $clientId, loanId: $loanId, loanStatementId: $loanStatementId, interestAmountPaid: $interestAmountPaid, principalAmountPaid: $principalAmountPaid, date: $date, receiptImageUrl: $receiptImageUrl');
 
       var values = {
@@ -106,7 +111,7 @@ class PaymentProvider extends ChangeNotifier {
 
       return Response.success();
     } catch (e) {
-      _logger.e('Error adding payment: $e');
+      _logger.e('createPaymentWithLoanStatement', 'Error adding payment: $e');
       return Response.error(e.toString());
     }
   }
@@ -120,7 +125,7 @@ class PaymentProvider extends ChangeNotifier {
       required DateTime date,
       required String receiptImageUrl}) async {
     try {
-      _logger.i(
+      _logger.i('createPaymentForOpenEndedLoan',
           'createPaymentForOpenEndedLoan: Adding payment with clientId: $clientId, loanId: $loanId, principalAmountPaid: $principalAmountPaid, date: $date, receiptImageUrl: $receiptImageUrl');
 
       var values = {
@@ -137,7 +142,7 @@ class PaymentProvider extends ChangeNotifier {
 
       return Response.success();
     } catch (e) {
-      _logger.e('Error adding payment: $e');
+      _logger.e('createPaymentForOpenEndedLoan', 'Error adding payment: $e');
       return Response.error(e.toString());
     }
   }
@@ -149,7 +154,7 @@ class PaymentProvider extends ChangeNotifier {
       required DateTime date,
       required String receiptImageUrl}) async {
     try {
-      _logger.i(
+      _logger.i('createPaymentForZeroInterestLoan',
           'createPaymentForZeroInterestLoan: Adding payment with clientId: $clientId, loanId: $loanId, principalAmountPaid: $principalAmountPaid, date: $date, receiptImageUrl: $receiptImageUrl');
 
       var values = {
@@ -165,7 +170,7 @@ class PaymentProvider extends ChangeNotifier {
 
       return Response.success();
     } catch (e) {
-      _logger.e('Error adding payment: $e');
+      _logger.e('createPaymentForZeroInterestLoan', 'Error adding payment: $e');
       return Response.error(e.toString());
     }
   }
@@ -179,7 +184,7 @@ class PaymentProvider extends ChangeNotifier {
       required DateTime date,
       required String receiptImageUrl}) async {
     try {
-      _logger.i(
+      _logger.i('createPayment',
           'Adding payment with clientId: $clientId, loanId: $loanId, loanStatementId: $loanStatementId, interestAmountPaid: $interestAmountPaid, principalAmountPaid: $principalAmountPaid, date: $date, receiptImageUrl: $receiptImageUrl');
 
       var values = {
@@ -196,7 +201,7 @@ class PaymentProvider extends ChangeNotifier {
 
       return Response.success();
     } catch (e) {
-      _logger.e('Error adding payment: $e');
+      _logger.e('createPayment', 'Error adding payment: $e');
       return Response.error(e.toString());
     }
   }
@@ -213,7 +218,7 @@ class PaymentProvider extends ChangeNotifier {
 
       return Response.success();
     } catch (e) {
-      _logger.e('Error deleting payment: $e');
+      _logger.e('deletePayment', 'Error deleting payment: $e');
       return Response.error(e.toString());
     }
   }
@@ -226,12 +231,13 @@ class PaymentProvider extends ChangeNotifier {
 
       return Response.success();
     } catch (e) {
-      _logger.e('Error deleting payment: $e');
+      _logger.e('undeletePayment', 'Error deleting payment: $e');
       return Response.error(e.toString());
     }
   }
 
-  Future<Response> updateReceiptImageUrl(String id, String receiptImageUrl) async {
+  Future<Response> updateReceiptImageUrl(
+      String id, String receiptImageUrl) async {
     try {
       var response = await supabase.from('payments').update({
         'receipt_image_url': receiptImageUrl,
@@ -239,7 +245,7 @@ class PaymentProvider extends ChangeNotifier {
 
       return Response.success();
     } catch (e) {
-      _logger.e('Error uploading receipt: $e');
+      _logger.e('updateReceiptImageUrl', 'Error uploading receipt: $e');
       return Response.error(e.toString());
     }
   }

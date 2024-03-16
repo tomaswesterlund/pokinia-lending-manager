@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:logger/logger.dart';
 import 'package:pokinia_lending_manager/components/boxes/deleted_alert_box.dart';
 import 'package:pokinia_lending_manager/components/images/image_picker.dart';
 import 'package:pokinia_lending_manager/components/payments/app_bars/payment_app_bar.dart';
@@ -11,7 +10,7 @@ import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_on
 import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_two_text.dart';
 import 'package:pokinia_lending_manager/models/data/payment.dart';
 import 'package:pokinia_lending_manager/providers/payment_provider.dart';
-import 'package:pokinia_lending_manager/services/logger.dart';
+import 'package:pokinia_lending_manager/services/log_service.dart';
 import 'package:pokinia_lending_manager/services/receipt_service.dart';
 import 'package:pokinia_lending_manager/util/string_extensions.dart';
 import 'package:provider/provider.dart';
@@ -26,7 +25,7 @@ class PaymentPage extends StatefulWidget {
 }
 
 class _PaymentPageState extends State<PaymentPage> {
-  final Logger _logger = getLogger('PaymentPage');
+  final LogService _logger = LogService('PaymentPage');
   bool isProcessing = false;
 
   void _uploadImageAndUpdateReceiptImageUrl(
@@ -39,7 +38,7 @@ class _PaymentPageState extends State<PaymentPage> {
 
       setProcessing(false);
     } catch (e) {
-      _logger.e(e);
+      _logger.e('_uploadImageAndUpdateReceiptImageUrl', e.toString());
       setProcessing(false);
     }
   }

@@ -8,7 +8,6 @@ import 'package:pokinia_lending_manager/enums/loan_types.dart';
 import 'package:pokinia_lending_manager/pages/loans/selector/select_loan_type_page.dart';
 import 'package:pokinia_lending_manager/providers/loans/loan_provider.dart';
 import 'package:pokinia_lending_manager/providers/user_settings_provider.dart';
-import 'package:pokinia_lending_manager/services/logger.dart';
 import 'package:provider/provider.dart';
 
 class LoansPage extends StatelessWidget {
@@ -16,9 +15,6 @@ class LoansPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var logger = getLogger('LoansPage');
-    logger.i('Building LoansPage');
-
     var userSettingsProvider = Provider.of<UserSettingsProvider>(context);
     var userSettings = userSettingsProvider.getByLoggedInUser();
 

@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 import 'package:pokinia_lending_manager/models/data/client.dart';
 import 'package:pokinia_lending_manager/models/data/repsonse.dart';
-import 'package:pokinia_lending_manager/services/logger.dart';
+import 'package:pokinia_lending_manager/services/log_service.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ClientProvider extends ChangeNotifier {
-  final Logger _logger = getLogger('ClientService');
+  final LogService _logger = LogService('ClientProvider');
   final supabase = Supabase.instance.client;
   bool loaded = false;
 
@@ -27,7 +26,7 @@ class ClientProvider extends ChangeNotifier {
 
       notifyListeners();
     })).onError((error, stackTrace) {
-      _logger.e('Error listening to clients: $error');
+      _logger.e('startListener', 'Error listening to clients: $error');
     });
   }
 
@@ -50,7 +49,7 @@ class ClientProvider extends ChangeNotifier {
       String? address,
       String? avatarImagePath}) async {
     try {
-      _logger.i(
+      _logger.i('createClient', 
           'Adding client with organizationId: $organizationId, name: $name, phoneNumber: $phoneNumber, address: $address, avatarImagePath: $avatarImagePath');
 
       var params = {
@@ -65,7 +64,7 @@ class ClientProvider extends ChangeNotifier {
 
       return Response.success();
     } catch (e) {
-      _logger.e('Error adding client: $e');
+      _logger.e('createClient', 'Error creating client: $e');
       return Response.error(e.toString());
     }
   }
@@ -82,7 +81,7 @@ class ClientProvider extends ChangeNotifier {
 
       return Response.success();
     } catch (e) {
-      _logger.e('Error deleting client: $e');
+      _logger.e('deleteClient', 'Error deleting client: $e');
       return Response.error(e.toString());
     }
   }
@@ -95,7 +94,7 @@ class ClientProvider extends ChangeNotifier {
 
       return Response.success();
     } catch (e) {
-      _logger.e('Error un-deleting client: $e');
+      _logger.e('undeleteClient', 'Error un-deleting client: $e');
       return Response.error(e.toString());
     }
   }

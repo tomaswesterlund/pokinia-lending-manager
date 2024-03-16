@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:logger/logger.dart';
 import 'package:pokinia_lending_manager/components/boxes/square_tile.dart';
 import 'package:pokinia_lending_manager/components/texts/headers/header_two_text.dart';
 import 'package:pokinia_lending_manager/services/auth_service.dart';
-import 'package:pokinia_lending_manager/services/logger.dart';
+import 'package:pokinia_lending_manager/services/log_service.dart';
 import 'package:pokinia_lending_manager/services/toast_service.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -19,7 +18,7 @@ class SignInPage extends StatefulWidget {
 
 class _SignInPageState extends State<SignInPage> {
   final supabase = Supabase.instance.client;
-  final Logger _logger = getLogger('SignInPage');
+  final LogService _logger = LogService('SignInPage');
   final AuthService _authService = AuthService();
 
   @override
@@ -75,7 +74,7 @@ class _SignInPageState extends State<SignInPage> {
                         try {
                           await _authService.signInWithGoogle();
                         } catch (e) {
-                          _logger.e(e);
+                          _logger.e('onTap', 'Google: $e');
                           ToastService().showErrorToast(
                               'Something seems to have gone wrong, please try again.');
                         }
