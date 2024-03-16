@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pokinia_lending_manager/components/avatars/my_avatar_component.dart';
 import 'package:pokinia_lending_manager/components/loan_statements/open_ended/open_ended_loan_statement_list.dart';
-import 'package:pokinia_lending_manager/components/loans/delete_loan.dart';
+import 'package:pokinia_lending_manager/components/loans/deleted_loan.dart';
 import 'package:pokinia_lending_manager/components/loans/loan_app_bar.dart';
 import 'package:pokinia_lending_manager/components/status_boxes/payment_status/wide_payment_status_box_component.dart';
 import 'package:pokinia_lending_manager/components/texts/amounts/big_amount_text_with_title_text.dart';
