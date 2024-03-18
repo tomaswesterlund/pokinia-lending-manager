@@ -123,10 +123,11 @@ class PaymentProvider extends ChangeNotifier {
       required double interestAmountPaid,
       required double principalAmountPaid,
       required DateTime date,
-      required String receiptImageUrl}) async {
+      required String receiptImageUrl,
+      required String? description}) async {
     try {
       _logger.i('createPaymentForOpenEndedLoan',
-          'createPaymentForOpenEndedLoan: Adding payment with clientId: $clientId, loanId: $loanId, principalAmountPaid: $principalAmountPaid, date: $date, receiptImageUrl: $receiptImageUrl');
+          'createPaymentForOpenEndedLoan: Adding payment with clientId: $clientId, loanId: $loanId, principalAmountPaid: $principalAmountPaid, date: $date, receiptImageUrl: $receiptImageUrl, description: $description');
 
       var values = {
         'v_client_id': clientId,
@@ -136,6 +137,7 @@ class PaymentProvider extends ChangeNotifier {
         'v_principal_amount_paid': principalAmountPaid.toString(),
         'v_pay_date': date.toIso8601String(),
         'v_receipt_image_url': receiptImageUrl,
+        'v_description': description,
       };
 
       await supabase.rpc('create_payment_for_open_ended_loan', params: values);
@@ -152,10 +154,11 @@ class PaymentProvider extends ChangeNotifier {
       required String loanId,
       required double principalAmountPaid,
       required DateTime date,
-      required String receiptImageUrl}) async {
+      required String receiptImageUrl,
+      required String? description}) async {
     try {
       _logger.i('createPaymentForZeroInterestLoan',
-          'createPaymentForZeroInterestLoan: Adding payment with clientId: $clientId, loanId: $loanId, principalAmountPaid: $principalAmountPaid, date: $date, receiptImageUrl: $receiptImageUrl');
+          'createPaymentForZeroInterestLoan: Adding payment with clientId: $clientId, loanId: $loanId, principalAmountPaid: $principalAmountPaid, date: $date, receiptImageUrl: $receiptImageUrl, description: $description');
 
       var values = {
         'v_client_id': clientId,
@@ -163,6 +166,7 @@ class PaymentProvider extends ChangeNotifier {
         'v_principal_amount_paid': principalAmountPaid.toString(),
         'v_pay_date': date.toIso8601String(),
         'v_receipt_image_url': receiptImageUrl,
+        'v_description': description,
       };
 
       await supabase.rpc('create_payment_for_zero_interest_loan',
@@ -171,37 +175,6 @@ class PaymentProvider extends ChangeNotifier {
       return Response.success();
     } catch (e) {
       _logger.e('createPaymentForZeroInterestLoan', 'Error adding payment: $e');
-      return Response.error(e.toString());
-    }
-  }
-
-  Future<Response> createPayment(
-      {required String clientId,
-      required String loanId,
-      required String loanStatementId,
-      required double interestAmountPaid,
-      required double principalAmountPaid,
-      required DateTime date,
-      required String receiptImageUrl}) async {
-    try {
-      _logger.i('createPayment',
-          'Adding payment with clientId: $clientId, loanId: $loanId, loanStatementId: $loanStatementId, interestAmountPaid: $interestAmountPaid, principalAmountPaid: $principalAmountPaid, date: $date, receiptImageUrl: $receiptImageUrl');
-
-      var values = {
-        'client_id': clientId,
-        'loan_id': loanId,
-        'loan_statement_id': loanStatementId,
-        'interest_amount_paid': interestAmountPaid.toString(),
-        'principal_amount_paid': principalAmountPaid.toString(),
-        'pay_date': date.toIso8601String(),
-        'receipt_image_url': receiptImageUrl,
-      };
-
-      await supabase.from('payments').insert(values);
-
-      return Response.success();
-    } catch (e) {
-      _logger.e('createPayment', 'Error adding payment: $e');
       return Response.error(e.toString());
     }
   }

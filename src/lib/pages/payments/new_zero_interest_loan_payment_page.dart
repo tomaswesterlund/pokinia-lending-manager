@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:pokinia_lending_manager/components/app_bars/my_app_bar.dart';
 import 'package:pokinia_lending_manager/components/images/image_picker.dart';
+import 'package:pokinia_lending_manager/components/input/description_form_field.dart';
 import 'package:pokinia_lending_manager/components/input/principal_amount_form_field.dart';
 import 'package:pokinia_lending_manager/components/payments/form_fields/add_payment_button.dart';
 import 'package:pokinia_lending_manager/models/data/loan.dart';
@@ -29,6 +30,7 @@ class _NewZeroInterestLoanPaymentPageState
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _principalAmountPaidController =
       TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
 
   File? _selectedImage;
   bool _isProcessing = false;
@@ -50,7 +52,8 @@ class _NewZeroInterestLoanPaymentPageState
           principalAmountPaid:
               double.parse(_principalAmountPaidController.text),
           date: DateTime.now(),
-          receiptImageUrl: urlDownload);
+          receiptImageUrl: urlDownload,
+          description: _descriptionController.text);
 
       setOnProcessing(false);
 
@@ -101,9 +104,13 @@ class _NewZeroInterestLoanPaymentPageState
                 PrincipalAmountFormField(
                     controller: _principalAmountPaidController,
                     isProcessing: _isProcessing),
+                DescriptionFormField(
+                    controller: _descriptionController,
+                    isProcessing: _isProcessing),
                 const Spacer(),
                 AddPaymentButton(
-                    isProcessing: _isProcessing, onPressed: () => addPayment(loan))
+                    isProcessing: _isProcessing,
+                    onPressed: () => addPayment(loan))
               ],
             ),
           ),

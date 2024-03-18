@@ -9,6 +9,7 @@ class Payment {
   final double principalAmountPaid;
   final DateTime payDate;
   final String receiptImageUrl;
+  final String? description;
 
   
 
@@ -29,6 +30,7 @@ class Payment {
     required this.receiptImageUrl,
     required this.deleteDate,
     required this.deleteReason,
+    this.description,
   });
 
   Payment.fromMap(Map<String, dynamic> map)
@@ -41,5 +43,6 @@ class Payment {
         payDate = map['pay_date'].toString().toDate(),
         receiptImageUrl = map['receipt_image_url'] ?? '',
         deleteDate = map['delete_date']?.toString().toDate(),
-        deleteReason = map['delete_reason'];
+        deleteReason = map['delete_reason'],
+        description = map['description'];
 }

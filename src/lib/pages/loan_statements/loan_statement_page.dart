@@ -12,9 +12,10 @@ import 'package:pokinia_lending_manager/components/texts/headers/header_five_tex
 import 'package:pokinia_lending_manager/components/texts/headers/header_four_text.dart';
 import 'package:pokinia_lending_manager/components/texts/headers/header_three_text.dart';
 import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_two_text.dart';
+import 'package:pokinia_lending_manager/enums/loan_types.dart';
 import 'package:pokinia_lending_manager/enums/payment_status_enum.dart';
 import 'package:pokinia_lending_manager/models/data/loan_statement.dart';
-import 'package:pokinia_lending_manager/pages/payments/new_payment_page.dart';
+import 'package:pokinia_lending_manager/pages/payments/new_open_ended_loan_payment_page.dart';
 import 'package:pokinia_lending_manager/providers/loan_statement_provider.dart';
 import 'package:pokinia_lending_manager/providers/loans/loan_provider.dart';
 import 'package:pokinia_lending_manager/providers/payment_provider.dart';
@@ -37,15 +38,15 @@ class _LoanStatementPageState extends State<LoanStatementPage> {
   Widget build(BuildContext context) {
     var userSettingsProvider = Provider.of<UserSettingsProvider>(context);
     var userSettings = userSettingsProvider.getByLoggedInUser();
-    
+
     return Consumer3<LoanProvider, LoanStatementProvider, PaymentProvider>(
       builder:
           (context, loanProvider, loanStatementProvider, paymentProvider, _) {
         var loanStatement =
             loanStatementProvider.getById(widget.loanStatementId);
         var loan = loanProvider.getById(loanStatement.loanId);
-        var payments =
-            paymentProvider.getByLoanStatementId(widget.loanStatementId, userSettings.showDeletedPayments);
+        var payments = paymentProvider.getByLoanStatementId(
+            widget.loanStatementId, userSettings.showDeletedPayments);
 
         return Scaffold(
           body: CustomScrollView(
@@ -149,8 +150,12 @@ class _LoanStatementPageState extends State<LoanStatementPage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) {
-                  return NewPaymentPage(
-                      loan: loan, loanStatement: loanStatement);
+                  if (loan.type == LoanTypes.openEndedLoan) {
+                    return NewOpenEndedLoanPaymentPage(
+                        loan: loan, loanStatement: loanStatement);
+                  } else {
+                    throw Exception('Loan type not supported');
+                  }
                 }),
               );
             },
