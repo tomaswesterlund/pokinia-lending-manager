@@ -34,6 +34,7 @@ class SelectLoanTypePage extends StatelessWidget {
 
     return  Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: const Text('Select loan type'),
       ),
       body: Padding(

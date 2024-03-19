@@ -23,9 +23,12 @@ class UpdateExpectedInterestForOverdueLoanStatements extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const ParagraphTwoText(
-                  text:
-                      'Update expected interest for overdue loan statements when value changes'),
+              const Flexible(
+                child: ParagraphTwoText(
+                    text:
+                        'Update expected interest for overdue loan statements when value changes'),
+              ),
+              const SizedBox(width: 12),
               CupertinoSwitch(
                 value: value,
                 onChanged: (newValue) {

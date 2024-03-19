@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:pokinia_lending_manager/models/loans/new_open_ended_loan_parameters.dart';
-import 'package:pokinia_lending_manager/providers/loans/loan_provider.dart';
-import 'package:pokinia_lending_manager/providers/loans/open_ended_loan_provider.dart';
 import 'package:pokinia_lending_manager/components/buttons/my_cta_button.dart';
 import 'package:pokinia_lending_manager/components/clients/client_list_dropdown_menu_component.dart';
 import 'package:pokinia_lending_manager/components/input/interest_rate_form_field.dart';
 import 'package:pokinia_lending_manager/components/input/principal_amount_form_field.dart';
 import 'package:pokinia_lending_manager/components/input/select_date_input.dart';
+import 'package:pokinia_lending_manager/models/loans/new_open_ended_loan_parameters.dart';
+import 'package:pokinia_lending_manager/providers/loans/loan_provider.dart';
+import 'package:pokinia_lending_manager/providers/loans/open_ended_loan_provider.dart';
 import 'package:provider/provider.dart';
 
 class NewOpenEndedLoanPage extends StatefulWidget {
@@ -72,6 +72,7 @@ class _NewOpenEndedLoanPageState extends State<NewOpenEndedLoanPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: const Text('Create open-ended loan'),
       ),
       body: Center(

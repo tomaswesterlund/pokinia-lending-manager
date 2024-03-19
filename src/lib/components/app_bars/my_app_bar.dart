@@ -24,6 +24,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
               },
             ),
       title: Text(title),
+      centerTitle: true,
     );
   }
 }

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pokinia_lending_manager/enums/loan_types.dart';
-import 'package:pokinia_lending_manager/providers/loans/loan_provider.dart';
 import 'package:pokinia_lending_manager/pages/loans/open_ended/open_ended_loan_page.dart';
 import 'package:pokinia_lending_manager/pages/loans/zero_interest_loans/zero_interest_loan_page.dart';
+import 'package:pokinia_lending_manager/providers/loans/loan_provider.dart';
 import 'package:provider/provider.dart';
 
 class LoanPage extends StatelessWidget {
@@ -22,6 +22,7 @@ class LoanPage extends StatelessWidget {
     else {
       return  Scaffold(
         appBar: AppBar(
+          centerTitle: true,
           title: const Text("Under construction ..."),
         ),
         body: const Text("Loan page not implemented!"));

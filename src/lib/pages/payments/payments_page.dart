@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:pokinia_lending_manager/providers/client_provider.dart';
-import 'package:pokinia_lending_manager/providers/loan_statement_provider.dart';
-import 'package:pokinia_lending_manager/providers/payment_provider.dart';
 import 'package:pokinia_lending_manager/components/payments/payment_list_card_component.dart';
 import 'package:pokinia_lending_manager/components/texts/headers/header_four_text.dart';
 import 'package:pokinia_lending_manager/components/texts/headers/header_two_text.dart';
+import 'package:pokinia_lending_manager/providers/client_provider.dart';
+import 'package:pokinia_lending_manager/providers/loan_statement_provider.dart';
+import 'package:pokinia_lending_manager/providers/payment_provider.dart';
 
 class PaymentsPage extends StatelessWidget {
   const PaymentsPage({super.key});
@@ -14,6 +14,7 @@ class PaymentsPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const HeaderTwoText(text: "Payments"),
+        centerTitle: true,
         automaticallyImplyLeading: false,
       ),
       body: const Scaffold()

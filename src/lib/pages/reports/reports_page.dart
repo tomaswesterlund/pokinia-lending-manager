@@ -9,6 +9,7 @@ class ReportsPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const HeaderTwoText(text: "Reports"),
+        centerTitle: true,
         automaticallyImplyLeading: false,
       ),
       body: const Center(

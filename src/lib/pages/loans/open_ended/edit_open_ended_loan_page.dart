@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:pokinia_lending_manager/enums/payment_status_enum.dart';
-import 'package:pokinia_lending_manager/providers/loans/open_ended_loan_provider.dart';
 import 'package:pokinia_lending_manager/components/buttons/my_cta_button.dart';
 import 'package:pokinia_lending_manager/components/input/interest_rate_form_field.dart';
+import 'package:pokinia_lending_manager/enums/payment_status_enum.dart';
+import 'package:pokinia_lending_manager/providers/loans/open_ended_loan_provider.dart';
 import 'package:provider/provider.dart';
 
 class EditOpenEndedLoanPage extends StatefulWidget {
@@ -59,6 +59,7 @@ class _EditOpenEndedLoanPageState extends State<EditOpenEndedLoanPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: const Text('Edit Open Ended Loan'),
       ),
       body: Form(

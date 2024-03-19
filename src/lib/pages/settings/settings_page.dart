@@ -24,6 +24,7 @@ class SettingsPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const HeaderTwoText(text: 'Settings'),
+        centerTitle: true,
         automaticallyImplyLeading: false,
       ),
       body: Consumer2<OrganizationSettingsProvider, UserSettingsProvider>(

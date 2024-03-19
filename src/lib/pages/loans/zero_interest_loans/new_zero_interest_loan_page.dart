@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:pokinia_lending_manager/models/data/client.dart';
-import 'package:pokinia_lending_manager/providers/loans/loan_provider.dart';
-import 'package:pokinia_lending_manager/providers/loans/zero_interest_loan_provider.dart';
 import 'package:pokinia_lending_manager/components/buttons/my_cta_button.dart';
 import 'package:pokinia_lending_manager/components/clients/client_list_dropdown_menu_component.dart';
 import 'package:pokinia_lending_manager/components/input/my_text_form_field.dart';
 import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_one_text.dart';
+import 'package:pokinia_lending_manager/models/data/client.dart';
+import 'package:pokinia_lending_manager/providers/loans/loan_provider.dart';
+import 'package:pokinia_lending_manager/providers/loans/zero_interest_loan_provider.dart';
 import 'package:pokinia_lending_manager/util/date_extensions.dart';
 import 'package:pokinia_lending_manager/util/string_extensions.dart';
 import 'package:provider/provider.dart';
@@ -83,6 +83,7 @@ class _NewZerointerestLoanPageState extends State<NewZerointerestLoanPage> {
       builder: (context, loanService, child) {
         return Scaffold(
           appBar: AppBar(
+            centerTitle: true,
             title: const Text('Create zero-interest loan'),
           ),
           body: Center(

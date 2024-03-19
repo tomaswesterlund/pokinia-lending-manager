@@ -17,6 +17,7 @@ class PaymentAppBar extends StatelessWidget implements PreferredSizeWidget {
 
         return AppBar(
           title: const Text("Payment page"),
+          centerTitle: true,
           actions: [
             PopupMenuButton<int>(
               itemBuilder: (context) => [
