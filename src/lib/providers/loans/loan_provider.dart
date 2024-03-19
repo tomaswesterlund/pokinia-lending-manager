@@ -22,7 +22,7 @@ class LoanProvider extends ChangeNotifier {
 
       if (!loaded) {
         loaded = true;
-        onLoaded('loanService');
+        onLoaded('LoanProvider');
       }
 
       notifyListeners();

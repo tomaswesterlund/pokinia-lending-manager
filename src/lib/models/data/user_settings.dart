@@ -13,6 +13,7 @@ class UserSettings {
         selectedOrganzationId = data['selected_organization_id'],
         showDeletedClients = data['show_deleted_clients'] ?? false,
         showDeletedLoans = data['show_deleted_loans'] ?? false,
-        showDeletedLoanStatements = data['show_deleted_loan_statements'] ?? false,
+        showDeletedLoanStatements =
+            data['show_deleted_loan_statements'] ?? false,
         showDeletedPayments = data['show_deleted_payments'] ?? false;
 }

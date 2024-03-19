@@ -6,6 +6,7 @@ import 'package:pokinia_lending_manager/providers/loans/loan_provider.dart';
 import 'package:pokinia_lending_manager/providers/loans/open_ended_loan_provider.dart';
 import 'package:pokinia_lending_manager/providers/loans/zero_interest_loan_provider.dart';
 import 'package:pokinia_lending_manager/providers/organization_provider.dart';
+import 'package:pokinia_lending_manager/providers/organization_settings_provider.dart';
 import 'package:pokinia_lending_manager/providers/payment_provider.dart';
 import 'package:pokinia_lending_manager/providers/user_settings_provider.dart';
 import 'package:pokinia_lending_manager/services/log_service.dart';
@@ -21,15 +22,16 @@ class ApplicationService {
   ApplicationService({required this.onAllListenersLoaded});
 
   final Map<String, bool> _listenersLoaded = {
-    'clientService': false,
-    'customerService': false,
-    'loanService': false,
+    'ClientProvider': false,
+    'CustomerProvider': false,
+    'LoanProvider': false,
     'openEndedLoanService': false,
     'zeroInterestLoanService': false,
     'loanStatementService': false,
     'organizationService': false,
     'paymentService': false,
     'userSettingsService': false,
+    'OrganizationSettingsProvider': false
   };
 
   // final bool _userSettingsInitialized = false;
@@ -56,6 +58,9 @@ class ApplicationService {
           .startListener(onListenerLoaded);
 
       Provider.of<OrganizationProvider>(context, listen: false)
+          .startListener(onListenerLoaded);
+
+      Provider.of<OrganizationSettingsProvider>(context, listen: false)
           .startListener(onListenerLoaded);
 
       Provider.of<UserSettingsProvider>(context, listen: false)

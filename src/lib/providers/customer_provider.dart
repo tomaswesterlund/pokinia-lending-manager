@@ -20,7 +20,7 @@ class CustomerProvider extends ChangeNotifier {
 
       if (!loaded) {
         loaded = true;
-        onLoaded('customerService');
+        onLoaded('CustomerProvider');
       }
 
       notifyListeners();

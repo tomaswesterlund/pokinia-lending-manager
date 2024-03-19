@@ -1,7 +1,9 @@
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:pokinia_lending_manager/services/log_service.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthService {
+  final LogService _logger = LogService('AuthService');
   final supabase = Supabase.instance.client;
 
   Future<AuthResponse> signInWithGoogle() async {
@@ -38,5 +40,14 @@ class AuthService {
 
   Future<void> signOut() async {
     await supabase.auth.signOut();
+  }
+
+  Future initializeDefaultValues(String userId) async {
+    try {
+      await supabase.rpc('on_user_signed_in', params: {'v_user_id': userId});
+    } catch (e) {
+      _logger.e(
+          'initializeDefaultValues', 'Error initializing default values: $e');
+    }
   }
 }

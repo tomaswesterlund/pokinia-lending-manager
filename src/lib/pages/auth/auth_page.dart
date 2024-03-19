@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pokinia_lending_manager/pages/auth/sign_in_page.dart';
 import 'package:pokinia_lending_manager/pages/main_page.dart';
-import 'package:pokinia_lending_manager/providers/organization_provider.dart';
-import 'package:pokinia_lending_manager/providers/user_settings_provider.dart';
+import 'package:pokinia_lending_manager/services/auth_service.dart';
 import 'package:pokinia_lending_manager/services/toast_service.dart';
-import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthPage extends StatefulWidget {
@@ -19,6 +17,7 @@ class AuthPage extends StatefulWidget {
 
 class _AuthPageState extends State<AuthPage> {
   final supabase = Supabase.instance.client;
+  final AuthService _authService = AuthService();
   AuthChangeEvent _currentAuthEvent = AuthChangeEvent.initialSession;
 
   @override
@@ -29,7 +28,7 @@ class _AuthPageState extends State<AuthPage> {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
   }
 
-  void setupOnAuthStateChange() {
+  void setupOnAuthStateChange() async {
     supabase.auth.onAuthStateChange.listen((data) async {
       try {
         final event = data.event;
@@ -37,22 +36,9 @@ class _AuthPageState extends State<AuthPage> {
 
         if (session != null) {
           var user = session.user;
+          await _authService.initializeDefaultValues(user.id);
 
-          var userSettingsProvider =
-              Provider.of<UserSettingsProvider>(context, listen: false);
-
-          if (!userSettingsProvider.hasUserSettingsForUser(user.id)) {
-            var organizationProvider =
-                Provider.of<OrganizationProvider>(context, listen: false);
-            var response = await organizationProvider
-                .createOrganization('My first organization');
-            var organizationId = response.data[0]['id'] as String;
-            await userSettingsProvider.createUserSettings(
-                user.id, organizationId);
-          }
-
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const MainPage()));
+          Navigator.pushNamed(context, MainPage.routeName);
         }
 
         if (event == _currentAuthEvent) {
@@ -68,6 +54,9 @@ class _AuthPageState extends State<AuthPage> {
         }
 
         if (event == AuthChangeEvent.signedIn) {
+          var user = session!.user;
+          await _authService.initializeDefaultValues(user.id);
+
           Navigator.pushNamed(context, MainPage.routeName);
         }
 

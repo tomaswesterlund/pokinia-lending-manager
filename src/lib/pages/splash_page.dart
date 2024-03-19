@@ -25,7 +25,11 @@ class _SplashPageState extends State<SplashPage> {
 
     super.initState();
 
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
+
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
   }
 
   void onAllListenersLoaded() {
@@ -41,10 +45,15 @@ class _SplashPageState extends State<SplashPage> {
       child: Scaffold(
           body: SafeArea(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const HeaderTwoText(text: 'Pokinia Lending Manager'),
-            Lottie.asset('assets/animations/bank.json'),
+            const Padding(
+              padding: EdgeInsets.all(40.0),
+              child: Center(child: HeaderTwoText(text: 'Pokinia Lending Manager')),
+            ),
+            //Lottie.asset('assets/animations/bank.json'),
+            const Spacer(),
             Lottie.asset('assets/animations/loading.json'),
           ],
         ),

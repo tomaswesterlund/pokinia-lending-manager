@@ -16,7 +16,6 @@ class ParagraphTwoText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       text,
-      overflow: TextOverflow.ellipsis,
       style: GoogleFonts.openSans(
           color: color,
           textStyle: TextStyle(

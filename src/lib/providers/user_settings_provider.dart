@@ -38,7 +38,7 @@ class UserSettingsProvider extends ChangeNotifier {
         .where((element) => element.userId == userId)
         .isNotEmpty;
   }
-
+  
   UserSettings getByUserId(String userId) {
     try {
       return _userSettingsList
@@ -57,7 +57,7 @@ class UserSettingsProvider extends ChangeNotifier {
       _logger.e('getByLoggedInUser', e.toString());
       rethrow;
     }
-  } 
+  }
 
   void setSelectedOrganizationId(String userId, String organizationId) async {
     try {

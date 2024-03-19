@@ -21,7 +21,7 @@ class ClientProvider extends ChangeNotifier {
 
       if (!loaded) {
         loaded = true;
-        onLoaded('clientService');
+        onLoaded('ClientProvider');
       }
 
       notifyListeners();

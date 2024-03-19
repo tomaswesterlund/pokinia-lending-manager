@@ -10,6 +10,7 @@ import 'package:pokinia_lending_manager/providers/loans/loan_provider.dart';
 import 'package:pokinia_lending_manager/providers/loans/open_ended_loan_provider.dart';
 import 'package:pokinia_lending_manager/providers/loans/zero_interest_loan_provider.dart';
 import 'package:pokinia_lending_manager/providers/organization_provider.dart';
+import 'package:pokinia_lending_manager/providers/organization_settings_provider.dart';
 import 'package:pokinia_lending_manager/providers/payment_provider.dart';
 import 'package:pokinia_lending_manager/providers/user_settings_provider.dart';
 import 'package:provider/provider.dart';
@@ -34,6 +35,7 @@ void main() async {
       ChangeNotifierProvider(create: (context) => PaymentProvider()),
       ChangeNotifierProvider(create: (context) => OpenEndedLoanProvider()),
       ChangeNotifierProvider(create: (context) => OrganizationProvider()),
+      ChangeNotifierProvider(create: (context) => OrganizationSettingsProvider()),
       ChangeNotifierProvider(create: (context) => UserSettingsProvider()),
       ChangeNotifierProvider(create: (context) => ZeroInterestLoanProvider()),
     ],

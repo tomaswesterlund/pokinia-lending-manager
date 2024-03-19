@@ -1,9 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pokinia_lending_manager/components/buttons/my_log_out_button.dart';
+import 'package:pokinia_lending_manager/components/settings/update_expected_interest_for_overdue_loan_statements.dart';
+import 'package:pokinia_lending_manager/components/settings/update_expected_interest_for_scheduled_loan_statements.dart';
 import 'package:pokinia_lending_manager/components/texts/headers/header_three_text.dart';
 import 'package:pokinia_lending_manager/components/texts/headers/header_two_text.dart';
 import 'package:pokinia_lending_manager/components/texts/paragraphs/paragraph_two_text.dart';
+import 'package:pokinia_lending_manager/providers/organization_settings_provider.dart';
 import 'package:pokinia_lending_manager/providers/user_settings_provider.dart';
 import 'package:pokinia_lending_manager/services/auth_service.dart';
 import 'package:pokinia_lending_manager/services/toast_service.dart';
@@ -23,8 +26,9 @@ class SettingsPage extends StatelessWidget {
         title: const HeaderTwoText(text: 'Settings'),
         automaticallyImplyLeading: false,
       ),
-      body: Consumer<UserSettingsProvider>(
-        builder: (context, userSettingsProvider, child) {
+      body: Consumer2<OrganizationSettingsProvider, UserSettingsProvider>(
+        builder: (context, organizationSettingsProvider, userSettingsProvider,
+            child) {
           var userId = _supabase.auth.currentUser!.id;
           var userSettings = userSettingsProvider.getByUserId(userId);
 
@@ -83,28 +87,6 @@ class SettingsPage extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const ParagraphTwoText(
-                        text: 'Show deleted loan statements'),
-                    CupertinoSwitch(
-                      value: userSettings.showDeletedLoanStatements,
-                      onChanged: (value) {
-                        try {
-                          userSettingsProvider.updateShowDeletedLoanStatements(
-                              userId, value);
-                        } catch (error) {
-                          ToastService()
-                              .showErrorToast('Could not update settings');
-                        }
-                      },
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(32.0, 12.0, 32.0, 0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
                     const ParagraphTwoText(text: 'Show deleted payments'),
                     CupertinoSwitch(
                       value: userSettings.showDeletedPayments,
@@ -121,6 +103,35 @@ class SettingsPage extends StatelessWidget {
                   ],
                 ),
               ),
+              const Padding(
+                padding: EdgeInsets.fromLTRB(32.0, 12.0, 32.0, 0),
+                child: Center(
+                  child: HeaderThreeText(text: 'Loan statements'),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(32.0, 12.0, 32.0, 0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const ParagraphTwoText(text: 'Show deleted loan statements'),
+                    CupertinoSwitch(
+                      value: userSettings.showDeletedLoanStatements,
+                      onChanged: (value) {
+                        try {
+                          userSettingsProvider.updateShowDeletedLoanStatements(
+                              userId, value);
+                        } catch (error) {
+                          ToastService()
+                              .showErrorToast('Could not update settings');
+                        }
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              const UpdateExpectedInterestForOverdueLoanStatements(),
+              const UpdateExpectedInterestForScheduledLoanStatements(),
               const SizedBox(height: 32.0),
               const Padding(
                 padding: EdgeInsets.fromLTRB(32.0, 12.0, 32.0, 0),
@@ -143,7 +154,6 @@ class SettingsPage extends StatelessWidget {
                 ],
               ),
               const Spacer(),
-              
               Padding(
                 padding: const EdgeInsets.fromLTRB(32.0, 12.0, 32.0, 32.0),
                 child: MyLogOutButton(
