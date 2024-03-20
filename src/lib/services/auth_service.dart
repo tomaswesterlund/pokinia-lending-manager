@@ -50,4 +50,15 @@ class AuthService {
           'initializeDefaultValues', 'Error initializing default values: $e');
     }
   }
+
+  Future<bool> userExistsInDatabase(String userId) async {
+    try {
+      var response =
+          await supabase.rpc('user_exists', params: {'v_user_id': userId});
+      return response as bool;
+    } catch (e) {
+      _logger.e('userExistsInDatabase', 'Error checking if user exists: $e');
+      rethrow;
+    }
+  }
 }

@@ -36,9 +36,13 @@ class _AuthPageState extends State<AuthPage> {
 
         if (session != null) {
           var user = session.user;
-          await _authService.initializeDefaultValues(user.id);
+          var userInitialized =
+              await _authService.userExistsInDatabase(user.id);
 
-          Navigator.pushNamed(context, MainPage.routeName);
+          if (userInitialized) {
+            await _authService.initializeDefaultValues(user.id);
+            Navigator.pushNamed(context, MainPage.routeName);
+          }
         }
 
         if (event == _currentAuthEvent) {

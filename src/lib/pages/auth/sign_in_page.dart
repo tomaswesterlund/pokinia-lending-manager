@@ -33,6 +33,7 @@ class _SignInPageState extends State<SignInPage> {
       canPop: false,
       child: Scaffold(
         appBar: AppBar(
+          centerTitle: true,
           automaticallyImplyLeading: false,
           backgroundColor: Colors.grey[300],
         ),
