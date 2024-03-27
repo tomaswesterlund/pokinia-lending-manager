@@ -58,4 +58,10 @@ class NewZeroInterestLoanPaymentPageViewModel extends BaseViewModel {
       return Right(Success());
     }
   }
+
+  void reset() {
+    _principalAmountPaidController.clear();
+    _descriptionController.clear();
+    _selectedImage = null;
+  }
 }

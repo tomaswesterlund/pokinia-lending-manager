@@ -18,6 +18,8 @@ class NewZeroInterestLoanPaymentPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<NewZeroInterestLoanPaymentPageViewModel>(
       builder: (context, vm, _) {
+        vm.reset();
+        
         return Scaffold(
           appBar: MyAppBar(title: 'Add payment', isProcessing: vm.isProcessing),
           body: Form(
@@ -40,9 +42,10 @@ class NewZeroInterestLoanPaymentPage extends StatelessWidget {
                   isProcessing: vm.isProcessing,
                   onPressed: () {
                     vm.createPayment(loanId).fold(
-                        (error) => ToastService().showErrorToast(
-                            'An unexpected error occurred and the payment could not be created ...'),
-                        (success) => context.pop());
+                          (error) => ToastService().showErrorToast(
+                              'An unexpected error occurred and the payment could not be created ...'),
+                          (success) => context.pop(),
+                        );
                   },
                 )
               ],

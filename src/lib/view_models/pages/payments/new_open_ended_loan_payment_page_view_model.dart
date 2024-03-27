@@ -67,7 +67,7 @@ class NewOpenEndedLoanPaymentPageViewModel extends BaseViewModel {
         super.state = States.ready;
         return Right(Success());
       } else {
-        //super.state = States.error;
+        super.state = States.error;
         return Left(response.message);
       }
     } else {

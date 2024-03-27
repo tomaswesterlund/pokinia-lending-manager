@@ -17,6 +17,7 @@ import 'package:pokinia_lending_manager/view_models/widgets/shared/unexpected_er
 import 'package:provider/provider.dart';
 
 class ZeroInterestLoanPage extends StatelessWidget {
+  static String routeName = 'zero_interest_loan_page';
   final String loanId;
   const ZeroInterestLoanPage({super.key, required this.loanId});
 
