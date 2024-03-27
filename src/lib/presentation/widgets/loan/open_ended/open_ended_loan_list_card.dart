@@ -8,7 +8,7 @@ import 'package:pokinia_lending_manager/presentation/widgets/loan/error_loan_lis
 import 'package:pokinia_lending_manager/presentation/widgets/shared/boxes/base_box.dart';
 import 'package:pokinia_lending_manager/presentation/widgets/shared/payment_status_boxes/dot_payment_status_component.dart';
 import 'package:pokinia_lending_manager/presentation/widgets/shared/payment_status_boxes/squared_payment_status_box_component.dart';
-import 'package:pokinia_lending_manager/view_models/pages/loan/open_ended/open_ended_loan_list_card_view_model.dart';
+import 'package:pokinia_lending_manager/view_models/widgets/loan/open_ended/open_ended_loan_list_card_view_model.dart';
 import 'package:provider/provider.dart';
 
 class OpenEndedLoanListCard extends StatelessWidget {

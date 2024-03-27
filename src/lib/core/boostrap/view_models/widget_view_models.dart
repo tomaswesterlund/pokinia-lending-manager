@@ -8,9 +8,9 @@ import 'package:pokinia_lending_manager/domain/services/loan/zero_interest_loan_
 import 'package:pokinia_lending_manager/domain/services/open_ended_loan_service.dart';
 import 'package:pokinia_lending_manager/domain/services/organization/organization_settings_service.dart';
 import 'package:pokinia_lending_manager/domain/services/user_settings_service.dart';
-import 'package:pokinia_lending_manager/view_models/pages/loan/open_ended/open_ended_loan_list_card_view_model.dart';
 import 'package:pokinia_lending_manager/view_models/widgets/auth/google_sign_in_button_view_model.dart';
 import 'package:pokinia_lending_manager/view_models/widgets/loan/expected_pay_date_view_model.dart';
+import 'package:pokinia_lending_manager/view_models/widgets/loan/open_ended/open_ended_loan_list_card_view_model.dart';
 import 'package:pokinia_lending_manager/view_models/widgets/loan/remaining_principal_amount_row_view_model.dart';
 import 'package:pokinia_lending_manager/view_models/widgets/settings/show_deleted_clients_view_model.dart';
 import 'package:pokinia_lending_manager/view_models/widgets/settings/show_deleted_loan_statements_view_model.dart';

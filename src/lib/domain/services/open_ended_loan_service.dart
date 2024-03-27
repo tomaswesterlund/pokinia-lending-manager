@@ -16,4 +16,10 @@ class OpenEndedLoanService {
   Future<Response> createLoan(NewOpenEndedLoanParameters params) async {
     return await _openEndedLoanRepository.createLoan(params);
   }
+
+  Future<Response> editLoan(
+      String id, double interestRate, List<String> paymentStatuses) async {
+    return await _openEndedLoanRepository.editLoan(
+        id, interestRate, paymentStatuses);
+  }
 }

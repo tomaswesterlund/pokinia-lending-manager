@@ -22,7 +22,6 @@ class NewClientPage extends StatelessWidget {
   final TextEditingController _phoneNumberController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
   File? _selectedAvatar;
-  OverlayEntry? _loadingOverlay;
 
   void _addClient(BuildContext context, NewClientPageViewModel vm) async {
     if (_formKey.currentState!.validate()) {
