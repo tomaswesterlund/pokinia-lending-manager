@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:pokinia_lending_manager/components/universal/texts/headers/header_two_text.dart';
 import 'package:pokinia_lending_manager/presentation/widgets/auth/apple_sign_in_button.dart';
 import 'package:pokinia_lending_manager/presentation/widgets/auth/google_sign_in_button.dart';
+import 'package:pokinia_lending_manager/presentation/widgets/shared/texts/headers/header_two_text.dart';
 import 'package:pokinia_lending_manager/view_models/pages/auth/sign_in_page_view_model.dart';
 import 'package:provider/provider.dart';
 

@@ -1,14 +1,14 @@
 import 'package:awesome_extensions/awesome_extensions.dart';
 import 'package:flutter/material.dart';
-import 'package:pokinia_lending_manager/components/universal/buttons/fabs.dart';
-import 'package:pokinia_lending_manager/components/universal/texts/headers/header_three_text.dart';
 import 'package:pokinia_lending_manager/presentation/pages/loans/selector/select_loan_type_page.dart';
 import 'package:pokinia_lending_manager/presentation/widgets/client/client_app_bar.dart';
 import 'package:pokinia_lending_manager/presentation/widgets/client/client_contact.dart';
 import 'package:pokinia_lending_manager/presentation/widgets/client/client_deleted_box.dart';
 import 'package:pokinia_lending_manager/presentation/widgets/client/lists/client_loan_list/client_loan_list.dart';
 import 'package:pokinia_lending_manager/presentation/widgets/shared/avatars/my_avatar_component.dart';
+import 'package:pokinia_lending_manager/presentation/widgets/shared/buttons/fabs.dart';
 import 'package:pokinia_lending_manager/presentation/widgets/shared/payment_status_row.dart';
+import 'package:pokinia_lending_manager/presentation/widgets/shared/texts/headers/header_three_text.dart';
 import 'package:pokinia_lending_manager/view_models/pages/client/client_page_view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:sliver_tools/sliver_tools.dart';

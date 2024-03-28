@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pokinia_lending_manager/components/universal/texts/headers/base_header_text.dart';
+import 'package:pokinia_lending_manager/presentation/widgets/shared/texts/headers/base_header_text.dart';
 
 class HeaderThreeText extends StatelessWidget {
   final String text;

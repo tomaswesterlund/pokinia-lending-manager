@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:pokinia_lending_manager/components/universal/buttons/fabs.dart';
-import 'package:pokinia_lending_manager/components/universal/texts/headers/header_two_text.dart';
 import 'package:pokinia_lending_manager/presentation/pages/clients/new_client_page.dart';
 import 'package:pokinia_lending_manager/presentation/widgets/client/empty_list_client_component.dart';
 import 'package:pokinia_lending_manager/presentation/widgets/client/lists/client_list/client_list.dart';
+import 'package:pokinia_lending_manager/presentation/widgets/shared/buttons/fabs.dart';
+import 'package:pokinia_lending_manager/presentation/widgets/shared/texts/headers/header_two_text.dart';
+import 'package:pokinia_lending_manager/presentation/widgets/shared/unexpected_error.dart';
 import 'package:pokinia_lending_manager/view_models/pages/client/clients_page_view_model.dart';
-import 'package:pokinia_lending_manager/view_models/widgets/shared/unexpected_error.dart';
 import 'package:provider/provider.dart';
 
 class ClientsPage extends StatefulWidget {

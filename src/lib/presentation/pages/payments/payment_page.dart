@@ -2,17 +2,17 @@ import 'package:awesome_extensions/awesome_extensions.dart';
 import 'package:either_dart/either.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:pokinia_lending_manager/components/universal/texts/amounts/big_amount_text_with_title_text.dart';
-import 'package:pokinia_lending_manager/components/universal/texts/paragraphs/paragraph_one_text.dart';
-import 'package:pokinia_lending_manager/components/universal/texts/paragraphs/paragraph_two_text.dart';
 import 'package:pokinia_lending_manager/core/util/string_extensions.dart';
 import 'package:pokinia_lending_manager/domain/entities/payment_entity.dart';
 import 'package:pokinia_lending_manager/domain/services/toast_service.dart';
-import 'package:pokinia_lending_manager/presentation/widgets/shared/deleted_alert_box.dart';
+import 'package:pokinia_lending_manager/presentation/widgets/shared/boxes/deleted_alert_box.dart';
 import 'package:pokinia_lending_manager/presentation/widgets/shared/images/image_picker.dart';
+import 'package:pokinia_lending_manager/presentation/widgets/shared/texts/amounts/big_amount_text_with_title_text.dart';
+import 'package:pokinia_lending_manager/presentation/widgets/shared/texts/paragraphs/paragraph_one_text.dart';
+import 'package:pokinia_lending_manager/presentation/widgets/shared/texts/paragraphs/paragraph_two_text.dart';
+import 'package:pokinia_lending_manager/presentation/widgets/shared/unexpected_error.dart';
 import 'package:pokinia_lending_manager/view_models/pages/payments/payment_app_bar.dart';
 import 'package:pokinia_lending_manager/view_models/pages/payments/payment_page_view_model.dart';
-import 'package:pokinia_lending_manager/view_models/widgets/shared/unexpected_error.dart';
 import 'package:provider/provider.dart';
 
 class PaymentPage extends StatelessWidget {

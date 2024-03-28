@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pokinia_lending_manager/components/universal/buttons/my_cta_button.dart';
+import 'package:pokinia_lending_manager/presentation/widgets/shared/buttons/my_cta_button.dart';
 
 class AddPaymentButton extends StatelessWidget {
   final bool isProcessing;

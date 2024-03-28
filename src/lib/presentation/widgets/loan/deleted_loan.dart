@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pokinia_lending_manager/core/enums/payment_status_enum.dart';
 import 'package:pokinia_lending_manager/domain/entities/loan_entity.dart';
-import 'package:pokinia_lending_manager/presentation/widgets/shared/deleted_alert_box.dart';
+import 'package:pokinia_lending_manager/presentation/widgets/shared/boxes/deleted_alert_box.dart';
 
 class DeletedLoan extends StatelessWidget {
   final LoanEntity loan;

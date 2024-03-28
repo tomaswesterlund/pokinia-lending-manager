@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:pokinia_lending_manager/components/universal/buttons/fabs.dart';
-import 'package:pokinia_lending_manager/components/universal/texts/headers/header_two_text.dart';
 import 'package:pokinia_lending_manager/core/enums/loan_types.dart';
 import 'package:pokinia_lending_manager/presentation/pages/loans/selector/select_loan_type_page.dart';
 import 'package:pokinia_lending_manager/presentation/widgets/loan/empty_loan_list_component.dart';
 import 'package:pokinia_lending_manager/presentation/widgets/loan/open_ended/open_ended_loan_list_card.dart';
 import 'package:pokinia_lending_manager/presentation/widgets/loan/zero_interest/zero_interest_loan_list_card.dart';
+import 'package:pokinia_lending_manager/presentation/widgets/shared/buttons/fabs.dart';
+import 'package:pokinia_lending_manager/presentation/widgets/shared/texts/headers/header_two_text.dart';
+import 'package:pokinia_lending_manager/presentation/widgets/shared/unexpected_error.dart';
 import 'package:pokinia_lending_manager/view_models/pages/loan/loans_page_view_model.dart';
-import 'package:pokinia_lending_manager/view_models/widgets/shared/unexpected_error.dart';
 import 'package:provider/provider.dart';
 
 class LoansPage extends StatelessWidget {

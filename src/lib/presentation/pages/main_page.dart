@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:pokinia_lending_manager/components/universal/texts/headers/header_two_text.dart';
-import 'package:pokinia_lending_manager/components/universal/texts/paragraphs/paragraph_one_text.dart';
 import 'package:pokinia_lending_manager/core/enums/states.dart';
 import 'package:pokinia_lending_manager/presentation/pages/clients/clients_page.dart';
 import 'package:pokinia_lending_manager/presentation/pages/loans/loans_page.dart';
 import 'package:pokinia_lending_manager/presentation/pages/settings/settings_page.dart';
+import 'package:pokinia_lending_manager/presentation/widgets/shared/texts/headers/header_two_text.dart';
+import 'package:pokinia_lending_manager/presentation/widgets/shared/texts/paragraphs/paragraph_one_text.dart';
 import 'package:pokinia_lending_manager/view_models/pages/main_page_view_model.dart';
 import 'package:provider/provider.dart';
 

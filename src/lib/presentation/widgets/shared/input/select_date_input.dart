@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pokinia_lending_manager/components/universal/texts/paragraphs/paragraph_one_text.dart';
 import 'package:pokinia_lending_manager/core/util/date_extensions.dart';
+import 'package:pokinia_lending_manager/presentation/widgets/shared/texts/paragraphs/paragraph_one_text.dart';
 
 class SelectDateInput extends StatefulWidget {
   final String title;

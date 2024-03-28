@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:pokinia_lending_manager/components/universal/texts/amounts/big_amount_text.dart';
-import 'package:pokinia_lending_manager/components/universal/texts/paragraphs/paragraph_one_text.dart';
 import 'package:pokinia_lending_manager/core/util/double_extensions.dart';
+import 'package:pokinia_lending_manager/presentation/widgets/shared/texts/amounts/big_amount_text.dart';
+import 'package:pokinia_lending_manager/presentation/widgets/shared/texts/paragraphs/paragraph_one_text.dart';
 
 class InitialPrincipalAmount extends StatelessWidget {
   final double amount;

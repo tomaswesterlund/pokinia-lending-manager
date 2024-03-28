@@ -4,13 +4,13 @@ import 'package:either_dart/either.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_avatar/flutter_advanced_avatar.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:pokinia_lending_manager/components/universal/buttons/my_cta_button.dart';
-import 'package:pokinia_lending_manager/components/universal/texts/headers/header_four_text.dart';
 import 'package:pokinia_lending_manager/core/enums/states.dart';
 import 'package:pokinia_lending_manager/core/util/string_extensions.dart';
 import 'package:pokinia_lending_manager/domain/services/avatar_service.dart';
 import 'package:pokinia_lending_manager/domain/services/image_picker_service.dart';
+import 'package:pokinia_lending_manager/presentation/widgets/shared/buttons/my_cta_button.dart';
 import 'package:pokinia_lending_manager/presentation/widgets/shared/input/my_text_form_field.dart';
+import 'package:pokinia_lending_manager/presentation/widgets/shared/texts/headers/header_four_text.dart';
 import 'package:pokinia_lending_manager/view_models/pages/client/new_client_page_view_model.dart';
 import 'package:provider/provider.dart';
 

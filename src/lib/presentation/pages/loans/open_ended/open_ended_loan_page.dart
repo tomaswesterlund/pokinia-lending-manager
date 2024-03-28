@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pokinia_lending_manager/components/universal/texts/amounts/big_amount_text_with_title_text.dart';
-import 'package:pokinia_lending_manager/components/universal/texts/headers/header_four_text.dart';
-import 'package:pokinia_lending_manager/components/universal/texts/paragraphs/paragraph_two_text.dart';
 import 'package:pokinia_lending_manager/core/enums/payment_status_enum.dart';
 import 'package:pokinia_lending_manager/core/util/date_extensions.dart';
 import 'package:pokinia_lending_manager/presentation/widgets/loan/deleted_loan.dart';
@@ -10,6 +7,9 @@ import 'package:pokinia_lending_manager/presentation/widgets/loan/loan_app_bar.d
 import 'package:pokinia_lending_manager/presentation/widgets/loan_statement/open_ended/open_ended_loan_statement_list.dart';
 import 'package:pokinia_lending_manager/presentation/widgets/shared/avatars/my_avatar_component.dart';
 import 'package:pokinia_lending_manager/presentation/widgets/shared/payment_status_boxes/wide_payment_status_box_component.dart';
+import 'package:pokinia_lending_manager/presentation/widgets/shared/texts/amounts/big_amount_text_with_title_text.dart';
+import 'package:pokinia_lending_manager/presentation/widgets/shared/texts/headers/header_four_text.dart';
+import 'package:pokinia_lending_manager/presentation/widgets/shared/texts/paragraphs/paragraph_two_text.dart';
 import 'package:pokinia_lending_manager/presentation/widgets/shared/texts/remaining_principal_amount.dart';
 import 'package:pokinia_lending_manager/view_models/pages/loan/open_ended/open_ended_loan_page_view_model.dart';
 import 'package:provider/provider.dart';

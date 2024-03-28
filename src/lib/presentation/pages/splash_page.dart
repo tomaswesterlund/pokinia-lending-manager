@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
-import 'package:pokinia_lending_manager/components/universal/texts/headers/header_two_text.dart';
 import 'package:pokinia_lending_manager/core/application_service.dart';
 import 'package:pokinia_lending_manager/presentation/pages/auth/auth_page.dart';
+import 'package:pokinia_lending_manager/presentation/widgets/shared/texts/headers/header_two_text.dart';
 
 class SplashPage extends StatefulWidget {
   static String routeName = '/splash';

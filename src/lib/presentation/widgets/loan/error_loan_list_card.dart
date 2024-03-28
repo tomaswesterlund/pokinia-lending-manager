@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pokinia_lending_manager/components/universal/texts/paragraphs/paragraph_two_text.dart';
+import 'package:pokinia_lending_manager/presentation/widgets/shared/texts/paragraphs/paragraph_two_text.dart';
 
 class ErrorLoanListCard extends StatelessWidget {
   const ErrorLoanListCard({super.key});

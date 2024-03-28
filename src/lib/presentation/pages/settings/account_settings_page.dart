@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:pokinia_lending_manager/components/universal/buttons/my_log_out_button.dart';
-import 'package:pokinia_lending_manager/components/universal/texts/paragraphs/paragraph_two_text.dart';
 import 'package:pokinia_lending_manager/domain/services/auth_service.dart';
+import 'package:pokinia_lending_manager/presentation/widgets/shared/buttons/my_log_out_button.dart';
+import 'package:pokinia_lending_manager/presentation/widgets/shared/texts/paragraphs/paragraph_two_text.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AccountSettings extends StatelessWidget {

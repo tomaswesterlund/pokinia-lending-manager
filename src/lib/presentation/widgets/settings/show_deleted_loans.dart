@@ -1,10 +1,10 @@
 import 'package:either_dart/either.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:pokinia_lending_manager/components/universal/texts/paragraphs/paragraph_two_text.dart';
 import 'package:pokinia_lending_manager/domain/services/toast_service.dart';
+import 'package:pokinia_lending_manager/presentation/widgets/shared/texts/paragraphs/paragraph_two_text.dart';
+import 'package:pokinia_lending_manager/presentation/widgets/shared/unexpected_error.dart';
 import 'package:pokinia_lending_manager/view_models/widgets/settings/show_deleted_loans_view_model.dart';
-import 'package:pokinia_lending_manager/view_models/widgets/shared/unexpected_error.dart';
 import 'package:provider/provider.dart';
 
 class ShowDeletedLoans extends StatelessWidget {

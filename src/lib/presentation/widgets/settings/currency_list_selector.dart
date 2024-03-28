@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
-import 'package:pokinia_lending_manager/components/universal/texts/headers/header_four_text.dart';
-import 'package:pokinia_lending_manager/components/universal/texts/paragraphs/paragraph_one_text.dart';
-import 'package:pokinia_lending_manager/components/universal/texts/paragraphs/paragraph_two_text.dart';
 import 'package:pokinia_lending_manager/presentation/widgets/shared/boxes/base_box.dart';
+import 'package:pokinia_lending_manager/presentation/widgets/shared/texts/headers/header_four_text.dart';
+import 'package:pokinia_lending_manager/presentation/widgets/shared/texts/paragraphs/paragraph_one_text.dart';
+import 'package:pokinia_lending_manager/presentation/widgets/shared/texts/paragraphs/paragraph_two_text.dart';
 import 'package:pokinia_lending_manager/view_models/widgets/settings/currency_list_selector_view_model.dart';
 import 'package:provider/provider.dart';
 

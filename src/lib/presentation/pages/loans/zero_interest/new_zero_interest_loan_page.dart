@@ -2,13 +2,13 @@ import 'package:awesome_extensions/awesome_extensions.dart';
 import 'package:either_dart/either.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:pokinia_lending_manager/components/universal/buttons/my_cta_button.dart';
-import 'package:pokinia_lending_manager/components/universal/texts/paragraphs/paragraph_one_text.dart';
 import 'package:pokinia_lending_manager/domain/services/toast_service.dart';
 import 'package:pokinia_lending_manager/presentation/pages/main_page.dart';
 import 'package:pokinia_lending_manager/presentation/widgets/client/client_list_dropdown_menu.dart';
+import 'package:pokinia_lending_manager/presentation/widgets/shared/buttons/my_cta_button.dart';
 import 'package:pokinia_lending_manager/presentation/widgets/shared/input/principal_amount_form_field.dart';
 import 'package:pokinia_lending_manager/presentation/widgets/shared/input/select_date_input.dart';
+import 'package:pokinia_lending_manager/presentation/widgets/shared/texts/paragraphs/paragraph_one_text.dart';
 import 'package:pokinia_lending_manager/view_models/pages/loan/zero_interest/new_zero_interest_loan_page_view_model.dart';
 import 'package:provider/provider.dart';
 

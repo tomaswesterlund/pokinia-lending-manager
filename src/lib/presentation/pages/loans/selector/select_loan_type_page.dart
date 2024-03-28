@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:pokinia_lending_manager/components/universal/texts/headers/header_three_text.dart';
-import 'package:pokinia_lending_manager/components/universal/texts/paragraphs/paragraph_two_text.dart';
 import 'package:pokinia_lending_manager/core/enums/loan_types.dart';
 import 'package:pokinia_lending_manager/presentation/pages/loans/selector/select_payment_period_page.dart';
 import 'package:pokinia_lending_manager/presentation/pages/loans/zero_interest/new_zero_interest_loan_page.dart';
+import 'package:pokinia_lending_manager/presentation/widgets/shared/texts/headers/header_three_text.dart';
+import 'package:pokinia_lending_manager/presentation/widgets/shared/texts/paragraphs/paragraph_two_text.dart';
 
 class SelectLoanTypePage extends StatelessWidget {
   const SelectLoanTypePage({super.key});

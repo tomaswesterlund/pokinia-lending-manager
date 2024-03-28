@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:pokinia_lending_manager/components/universal/buttons/my_fab_with_sub_title.dart';
-import 'package:pokinia_lending_manager/components/universal/texts/headers/header_four_text.dart';
-import 'package:pokinia_lending_manager/components/universal/texts/headers/header_three_text.dart';
 import 'package:pokinia_lending_manager/presentation/pages/payments/new_zero_interest_loan_payment_page.dart';
 import 'package:pokinia_lending_manager/presentation/widgets/loan/deleted_loan.dart';
 import 'package:pokinia_lending_manager/presentation/widgets/loan/loan_app_bar.dart';
 import 'package:pokinia_lending_manager/presentation/widgets/payments/empty_payment_list.dart';
 import 'package:pokinia_lending_manager/presentation/widgets/payments/small_payment_list_card.dart';
 import 'package:pokinia_lending_manager/presentation/widgets/shared/avatars/my_avatar_component.dart';
+import 'package:pokinia_lending_manager/presentation/widgets/shared/buttons/my_fab_with_sub_title.dart';
 import 'package:pokinia_lending_manager/presentation/widgets/shared/expected_pay_date_row.dart';
 import 'package:pokinia_lending_manager/presentation/widgets/shared/payment_status_row.dart';
+import 'package:pokinia_lending_manager/presentation/widgets/shared/texts/headers/header_four_text.dart';
+import 'package:pokinia_lending_manager/presentation/widgets/shared/texts/headers/header_three_text.dart';
 import 'package:pokinia_lending_manager/presentation/widgets/shared/texts/initial_principal_amount.dart';
 import 'package:pokinia_lending_manager/presentation/widgets/shared/texts/remaining_principal_amount.dart';
+import 'package:pokinia_lending_manager/presentation/widgets/shared/unexpected_error.dart';
 import 'package:pokinia_lending_manager/view_models/pages/loan/zero_interest/zero_interest_loan_page_view_model.dart';
-import 'package:pokinia_lending_manager/view_models/widgets/shared/unexpected_error.dart';
 import 'package:provider/provider.dart';
 
 class ZeroInterestLoanPage extends StatelessWidget {

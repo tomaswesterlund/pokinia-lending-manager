@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:circular_image/circular_image.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:pokinia_lending_manager/components/universal/texts/headers/header_five_text.dart';
 import 'package:pokinia_lending_manager/domain/services/image_picker_service.dart';
+import 'package:pokinia_lending_manager/presentation/widgets/shared/texts/headers/header_five_text.dart';
 
 class MyImagePicker extends StatefulWidget {
   final String title;

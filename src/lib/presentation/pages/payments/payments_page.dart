@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pokinia_lending_manager/components/universal/texts/headers/header_four_text.dart';
-import 'package:pokinia_lending_manager/components/universal/texts/headers/header_two_text.dart';
+import 'package:pokinia_lending_manager/presentation/widgets/shared/texts/headers/header_four_text.dart';
+import 'package:pokinia_lending_manager/presentation/widgets/shared/texts/headers/header_two_text.dart';
 
 class PaymentsPage extends StatelessWidget {
   const PaymentsPage({super.key});

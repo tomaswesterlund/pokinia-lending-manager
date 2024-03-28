@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:pokinia_lending_manager/components/universal/texts/headers/header_four_text.dart';
-import 'package:pokinia_lending_manager/components/universal/texts/headers/header_two_text.dart';
 import 'package:pokinia_lending_manager/presentation/pages/settings/account_settings_page.dart';
 import 'package:pokinia_lending_manager/presentation/pages/settings/client_settings_page.dart';
 import 'package:pokinia_lending_manager/presentation/pages/settings/loan_settings_page.dart';
 import 'package:pokinia_lending_manager/presentation/pages/settings/loan_statement_settings_page.dart';
 import 'package:pokinia_lending_manager/presentation/pages/settings/payment_settings_page.dart';
 import 'package:pokinia_lending_manager/presentation/widgets/shared/boxes/base_box.dart';
+import 'package:pokinia_lending_manager/presentation/widgets/shared/texts/headers/header_four_text.dart';
+import 'package:pokinia_lending_manager/presentation/widgets/shared/texts/headers/header_two_text.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SettingsPage extends StatelessWidget {

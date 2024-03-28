@@ -1,12 +1,12 @@
 import 'package:awesome_extensions/awesome_extensions.dart';
 import 'package:flutter/material.dart';
-import 'package:pokinia_lending_manager/components/universal/texts/paragraphs/paragraph_two_text.dart';
 import 'package:pokinia_lending_manager/presentation/pages/loans/loan_page.dart';
 import 'package:pokinia_lending_manager/presentation/widgets/loan/expected_pay_date.dart';
 import 'package:pokinia_lending_manager/presentation/widgets/loan/remaining_principal_amount_row.dart';
 import 'package:pokinia_lending_manager/presentation/widgets/shared/payment_status_boxes/squared_payment_status_box_component.dart';
+import 'package:pokinia_lending_manager/presentation/widgets/shared/texts/paragraphs/paragraph_two_text.dart';
+import 'package:pokinia_lending_manager/presentation/widgets/shared/unexpected_error.dart';
 import 'package:pokinia_lending_manager/view_models/widgets/client/loan_list/client_zero_interest_loan_list_card_view_model.dart';
-import 'package:pokinia_lending_manager/view_models/widgets/shared/unexpected_error.dart';
 import 'package:provider/provider.dart';
 
 class ClientZeroInterestLoanListCard extends StatelessWidget {

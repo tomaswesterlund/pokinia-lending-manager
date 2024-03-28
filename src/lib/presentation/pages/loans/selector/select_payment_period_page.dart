@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:pokinia_lending_manager/components/universal/texts/headers/header_three_text.dart';
-import 'package:pokinia_lending_manager/components/universal/texts/paragraphs/paragraph_two_text.dart';
 import 'package:pokinia_lending_manager/core/models/parameters/new_open_ended_loan_parameters.dart';
 import 'package:pokinia_lending_manager/domain/services/log_service.dart';
 import 'package:pokinia_lending_manager/presentation/pages/loans/open_ended/new_open_ended_loan_page.dart';
+import 'package:pokinia_lending_manager/presentation/widgets/shared/texts/headers/header_three_text.dart';
+import 'package:pokinia_lending_manager/presentation/widgets/shared/texts/paragraphs/paragraph_two_text.dart';
 
 class SelectPaymentPeriodPage extends StatelessWidget {
   final LogService _logger = LogService('SelectPaymentPeriodPage');

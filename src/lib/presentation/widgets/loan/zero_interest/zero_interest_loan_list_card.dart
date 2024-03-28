@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:pokinia_lending_manager/components/universal/texts/amounts/big_amount_text.dart';
-import 'package:pokinia_lending_manager/components/universal/texts/paragraphs/paragraph_one_text.dart';
-import 'package:pokinia_lending_manager/components/universal/texts/paragraphs/paragraph_two_text.dart';
 import 'package:pokinia_lending_manager/core/enums/states.dart';
 import 'package:pokinia_lending_manager/core/util/date_extensions.dart';
 import 'package:pokinia_lending_manager/core/util/double_extensions.dart';
 import 'package:pokinia_lending_manager/presentation/pages/loans/loan_page.dart';
 import 'package:pokinia_lending_manager/presentation/widgets/shared/payment_status_boxes/dot_payment_status_component.dart';
 import 'package:pokinia_lending_manager/presentation/widgets/shared/payment_status_boxes/squared_payment_status_box_component.dart';
+import 'package:pokinia_lending_manager/presentation/widgets/shared/texts/amounts/big_amount_text.dart';
+import 'package:pokinia_lending_manager/presentation/widgets/shared/texts/paragraphs/paragraph_one_text.dart';
+import 'package:pokinia_lending_manager/presentation/widgets/shared/texts/paragraphs/paragraph_two_text.dart';
 import 'package:pokinia_lending_manager/view_models/widgets/loan/zero_interest/zero_interest_loan_list_card_view_model.dart';
 import 'package:provider/provider.dart';
 

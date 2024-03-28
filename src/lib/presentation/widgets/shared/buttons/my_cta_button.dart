@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pokinia_lending_manager/components/universal/texts/my_sub_heading_text.dart';
+import 'package:pokinia_lending_manager/presentation/widgets/shared/texts/my_sub_heading_text.dart';
 
 class MyCtaButton extends StatelessWidget {
   final String text;

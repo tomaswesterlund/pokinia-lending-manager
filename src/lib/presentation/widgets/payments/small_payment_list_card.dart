@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:pokinia_lending_manager/components/universal/texts/amounts/small_amount_text.dart';
-import 'package:pokinia_lending_manager/components/universal/texts/paragraphs/paragraph_two_text.dart';
 import 'package:pokinia_lending_manager/core/util/date_extensions.dart';
 import 'package:pokinia_lending_manager/core/util/double_extensions.dart';
 import 'package:pokinia_lending_manager/domain/entities/payment_entity.dart';
 import 'package:pokinia_lending_manager/presentation/pages/payments/payment_page.dart';
 import 'package:pokinia_lending_manager/presentation/widgets/shared/boxes/base_box.dart';
+import 'package:pokinia_lending_manager/presentation/widgets/shared/texts/amounts/small_amount_text.dart';
+import 'package:pokinia_lending_manager/presentation/widgets/shared/texts/paragraphs/paragraph_two_text.dart';
 
 
 class SmallPaymentListCard extends StatelessWidget {
